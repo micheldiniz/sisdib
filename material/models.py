@@ -27,4 +27,3 @@ class MaterialAmpliado(Material, models.Model):
     quantidade_paginas_ampliada = models.PositiveIntegerField()
     arquivo_braille = models.FileField(upload_to="arquivos/ampliado/%Y/%m")
     partes = models.PositiveIntegerField()    
-
