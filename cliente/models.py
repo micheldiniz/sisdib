@@ -1,5 +1,6 @@
 from django.db import models
 from abc import ABC, abstractmethod
+from material.models import Material
 
 # Create your models here.
 class Endereco(models.Model):
@@ -23,10 +24,11 @@ class Assinatura(models.Model):
         ('2','vigente'),
     ]
     estado = models.CharField(max_length=2,choices=ESTADO_CHOICES)
+    material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True)
 
 class Cliente(models.Model):
     nome =  models.CharField(max_length=255,null=True)
-    assinatura = models.OneToOneField(Assinatura, on_delete=models.CASCADE)
+    assinaturas = models.ManyToManyField(Assinatura)
     contato = models.OneToOneField(Contato, on_delete=models.CASCADE, null=True)
     endereco = models.OneToOneField(Endereco, on_delete=models.CASCADE, null=True)
     data_registro = models.DateTimeField(auto_now_add=True)
