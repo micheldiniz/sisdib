@@ -17,5 +17,6 @@ class Item(models.Model):
 class Pedido(models.Model):
     cliente = models.OneToOneField(Cliente, on_delete=models.CASCADE)
     items = models.ManyToManyField(Item)
+    data_registro = models.DateTimeField(auto_now_add=True)
     
 
