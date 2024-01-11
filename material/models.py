@@ -11,19 +11,29 @@ class Material(models.Model):
         "Outro":"Outro",
     }
     tipo = models.CharField(max_length = 255, choices=TIPO_CHOICES)
+    titulo = models.CharField(max_length = 255, null = True)
     acervo = models.CharField(max_length = 255)
     tiragem = models.CharField(max_length = 255)
     quantidade_paginas = models.PositiveIntegerField()
     arquivo_original = models.FileField(upload_to="arquivos/%Y/%m")
-    is_disponivel_para_assinatura = models.BooleanField(default=False)
-    is_disponivel_para_pedido = models.BooleanField(default=False)    
+    def __str__(self):
+        return f"{self.titulo}, {self.tipo}"
+        
 
-class MaterialBraille(Material, models.Model):
-    arquivo_braille = models.FileField(upload_to="arquivos/braille/%Y/%m")
+class MaterialBraille(models.Model):
+    material = models.OneToOneField(Material, on_delete=models.CASCADE)
     quantidade_paginas_braille = models.PositiveIntegerField()
     partes = models.PositiveIntegerField()
+    is_disponivel_para_assinatura = models.BooleanField(default=False)
+    is_disponivel_para_pedido = models.BooleanField(default=False)
+    arquivo_braille = models.FileField(upload_to="arquivos/braille/%Y/%m")
+    def __str__(self):
+        return self.material.__str__() + ' | Braille'
 
-class MaterialAmpliado(Material, models.Model):
+class MaterialAmpliado(models.Model):
+    material = models.OneToOneField(Material, on_delete=models.CASCADE)
     quantidade_paginas_ampliada = models.PositiveIntegerField()
-    arquivo_braille = models.FileField(upload_to="arquivos/ampliado/%Y/%m")
     partes = models.PositiveIntegerField()    
+    is_disponivel_para_assinatura = models.BooleanField(default=False, verbose_name="disponibilizar para assinatura?")
+    is_disponivel_para_pedido = models.BooleanField(default=False, verbose_name="disponibilizar para pedido?")
+    arquivo_ampliado = models.FileField(upload_to="arquivos/ampliado/%Y/%m")
