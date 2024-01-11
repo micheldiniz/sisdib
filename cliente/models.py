@@ -33,8 +33,9 @@ class Cliente(models.Model):
     endereco = models.OneToOneField(Endereco, on_delete=models.CASCADE, null=True)
     data_registro = models.DateTimeField(auto_now_add=True)
    
-class PessoaFisica(Cliente, models.Model):
+class PessoaFisica(models.Model):
     cpf = models.CharField(max_length=255)
+    cliente = models.OneToOneField(Cliente,on_delete=models.CASCADE, default=None, null=True)
     def __str__(self):
         return self.nome + ' ' + self.get_cpf()
        
@@ -45,7 +46,8 @@ class PessoaFisica(Cliente, models.Model):
         return self.format_cpf(self.cpf)
         
 
-class PessoaJuridica(Cliente, models.Model):
+class PessoaJuridica(models.Model):
     cnpj = models.CharField(max_length=255)    
+    cliente = models.OneToOneField(Cliente,on_delete=models.CASCADE, default=None, null=True)
  
 

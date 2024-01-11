@@ -2,7 +2,8 @@ from django.contrib import admin
 from cliente.models import *
 
 
-
+class ClienteAdmin(admin.ModelAdmin):
+    pass
 
 class AssinaturaAdmin(admin.ModelAdmin):
     pass
@@ -19,8 +20,7 @@ class EnderecoAdmin(admin.ModelAdmin):
 class ContatoAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(Contato, ContatoAdmin)
-admin.site.register(Endereco, EnderecoAdmin)
+admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(PessoaJuridica, PessoaJuridicaAdmin)
 admin.site.register(PessoaFisica, PessoaFisicaAdmin)
 admin.site.register(Assinatura, AssinaturaAdmin)
