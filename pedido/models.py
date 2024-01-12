@@ -1,5 +1,4 @@
 from django.db import models
-from cliente.models import Cliente
 from material.models import Material
 
 # Create your models here.
@@ -14,9 +13,7 @@ class Item(models.Model):
     estado = models.CharField(max_length=255, choices=ESTADO_CHOICES)
     observacao = models.CharField(max_length=255)
     
-class Pedido(models.Model):
-    cliente = models.OneToOneField(Cliente, on_delete=models.CASCADE)
+class Pedido(models.Model):    
     items = models.ManyToManyField(Item)
     data_registro = models.DateTimeField(auto_now_add=True)
     
-
