@@ -1,25 +1,30 @@
 from django.contrib import admin
 from pessoa.models import *
 # Register your models here.
-class PessoaFisicaAdmin(admin.ModelAdmin):
-    pass
 
-class PessoaJuridicaAdmin(admin.ModelAdmin):
-    pass
-
-class EnderecoInline(admin.TabularInline):
+class EnderecoInline(admin.StackedInline):
     model = Endereco
+    extra = 1
 
-class ContatoInline(admin.TabularInline):
+class ContatoInline(admin.StackedInline):
     model = Contato
+    extra = 1
 
-class PessoaAdmin(admin.ModelAdmin):
+class PessoaFisicaAdmin(admin.ModelAdmin):
+    verbose_name_plural = "Pessoas Físicas"
     inlines = [
         EnderecoInline,
-        ContatoInline,
+        ContatoInline
     ]
 
 
+class PessoaJuridicaAdmin(admin.ModelAdmin):
+    verbose_name_plural = "Pessoas Jurídicas"
+    inlines = [
+        EnderecoInline,
+        ContatoInline
+    ]
+
 admin.site.register(PessoaJuridica, PessoaJuridicaAdmin)
 admin.site.register(PessoaFisica, PessoaFisicaAdmin)
-admin.site.register(Pessoa, PessoaAdmin)
+# admin.site.register(Pessoa, PessoaAdmin)
