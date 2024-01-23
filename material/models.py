@@ -24,8 +24,8 @@ class MaterialBraille(models.Model):
     material = models.OneToOneField(Material, on_delete=models.CASCADE)
     quantidade_paginas_braille = models.PositiveIntegerField()
     partes = models.PositiveIntegerField()
-    is_disponivel_para_assinatura = models.BooleanField(default=False)
-    is_disponivel_para_pedido = models.BooleanField(default=False)
+    is_disponivel_para_assinatura = models.BooleanField(default=False, verbose_name="Disponível para assinatura?")
+    is_disponivel_para_pedido = models.BooleanField(default=False, verbose_name="Disponível para pedido?")
     arquivo_braille = models.FileField(upload_to="arquivos/braille/%Y/%m")
     def __str__(self):
         return self.material.__str__() + ' | Braille'
