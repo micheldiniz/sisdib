@@ -3,17 +3,23 @@ from material.models import Material, MaterialAmpliado, MaterialBraille
 
 # Register your models here.
 
+
+class MaterialBrailleInline(admin.StackedInline):
+    model = MaterialBraille
+    can_delete = False 
+    verbose_name_plural = 'Materiais Brailles'
+    extra = 0
+
+class MaterialAmpliadoInline(admin.StackedInline):
+    model = MaterialAmpliado
+    can_delete = False  
+    verbose_name_plural = 'Materiais Ampliados'
+    extra = 0
+
 class MaterialAdmin(admin.ModelAdmin):
-    pass
+    inlines = [MaterialBrailleInline, MaterialAmpliadoInline]
+    verbose_name_plural = 'Materiais Ampliados'
 
-class MaterialAmpliadoAdmin(admin.ModelAdmin):
-    pass
-
-class MaterialBrailleAdmin(admin.ModelAdmin):
-    pass
-
-admin.site.register(MaterialBraille, MaterialBrailleAdmin)
-admin.site.register(MaterialAmpliado, MaterialAmpliadoAdmin)
 admin.site.register(Material, MaterialAdmin)
-
+# 
 
