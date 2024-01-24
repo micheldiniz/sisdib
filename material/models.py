@@ -1,5 +1,4 @@
 from django.db import models
-
 # Create your models here.
 
 class Material(models.Model):
@@ -37,3 +36,5 @@ class MaterialAmpliado(models.Model):
     is_disponivel_para_assinatura = models.BooleanField(default=False, verbose_name="disponibilizar para assinatura?")
     is_disponivel_para_pedido = models.BooleanField(default=False, verbose_name="disponibilizar para pedido?")
     arquivo_ampliado = models.FileField(upload_to="arquivos/ampliado/%Y/%m")
+
+
