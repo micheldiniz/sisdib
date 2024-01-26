@@ -17,7 +17,6 @@ class Material(models.Model):
     arquivo_original = models.FileField(upload_to="arquivos/%Y/%m")
     def __str__(self):
         return f"{self.titulo}, {self.tipo}"
-        
 
 class MaterialBraille(models.Model):
     material = models.OneToOneField(Material, on_delete=models.CASCADE)

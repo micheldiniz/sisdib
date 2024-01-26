@@ -10,12 +10,10 @@ from django.contrib.contenttypes.models import ContentType
 
 class Assinatura(models.Model):
     ESTADO_CHOICES =[
-        # ('0','nenhuma'),
         ('1','vigente'),
         ('0','cancelado'),
     ]
     estado = models.CharField(max_length=2,choices=ESTADO_CHOICES, default='vigente')
-    # material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True)
     material_object_id = models.IntegerField()
     material_content_type = models.ForeignKey(
         ContentType,
