@@ -1,10 +1,16 @@
+from typing import Any
 from django.db import models
+from datetime import datetime
 
 # Create your models here.
 class Pessoa(models.Model):
-    nome =  models.CharField(max_length=255,null=True)
+    nome =  models.CharField(max_length=255,null=True)    
+    data_registro = models.DateField(auto_now_add=True)
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
     def __str__(self) -> str:
-        return f"Nome: {self.nome}"
+        return f"Nome: {self.nome}"    
   
 class Endereco(models.Model):
     cep = models.CharField(max_length=255)
@@ -24,6 +30,7 @@ class Contato(models.Model):
 
 class PessoaFisica(Pessoa, models.Model):    
     cpf = models.CharField(max_length=255)
+    data_nascimento = models.DateField(null=True)
     def __str__(self):
         return self.nome + ' ' + self.get_cpf()
        
