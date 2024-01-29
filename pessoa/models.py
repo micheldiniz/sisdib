@@ -9,7 +9,7 @@ class Pessoa(models.Model):
         super().__init__(*args, **kwargs)
 
     def __str__(self) -> str:
-        return f"Nome: {self.nome}"    
+        return f"{self.nome}"    
   
 class Endereco(models.Model):
     cep = models.CharField(max_length=255)

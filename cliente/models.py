@@ -9,6 +9,9 @@ class Cliente(models.Model):
     data_registro = models.DateTimeField(auto_now_add=True)
     pessoa = models.OneToOneField(Pessoa, on_delete=models.CASCADE)
 
+    def __str__(self) -> str:
+        return self.pessoa.__str__()
+
 class Assinatura(models.Model):
     ESTADO_CHOICES =[
         ('1','vigente'),
