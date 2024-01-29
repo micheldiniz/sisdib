@@ -1,12 +1,13 @@
 from django.db import models
-from abc import ABC, abstractmethod
-from material.models import Material
-from pedido.models import Pedido
 from pessoa.models import Pessoa
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 # Create your models here.
+
+class Cliente(models.Model):
+    data_registro = models.DateTimeField(auto_now_add=True)
+    pessoa = models.OneToOneField(Pessoa, on_delete=models.CASCADE)
 
 class Assinatura(models.Model):
     ESTADO_CHOICES =[
@@ -24,10 +25,6 @@ class Assinatura(models.Model):
         'material_object_id',
     )
     observacao = models.CharField(max_length=255, verbose_name='Observação')
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
-class Cliente(models.Model):
-    assinaturas = models.ManyToManyField(Assinatura)
-    pedidos = models.ManyToManyField(Pedido)    
-    data_registro = models.DateTimeField(auto_now_add=True)
-    pessoa = models.OneToOneField(Pessoa, on_delete=models.CASCADE)
-
+    
