@@ -1,7 +1,7 @@
 from django.db import models
-from material.models import Material
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from cliente.models import Cliente
 
 # Create your models here.
 class Item(models.Model):
@@ -11,7 +11,6 @@ class Item(models.Model):
         "pendente":"pendente",
     }    
     quantidade = models.PositiveIntegerField()
-    # material = models.Gener(Material, on_delete=models.CASCADE)
     material_object_id = models.IntegerField()
     material_content_type = models.ForeignKey(
         ContentType,
@@ -27,4 +26,4 @@ class Item(models.Model):
 class Pedido(models.Model):    
     items = models.ManyToManyField(Item)
     data_registro = models.DateTimeField(auto_now_add=True)
-    
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
