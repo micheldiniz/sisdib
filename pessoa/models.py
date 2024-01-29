@@ -1,6 +1,5 @@
 from typing import Any
 from django.db import models
-from datetime import datetime
 
 # Create your models here.
 class Pessoa(models.Model):
