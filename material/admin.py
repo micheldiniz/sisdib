@@ -18,7 +18,7 @@ class MaterialAmpliadoInline(admin.StackedInline):
 
 class MaterialAdmin(admin.ModelAdmin):
     inlines = [MaterialBrailleInline, MaterialAmpliadoInline]
-    verbose_name_plural = 'Materiais Ampliados'
+    verbose_name_plural = 'Materiais'
 
 admin.site.register(Material, MaterialAdmin)
 # 
