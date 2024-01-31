@@ -5,6 +5,7 @@ from django.db import models
 class Pessoa(models.Model):
     nome =  models.CharField(max_length=255,null=True)    
     data_registro = models.DateField(auto_now_add=True)
+    
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
 
