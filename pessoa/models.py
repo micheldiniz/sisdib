@@ -5,7 +5,8 @@ from django.db import models
 class Pessoa(models.Model):
     nome =  models.CharField(max_length=255,null=True)    
     data_registro = models.DateField(auto_now_add=True)
-    
+    nacionalidade = models.CharField(max_length=255, null=True) 
+
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
 
@@ -17,6 +18,7 @@ class Endereco(models.Model):
     logradouro = models.CharField(max_length=255)
     numero = models.CharField(max_length=255)
     complemento = models.CharField(max_length=255)
+    pais = models.CharField(max_length=255)
     cidade = models.CharField(max_length=255)
     estado = models.CharField(max_length=255)
     pessoa = models.OneToOneField(Pessoa,on_delete=models.CASCADE, default=None)
@@ -29,7 +31,7 @@ class Contato(models.Model):
     pessoa = models.OneToOneField(Pessoa,on_delete=models.CASCADE, default=None)
 
 class PessoaFisica(Pessoa, models.Model):    
-    cpf = models.CharField(max_length=255)
+    cpf = models.CharField(max_length=255, null=True)
     data_nascimento = models.DateField(null=True)
     def __str__(self):
         return self.nome + ' ' + self.get_cpf()
