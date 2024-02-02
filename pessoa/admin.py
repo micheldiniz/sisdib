@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django import forms
 from pessoa.models import *
 # Register your models here.
 
@@ -10,8 +11,19 @@ class ContatoInline(admin.StackedInline):
     model = Contato
     extra = 1
 
+
+class PessoaFisicaAdminForm(forms.ModelForm):
+    class Meta:
+        model = PessoaFisica
+        fields = '__all__'
+
+    is_estrageiro_field = forms.BooleanField(
+        widget = forms.RadioSelect(choices=[(True, "Sim"),(False, "Não")]),required=True,
+    )
+
 class PessoaFisicaAdmin(admin.ModelAdmin):
     verbose_name_plural = "Pessoas Físicas"
+    form = PessoaFisicaAdminForm
     inlines = [
         EnderecoInline,
         ContatoInline

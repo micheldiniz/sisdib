@@ -5,7 +5,8 @@ from django.db import models
 class Pessoa(models.Model):
     nome =  models.CharField(max_length=255,null=True)    
     data_registro = models.DateField(auto_now_add=True)
-    nacionalidade = models.CharField(max_length=255, null=True) 
+    is_estrangeiro = models.BooleanField(verbose_name="Estrageiro?")
+    nacionalidade = models.CharField(max_length=255, null=True, default="Brasileiro") 
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
