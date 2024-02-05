@@ -1,11 +1,13 @@
 from typing import Any
 from django.db import models
 
+BOOL_CHOICES = ((True,"Sim"),(False,"Não"))
+
 # Create your models here.
 class Pessoa(models.Model):
     nome =  models.CharField(max_length=255,null=True)    
     data_registro = models.DateField(auto_now_add=True)
-    is_estrangeiro = models.BooleanField(verbose_name="Estrageiro?")
+    is_estrangeiro = models.BooleanField(verbose_name="Estrageiro?", choices=BOOL_CHOICES, default=False)
     nacionalidade = models.CharField(max_length=255, null=True, default="Brasileiro") 
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:

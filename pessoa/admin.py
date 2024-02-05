@@ -17,9 +17,9 @@ class PessoaFisicaAdminForm(forms.ModelForm):
         model = PessoaFisica
         fields = '__all__'
 
-    is_estrageiro_field = forms.BooleanField(
-        widget = forms.RadioSelect(choices=[(True, "Sim"),(False, "Não")]),required=True,
-    )
+    # is_estrageiro_field = forms.BooleanField(
+    #     widget = forms.RadioSelect(choices=[(True, "Sim"),(False, "Não")]),required=True,
+    # )
 
 class PessoaFisicaAdmin(admin.ModelAdmin):
     verbose_name_plural = "Pessoas Físicas"
