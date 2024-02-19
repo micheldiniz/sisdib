@@ -9,8 +9,8 @@ class Material(models.Model):
         "DAL (S/Revisão)":"DAL (S/Revisão)",
         "Outro":"Outro",
     }
-    tipo = models.CharField(max_length = 255, choices=TIPO_CHOICES)
     titulo = models.CharField(max_length = 255, null = True)
+    classificacao = models.CharField(max_length = 255, choices=TIPO_CHOICES)
     acervo = models.CharField(max_length = 255)
     tiragem = models.CharField(max_length = 255)
     quantidade_paginas = models.PositiveIntegerField()
@@ -18,24 +18,17 @@ class Material(models.Model):
     def __str__(self):
         return f"{self.titulo}, {self.tipo}"
 
-class MaterialBraille(models.Model):
-    material = models.OneToOneField(Material, on_delete=models.CASCADE)
-    quantidade_paginas_braille = models.PositiveIntegerField()
+class MaterialAdaptado(models.Model):    
+    MATERIAL_CHOICES = {
+        "braille":"braille",
+        "ampliado":"ampliado",
+    }
+    material = models.ForeignKey(Material, on_delete=models.CASCADE)
+    tipo = models.CharField(max_length = 255, choices = MATERIAL_CHOICES)
+    quantidade_paginas = models.PositiveIntegerField()
     partes = models.PositiveIntegerField()
     is_disponivel_para_assinatura = models.BooleanField(default=False, verbose_name="Disponível para assinatura?")
     is_disponivel_para_pedido = models.BooleanField(default=False, verbose_name="Disponível para pedido?")
-    arquivo_braille = models.FileField(upload_to="arquivos/braille/%Y/%m", null = True, blank= True)
+    arquivo = models.FileField(upload_to="arquivos/braille/%Y/%m", null = True, blank= True)
     def __str__(self):
-        return self.material.__str__() + ' | Braille'
-
-class MaterialAmpliado(models.Model):
-    material = models.OneToOneField(Material, on_delete=models.CASCADE)
-    quantidade_paginas_ampliada = models.PositiveIntegerField()
-    partes = models.PositiveIntegerField()    
-    is_disponivel_para_assinatura = models.BooleanField(default=False, verbose_name="disponibilizar para assinatura?")
-    is_disponivel_para_pedido = models.BooleanField(default=False, verbose_name="disponibilizar para pedido?")
-    arquivo_ampliado = models.FileField(upload_to="arquivos/ampliado/%Y/%m", null = True, blank= True)
-    def __str__(self):
-        return self.material.__str__() + ' | Ampliado'
-
-
+        return self.material.__str__() + ' | ' + self.tipo
