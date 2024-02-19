@@ -4,10 +4,19 @@ from material.models import MaterialAdaptado
 
 # Create your models here.
 
-class Pedido(models.Model):        
+class Pedido(models.Model):
+    ESTADO_CHOICES = {
+        'novo':'novo',
+        'processado':'processado',
+        'enviado':'enviado',
+        'finalizado':'finalizado',
+        'pendente':'pendente',
+    }
     data_registro = models.DateTimeField(auto_now_add=True)
     numero_pedido = models.PositiveBigIntegerField()
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    estado_do_pedido = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo")
+    solicitante = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    observacao = models.CharField(max_length=255)
 
     def __str__(self):        
         return self.numero_pedido.__str__()

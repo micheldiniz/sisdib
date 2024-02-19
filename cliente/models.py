@@ -20,6 +20,6 @@ class Assinatura(models.Model):
     material = models.ForeignKey(MaterialAdaptado, on_delete= models.CASCADE)
     
     observacao = models.CharField(max_length=255, verbose_name='Observação')
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    solicitante = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
     
