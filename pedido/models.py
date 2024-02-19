@@ -1,7 +1,6 @@
 from django.db import models
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
 from cliente.models import Cliente
+from material.models import MaterialAdaptado
 
 # Create your models here.
 
@@ -20,24 +19,13 @@ class ItemPedido(models.Model):
         "pendente":"pendente",
     }
     quantidade = models.PositiveIntegerField()
-    material_object_id = models.IntegerField()
-    material_content_type = models.ForeignKey(
-        ContentType,
-        on_delete = models.PROTECT,
-    )
-    material = GenericForeignKey(
-        'material_content_type',
-        'material_object_id',
-    )
+    
+    material = models.ForeignKey(MaterialAdaptado, on_delete=models.CASCADE)
+   
     estado = models.CharField(max_length=255, choices=ESTADO_CHOICES)
     observacao = models.CharField(max_length=255)
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)    
-
-    def getGenericObject(self):
-        content_type = ContentType.model_class(self.material_content_type)
-        obj = content_type.objects.get(id=self.material_object_id)
-        return obj
-
+   
     def __str__(self):  
         obj =  self.getGenericObject() 
         return f"{obj.__str__()} quantidade: {self.quantidade}"
