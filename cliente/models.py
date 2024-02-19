@@ -1,7 +1,6 @@
 from django.db import models
 from pessoa.models import Pessoa
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
+from material.models import MaterialAdaptado
 
 # Create your models here.
 
@@ -18,15 +17,8 @@ class Assinatura(models.Model):
         ('0','cancelado'),
     ]
     estado = models.CharField(max_length=2,choices=ESTADO_CHOICES, default='vigente')
-    material_object_id = models.IntegerField()
-    material_content_type = models.ForeignKey(
-        ContentType,
-        on_delete = models.PROTECT,
-    )
-    material = GenericForeignKey(
-        'material_content_type',
-        'material_object_id',
-    )
+    material = models.ForeignKey(MaterialAdaptado, on_delete= models.CASCADE)
+    
     observacao = models.CharField(max_length=255, verbose_name='Observação')
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
