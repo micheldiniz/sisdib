@@ -1,25 +1,37 @@
 from django.contrib import admin
-from material.models import Material, MaterialAmpliado, MaterialBraille
+from django import forms
+from material.models import Material, MaterialAdaptado
 
 # Register your models here.
 
 
-class MaterialBrailleInline(admin.StackedInline):
-    model = MaterialBraille
-    can_delete = False 
-    verbose_name_plural = 'Materiais Brailles'
-    extra = 0
+class MaterialAdaptadoForm(forms.ModelForm):
+    class Meta:
+        model = MaterialAdaptado
+        fields = '__all__'
 
-class MaterialAmpliadoInline(admin.StackedInline):
-    model = MaterialAmpliado
-    can_delete = False  
-    verbose_name_plural = 'Materiais Ampliados'
+    def clean_foreign_key_field(self):
+        foreign_key_value = self.cleaned_data.get('material')
+
+        count = MaterialAdaptado.objects.filter(material=foreign_key_value).count()
+
+        if count > 2:
+            raise forms.ValidateError("não é permitido mais de 2 itens relacionados à um material")
+        return foreign_key_value
+
+class MaterialAdaptadoInline(admin.StackedInline):
+    model = MaterialAdaptado
+    can_delete = True  
+    verbose_name_plural = 'Materiais Adaptados'
     extra = 0
 
 class MaterialAdmin(admin.ModelAdmin):
-    inlines = [MaterialBrailleInline, MaterialAmpliadoInline]
+    inlines = [MaterialAdaptadoInline]
     verbose_name_plural = 'Materiais'
 
-admin.site.register(Material, MaterialAdmin)
-# 
+class MaterialAdaptadoAdmin(admin.ModelAdmin):
+    # form = MaterialAdaptadoForm
+    pass
 
+admin.site.register(Material, MaterialAdmin)
+admin.site.register(MaterialAdaptado, MaterialAdaptadoAdmin)

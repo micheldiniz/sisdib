@@ -3,11 +3,11 @@ from pedido.models import Pedido, ItemPedido
 
 # Register your models here.
 
-class PedidoAdmin(admin.ModelAdmin):
-    pass
+class ItemPedidoInline(admin.StackedInline):
+    model = ItemPedido
+    extra = 1
 
-class ItemPedidoAdmin(admin.ModelAdmin):
-    pass
+class PedidoAdmin(admin.ModelAdmin):
+    inlines = [ItemPedidoInline]
 
 admin.site.register(Pedido, PedidoAdmin)
-admin.site.register(ItemPedido, ItemPedidoAdmin)
