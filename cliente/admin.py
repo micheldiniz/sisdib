@@ -3,7 +3,8 @@ from cliente.models import *
 
 
 class AssinaturaAdmin(admin.ModelAdmin):
-    pass
+    raw_id_fields = ('material',)
+    autocomplete_fields = ('material',) 
 
 class ClienteAdmin(admin.ModelAdmin):
     pass

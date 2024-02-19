@@ -6,7 +6,8 @@ from pedido.models import Pedido, ItemPedido
 class ItemPedidoInline(admin.StackedInline):
     model = ItemPedido
     extra = 1
-
+    raw_id_fields = ('material',)
+    autocomplete_fields = ('material',)
 class PedidoAdmin(admin.ModelAdmin):
     inlines = [ItemPedidoInline]
 

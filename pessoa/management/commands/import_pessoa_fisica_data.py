@@ -14,9 +14,9 @@ class Command(BaseCommand):
         # Your data import logic here
         with open('pessoa/management/data/pessoa_fisica.csv', 'r') as csvfile:
             reader = csv.DictReader(csvfile)
-            date = ""
+            date = datetime.datetime.now()
             for row in reader:
-                if(len(row['data_registro']) > 0):
+                if(len(row['data_registro']) > 1):
                     date = datetime.datetime.strptime(row['data_registro'],"%d/%m/%Y").strftime("%Y-%m-%d")
 
                 pessoa = PessoaFisica.objects.create(
@@ -25,7 +25,7 @@ class Command(BaseCommand):
                     # data=row['field2'],
                     # Map CSV fields to model fields
                 )
-
+                
                 # Create Endereco
                 endereco = Endereco.objects.create(
                     pessoa=pessoa,  # OneToOne relationship
