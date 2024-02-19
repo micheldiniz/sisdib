@@ -17,8 +17,9 @@ class Assinatura(models.Model):
         ('0','cancelado'),
     ]
     estado = models.CharField(max_length=2,choices=ESTADO_CHOICES, default='vigente')
-    material = models.ForeignKey(MaterialAdaptado, on_delete= models.CASCADE)
-    
+    material = models.ForeignKey(MaterialAdaptado, on_delete= models.CASCADE)    
+    data_registro = models.DateTimeField(auto_now_add=True)
+    data_ultima_alteracao = models.DateTimeField()
     observacao = models.CharField(max_length=255, verbose_name='Observação')
     solicitante = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
