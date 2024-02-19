@@ -16,7 +16,7 @@ class Material(models.Model):
     quantidade_paginas = models.PositiveIntegerField()
     arquivo_original = models.FileField(upload_to="arquivos/%Y/%m", null = True, blank= True)
     def __str__(self):
-        return f"{self.titulo}, {self.tipo}"
+        return f"{self.titulo}, {self.classificacao}"
 
 class MaterialAdaptado(models.Model):    
     MATERIAL_CHOICES = {
