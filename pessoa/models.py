@@ -6,7 +6,7 @@ BOOL_CHOICES = ((True,"Sim"),(False,"Não"))
 # Create your models here.
 class Pessoa(models.Model):
     nome =  models.CharField(max_length=255,null=True)    
-    data_registro = models.DateField(auto_now_add=True)
+    data_registro = models.DateField()
     is_estrangeiro = models.BooleanField(verbose_name="Estrageiro?", choices=BOOL_CHOICES, default=False)
     nacionalidade = models.CharField(max_length=255, null=True, default="Brasileiro") 
 
@@ -36,14 +36,14 @@ class Contato(models.Model):
 class PessoaFisica(Pessoa, models.Model):    
     cpf = models.CharField(max_length=255, null=True)
     data_nascimento = models.DateField(null=True)
-    def __str__(self):
-        return self.nome + ' ' + self.get_cpf()
+    # def __str__(self):
+    #     return self.nome + ' ' + self.get_cpf()
        
-    def format_cpf(self, cpf:str):
-        return cpf[0:3] + '.' + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:11]
+    # def format_cpf(self, cpf:str):
+    #     return cpf[0:3] + '.' + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:11]
     
-    def get_cpf(self):
-        return self.format_cpf(self.cpf)
+    # def get_cpf(self):
+    #     return self.format_cpf(self.cpf)
 
 class PessoaJuridica(Pessoa, models.Model):
     cnpj = models.CharField(max_length=255)
