@@ -43,7 +43,17 @@ class Command(BaseCommand):
                 cliente = Cliente.objects.create(
                     pessoa = pessoa
                 )
-
-
-
         self.stdout.write(self.style.SUCCESS('Data imported successfully'))
+
+    @staticmethod
+    def check_date(date:str) -> bool:
+        return True
+
+    def format_date(date:str) -> datetime.date:
+        if (check_date(date)):
+            pass
+
+        pass
+
+
+    
