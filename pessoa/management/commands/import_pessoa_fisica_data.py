@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from pessoa.models import PessoaFisica, Endereco, Contato
+from pessoa.models import PessoaFisica, Endereco, Contato, Pessoa
 from cliente.models import Cliente
 import csv, datetime, re
 
@@ -15,35 +15,70 @@ class Command(BaseCommand):
         with open('pessoa/management/data/pessoa_fisica.csv', 'r') as csvfile:
             reader = csv.DictReader(csvfile)
             date = datetime.datetime.now()
-            for row in reader:
-                if(len(row['data_registro']) > 1):
-                    date = datetime.datetime.strptime(row['data_registro'],"%d/%m/%Y").strftime("%Y-%m-%d")
-
-                pessoa = PessoaFisica.objects.create(
-                    nome=row['nome'],
-                    data_registro=date
-                    # data=row['field2'],
-                    # Map CSV fields to model fields
-                )
-                
-                # Create Endereco
-                endereco = Endereco.objects.create(
-                    pessoa=pessoa,  # OneToOne relationship
-                    # logradouro=row['logradouro'],
-                    # other fields
-                )
-
-                # Create Contato
-                contato = Contato.objects.create(
-                    pessoa=pessoa,  # OneToOne relationship
-                    # telefone=row['telefone'],
-                    # other fields
-                )
-
+            for row in reader:                
+                pessoa_fisica = Command.toPessoaFisica(row)
+                endereco = Command.toEndereco(row, pessoa_fisica)
+                contato = Command.toContato(row, pessoa_fisica)                         
                 cliente = Cliente.objects.create(
-                    pessoa = pessoa
+                    pessoa = pessoa_fisica
                 )
         self.stdout.write(self.style.SUCCESS('Data imported successfully'))
+
+    @staticmethod
+    def toPessoaFisica(row) -> PessoaFisica:
+
+        # if(len(row['data_registro']) > 6):
+        #     pessoa_fisica.data_registro = datetime.datetime.strptime(row['data_registro'],"%d/%m/%Y").strftime("%Y-%m-%d")
+
+        pessoa_fisica = PessoaFisica.objects.create(
+            cpf = row['cpf'],
+        )
+        
+        if(row['nome'] == row['solicitante']):
+            pessoa_fisica.nome = row['solicitante']        
+
+        if(row['nome']>0):
+            pessoa_fisica.nome = row['nome']        
+    
+
+        if(row['tipo_instituicao'] == 'Estrangeiros'):
+            pessoa_fisica.is_estrangeiro = True
+        
+        # data_nascimento = Command.format_date(row['data_nascimento'])
+        # pessoa_fisica.data_nascimento = data_nascimento
+                    
+        return pessoa_fisica
+
+    @staticmethod
+    def toEndereco(row, pessoa) -> Endereco: 
+            
+        endereco = Endereco.objects.create(
+            pessoa = pessoa,
+            cep = row['cep'],         
+            logradouro = row['endereco'],
+            numero = row['numero'],
+            complemento = row['complemento'],
+            bairro = row['bairro'],
+            cidade = row['cidade'],
+            estado = row['uf']
+            # pais = row['pais']
+        )     
+        
+        return endereco
+    
+    @staticmethod
+    def toContato(row, pessoa) -> Contato:
+        contato = Contato.objects.create(
+            pessoa = pessoa,
+            celular = row['celular'],
+            email = row['email'],
+            nome_contato = row['nome_contato']
+        )
+        
+        if (len(row['contato_fone'])>1):
+            contato.telefone = row['ddd'] + ' ' + row['contato_fone']
+
+        return contato
 
     @staticmethod
     def validate_date(date_str):
@@ -83,6 +118,7 @@ class Command(BaseCommand):
 
         return True
     
+    @staticmethod
     def format_date(date_str:str) -> datetime.date:        
         if (Command.validate_date(date_str)):
             return datetime.strptime(date_str, "%Y-%m-%d")
