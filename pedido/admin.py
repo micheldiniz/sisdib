@@ -8,7 +8,9 @@ class ItemPedidoInline(admin.StackedInline):
     extra = 1
     raw_id_fields = ('material',)
     autocomplete_fields = ('material',)
+
 class PedidoAdmin(admin.ModelAdmin):
     inlines = [ItemPedidoInline]
+    autocomplete_fields = ('solicitante',)
 
 admin.site.register(Pedido, PedidoAdmin)
