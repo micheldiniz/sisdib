@@ -22,5 +22,9 @@ class Assinatura(models.Model):
     data_ultima_alteracao = models.DateTimeField()
     observacao = models.CharField(max_length=255, verbose_name='Observação')
     solicitante = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    
+class Assinante(models.Model):
+    nome = models.CharField(max_length=255, verbose_name="nome da pessoa que receberá o material")
+    assinatura = models.OneToOneField(Assinatura, on_delete=models.CASCADE)
 
     
