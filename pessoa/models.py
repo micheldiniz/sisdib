@@ -6,7 +6,7 @@ BOOL_CHOICES = ((True,"Sim"),(False,"Não"))
 # Create your models here.
 class Pessoa(models.Model):
     nome =  models.CharField(max_length=255,null=True)    
-    data_registro = models.DateField()
+    data_registro = models.DateField(null=True)
     is_estrangeiro = models.BooleanField(verbose_name="Estrageiro?", choices=BOOL_CHOICES, default=False)
     nacionalidade = models.CharField(max_length=255, null=True, default="Brasileiro") 
 
@@ -21,6 +21,7 @@ class Endereco(models.Model):
     logradouro = models.CharField(max_length=255)
     numero = models.CharField(max_length=255)
     complemento = models.CharField(max_length=255)
+    bairro = models.CharField(max_length=255)
     pais = models.CharField(max_length=255)
     cidade = models.CharField(max_length=255)
     estado = models.CharField(max_length=255)
