@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from pessoa.models import PessoaFisica, Endereco, Contato, Pessoa
+from pessoa.models import PessoaFisica, Endereco, Contato
 from cliente.models import Cliente
 import csv, datetime, re
 
@@ -12,14 +12,15 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Your data import logic here
-        with open('pessoa/management/data/pessoa_fisica.csv', 'r') as csvfile:
+        with open('pessoa/management/data/data.csv', 'r') as csvfile:
             reader = csv.DictReader(csvfile)
-            date = datetime.datetime.now()
-            for row in reader:                
-                pessoa_fisica = Command.toPessoaFisica(row)
-                endereco = Command.toEndereco(row, pessoa_fisica)
-                contato = Command.toContato(row, pessoa_fisica)                         
-                cliente = Cliente.objects.create(
+            # date = datetime.datetime.now()
+            for row in reader:    
+                if(row['pessoa_fisica']=='TRUE' or row['cpf'] or row['tipo_instituicao'] == "Pessoa Física" or row['tipo_instituicao'] == "Estrangeiros" ):
+                    pessoa_fisica = Command.toPessoaFisica(row)
+                    endereco = Command.toEndereco(row, pessoa_fisica)
+                    contato = Command.toContato(row, pessoa_fisica)
+                    cliente = Cliente.objects.create(
                     pessoa = pessoa_fisica
                 )
         self.stdout.write(self.style.SUCCESS('Data imported successfully'))
@@ -27,25 +28,30 @@ class Command(BaseCommand):
     @staticmethod
     def toPessoaFisica(row) -> PessoaFisica:
 
-        # if(len(row['data_registro']) > 6):
-        #     pessoa_fisica.data_registro = datetime.datetime.strptime(row['data_registro'],"%d/%m/%Y").strftime("%Y-%m-%d")
-
         pessoa_fisica = PessoaFisica.objects.create(
             cpf = row['cpf'],
+            nome = row['solicitante'].upper(),
+            is_estrangeiro = False,                                  
         )
         
-        if(row['nome'] == row['solicitante']):
-            pessoa_fisica.nome = row['solicitante']        
+        # pessoa_fisica.is_estrangeiro = False
 
-        if(row['nome']>0):
-            pessoa_fisica.nome = row['nome']        
-    
+        if(len(row['solicitante'])==0):
+            pessoa_fisica.nome = row['nome'].upper()        
 
-        if(row['tipo_instituicao'] == 'Estrangeiros'):
+        data_registro = row['data_registro']
+        if data_registro:
+            pessoa_fisica.data_registro = Command.format_date(data_registro)
+
+        data_nascimento = row['data_nascimento']
+        if data_nascimento:
+            pessoa_fisica.data_nascimento = Command.format_date(data_nascimento)
+
+        if (row['tipo_instituicao'] == 'Estrangeiros'):
             pessoa_fisica.is_estrangeiro = True
-        
-        # data_nascimento = Command.format_date(row['data_nascimento'])
-        # pessoa_fisica.data_nascimento = data_nascimento
+            pessoa_fisica.nacionalidade = row['uf']
+
+        pessoa_fisica.save()   
                     
         return pessoa_fisica
 
@@ -60,9 +66,10 @@ class Command(BaseCommand):
             complemento = row['complemento'],
             bairro = row['bairro'],
             cidade = row['cidade'],
-            estado = row['uf']
-            # pais = row['pais']
+            estado = row['uf']            
         )     
+        if (row['tipo_instituicao'] == 'Estrangeiros'):
+            pais = row['uf']
         
         return endereco
     
@@ -120,6 +127,7 @@ class Command(BaseCommand):
     
     @staticmethod
     def format_date(date_str:str) -> datetime.date:        
+
         if (Command.validate_date(date_str)):
             return datetime.strptime(date_str, "%Y-%m-%d")
                
@@ -127,7 +135,7 @@ class Command(BaseCommand):
             date_parts = [int(part) for part in re.split(r"[/\-_]", date_str)]
         except (ValueError, IndexError):
             raise ValueError("Invalid date format. Please use DD/MM/YYYY, MM-DD-YYYY, or similar.")
-    
+
         day, month, year = date_parts
 
         try:
