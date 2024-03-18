@@ -24,6 +24,7 @@ class PessoaFisicaAdminForm(forms.ModelForm):
 class PessoaFisicaAdmin(admin.ModelAdmin):
     verbose_name_plural = "Pessoas Físicas"
     form = PessoaFisicaAdminForm
+    search_fields = ['nome','is_estrangeiro']
     inlines = [
         EnderecoInline,
         ContatoInline
