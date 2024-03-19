@@ -5,6 +5,9 @@ BOOL_CHOICES = ((True,"Sim"),(False,"Não"))
 
 # Create your models here.
 class Pessoa(models.Model):
+    class Meta:
+        verbose_name_plural = 'Pessoas'
+        
     nome =  models.CharField(max_length=255,null=True)    
     data_registro = models.DateField()
     is_estrangeiro = models.BooleanField(verbose_name="Estrageiro?", choices=BOOL_CHOICES)
@@ -35,6 +38,8 @@ class Contato(models.Model):
     pessoa = models.OneToOneField(Pessoa,on_delete=models.CASCADE, default=None)
 
 class PessoaFisica(Pessoa, models.Model):    
+    class Meta:
+        verbose_name_plural = 'Pessoas Físicas'
     cpf = models.CharField(max_length=255, null=True)
     data_nascimento = models.DateField(null=True)
     # def __str__(self):
@@ -47,6 +52,9 @@ class PessoaFisica(Pessoa, models.Model):
     #     return self.format_cpf(self.cpf)
 
 class PessoaJuridica(Pessoa, models.Model):
+    class Meta:
+        verbose_name_plural = 'Pessoas Jurídicas'
+        
     cnpj = models.CharField(max_length=255)
 
     def __str__(self) -> str:

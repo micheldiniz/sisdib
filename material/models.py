@@ -2,6 +2,9 @@ from django.db import models
 # Create your models here.
 
 class Material(models.Model):
+    class Meta:
+        verbose_name_plural = 'Materiais'
+
     TIPO_CHOICES = [
         ("didático","didático"),
         ("paradidático","paradidático"),
@@ -19,6 +22,9 @@ class Material(models.Model):
         return f"{self.titulo}, {self.classificacao}"
 
 class MaterialAdaptado(models.Model):    
+    class Meta:
+        verbose_name_plural = 'Materiais Adaptados'
+        
     MATERIAL_CHOICES = [
         ("braille","braille"),
         ("ampliado","ampliado"),
