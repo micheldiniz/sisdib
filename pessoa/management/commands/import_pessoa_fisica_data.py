@@ -11,18 +11,28 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
+        #clear all data
+        PessoaFisica.objects.all().delete()
+
+
         # Your data import logic here
+        csv_validate = open('pessoa/management/data/data_validate.csv', 'w')
+
+
         with open('pessoa/management/data/data.csv', 'r') as csvfile:
             reader = csv.DictReader(csvfile)
             # date = datetime.datetime.now()
             for row in reader:    
-                if(row['pessoa_fisica']=='TRUE' or row['cpf'] or row['tipo_instituicao'] == "Pessoa Física" or row['tipo_instituicao'] == "Estrangeiros" ):
+                if(row['pessoa_fisica']=='TRUE' and row['instituicao']=='FALSE' or row['cpf'] and (row['tipo_instituicao'] == "Pessoa Física" or row['tipo_instituicao'] == "Estrangeiros") ):
                     pessoa_fisica = Command.toPessoaFisica(row)
                     endereco = Command.toEndereco(row, pessoa_fisica)
                     contato = Command.toContato(row, pessoa_fisica)
                     cliente = Cliente.objects.create(
-                    pessoa = pessoa_fisica
-                )
+                        pessoa = pessoa_fisica
+                    )
+                    break
+                else:
+                    csv_validate.write(str(row) + '\n')
         self.stdout.write(self.style.SUCCESS('Data imported successfully'))
 
     @staticmethod
@@ -31,7 +41,8 @@ class Command(BaseCommand):
         pessoa_fisica = PessoaFisica.objects.create(
             cpf = row['cpf'],
             nome = row['solicitante'].upper(),
-            is_estrangeiro = False,                                  
+            is_estrangeiro = False,
+            nacionalidade = 'Brasileiro'
         )
         
         # pessoa_fisica.is_estrangeiro = False
@@ -66,11 +77,16 @@ class Command(BaseCommand):
             complemento = row['complemento'],
             bairro = row['bairro'],
             cidade = row['cidade'],
-            estado = row['uf']            
-        )     
-        if (row['tipo_instituicao'] == 'Estrangeiros'):
-            pais = row['uf']
+            estado = row['uf'],
+        )
         
+        endereco.pais = 'Brasil'
+        
+        if (row['tipo_instituicao'] == 'Estrangeiros'):
+            endereco.pais = row['uf']
+        
+        endereco.save()
+
         return endereco
     
     @staticmethod
