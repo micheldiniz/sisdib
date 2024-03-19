@@ -17,7 +17,10 @@ class Assinatura(models.Model):
         ('0','cancelado'),
     ]
     estado = models.CharField(max_length=2,choices=ESTADO_CHOICES, default='vigente')
-    material = models.ForeignKey(MaterialAdaptado, on_delete= models.CASCADE)    
+    material = models.ForeignKey(
+        MaterialAdaptado, 
+        on_delete= models.CASCADE,
+        limit_choices_to={'is_disponivel_para_assinatura':True})    
     data_registro = models.DateTimeField(auto_now_add=True)
     data_ultima_alteracao = models.DateTimeField()
     observacao = models.CharField(max_length=255, verbose_name='Observação')
@@ -27,4 +30,3 @@ class Assinante(models.Model):
     nome = models.CharField(max_length=255, verbose_name="nome da pessoa que receberá o material")
     assinatura = models.OneToOneField(Assinatura, on_delete=models.CASCADE)
 
-    
