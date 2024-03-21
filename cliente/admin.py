@@ -7,7 +7,9 @@ class AssinanteInline(admin.StackedInline):
 
 class AssinaturaAdmin(admin.ModelAdmin):
     inlines = [AssinanteInline]
-    raw_id_fields = ('material',)
+    list_display = ['material','solicitante','data_registro', 'estado', 'observacao', 'data_ultima_alteracao']
+    list_editable = ['estado', 'observacao']
+    raw_id_fields = ('material', )
     autocomplete_fields = ('material','solicitante') 
     exclude = ('data_ultima_alteracao',)
 
