@@ -9,6 +9,7 @@ def get_material_upload_path(instance, filename):
     if isinstance(instance, MaterialAdaptado):
         return os.path.join('materiais',instance.tipo, date_part,filename)
     return os.path.join('materiais', date_part, filename)
+
 class Material(models.Model):
     class Meta:
         verbose_name_plural = 'Materiais'
