@@ -35,7 +35,7 @@ class ItemPedido(models.Model):
         limit_choices_to={'is_disponivel_para_pedido': True})
    
     estado = models.CharField(max_length=255, choices=ESTADO_CHOICES)
-    observacao = models.CharField(max_length=255)
+    observacao = models.CharField(max_length=255, null=True, blank=True)
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)    
    
     def __str__(self):          
