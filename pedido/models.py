@@ -15,7 +15,7 @@ class Pedido(models.Model):
     data_registro = models.DateTimeField(auto_now_add=True)
     numero_pedido = models.PositiveBigIntegerField()
     estado_do_pedido = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo")
-    solicitante = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    solicitante = models.ForeignKey(Cliente,on_delete=models.CASCADE)
     observacao = models.CharField(max_length=255)
 
     def __str__(self):        
@@ -32,7 +32,8 @@ class ItemPedido(models.Model):
     material = models.ForeignKey(
         MaterialAdaptado, 
         on_delete=models.CASCADE,
-        limit_choices_to={'is_disponivel_para_pedido': True})
+        # limit_choices_to={'is_disponivel_para_pedido': True}
+        )
    
     estado = models.CharField(max_length=255, choices=ESTADO_CHOICES)
     observacao = models.CharField(max_length=255, null=True, blank=True)
