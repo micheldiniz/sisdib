@@ -31,6 +31,7 @@ class Material(models.Model):
     tiragem = models.CharField(max_length = 255, null=True, blank=True)
     quantidade_paginas = models.PositiveIntegerField(null=True, blank=True)
     arquivo_original = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
+
     def __str__(self):
         return f'{self.titulo}, {self.classificacao}'
 
