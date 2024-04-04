@@ -37,7 +37,7 @@ class ItemPedido(models.Model):
    
     estado = models.CharField(max_length=255, choices=ESTADO_CHOICES)
     observacao = models.CharField(max_length=255, null=True, blank=True)
-    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)    
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='itens_pedido')    
    
     def __str__(self):          
         return f"{self.material} quantidade: {self.quantidade}"
