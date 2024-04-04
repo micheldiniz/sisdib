@@ -13,14 +13,15 @@ class Cliente(models.Model):
 
 class Assinatura(models.Model):
     ESTADO_CHOICES =[
-        ('1','vigente'),
-        ('0','cancelado'),
+        ('vigente','vigente'),
+        ('cancelado','cancelado'),
     ]
-    estado = models.CharField(max_length=2,choices=ESTADO_CHOICES, default='vigente')
+    estado = models.CharField(max_length=255,choices=ESTADO_CHOICES, default='vigente')
     material = models.ForeignKey(
         MaterialAdaptado, 
         on_delete= models.CASCADE,
-        limit_choices_to={'is_disponivel_para_assinatura':True})    
+        # limit_choices_to={'is_disponivel_para_assinatura':True}
+        )    
     data_registro = models.DateTimeField(auto_now_add=True, verbose_name='Data de registro')
     data_ultima_alteracao = models.DateTimeField(null=True)
     observacao = models.CharField(max_length=255, verbose_name='Observação', blank=True)
