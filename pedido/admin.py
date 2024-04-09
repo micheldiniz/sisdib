@@ -35,7 +35,7 @@ class ItemPedidoInline(admin.StackedInline):
 class PedidoAdmin(admin.ModelAdmin):
     inlines = [ItemPedidoInline]
     # autocomplete_fields = ('solicitante',)
-    list_display = ['numero_pedido','estado_do_pedido','solicitante','itens_do_pedido','qtd_total']
+    list_display = ['numero_pedido','estado_do_pedido','solicitante','itens_do_pedido','total']
     list_editable = ['estado_do_pedido']
 
     def itens_do_pedido(self, obj):
@@ -48,7 +48,7 @@ class PedidoAdmin(admin.ModelAdmin):
             return mark_safe(str(items_str))            
         return 'Nenhum item encontrado'
     
-    def qtd_total(self, obj):
+    def total(self, obj):
         items = obj.itens_pedido.all()
         return sum(obj.quantidade for obj in items)
 
