@@ -1,5 +1,6 @@
 from typing import Any
 from django.db import models
+from datetime import datetime
 
 BOOL_CHOICES = ((True,"Sim"),(False,"Não"))
 
@@ -9,11 +10,12 @@ class Pessoa(models.Model):
         verbose_name_plural = 'Pessoas'
         
     nome =  models.CharField(max_length=255,null=True)    
-    data_registro = models.DateField()
-    is_estrangeiro = models.BooleanField(verbose_name="Estrageiro?", choices=BOOL_CHOICES)
+    data_registro = models.DateField(auto_now_add=True)
+    is_estrangeiro = models.BooleanField(verbose_name="Estrageiro?", choices=BOOL_CHOICES, default=False)
     nacionalidade = models.CharField(max_length=255, null=True) 
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
+        self.data_registro = datetime.now()
         super().__init__(*args, **kwargs)
 
     def __str__(self) -> str:

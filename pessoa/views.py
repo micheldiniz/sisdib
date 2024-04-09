@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import PessoaFisicaRegistrationForm, EnderecoRegistrationForm, ContatoRegistrationForm, ClienteRegistrationForm
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
+@login_required
 def pessoafisica_registration(request):
     if request.method == 'POST':
         pessoa_fisica_form = PessoaFisicaRegistrationForm(request.POST, prefix='pessoa_fisica')
