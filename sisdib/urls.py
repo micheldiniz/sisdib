@@ -19,15 +19,19 @@ from django.urls import include,path
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic.base import TemplateView
 
 urlpatterns = [
-    path('login/', auth_views.LoginView.as_view(),name = 'login'),
+    # path('login/', auth_views.LoginView.as_view(),name = 'login'),
     path('logout/', auth_views.LogoutView.as_view(), name = 'logout'),    
     path('admin/', admin.site.urls),
     path('cliente/', include("cliente.urls")),    
     path('pessoa/', include("pessoa.urls")),
     path('material/', include("material.urls")),
     path('pedido/', include("pedido.urls")),
+    path('accounts/', include("django.contrib.auth.urls")),
+    path("", TemplateView.as_view(template_name="home.html"), name="home"),  # new
+
 ]
 
 if settings.DEBUG:
