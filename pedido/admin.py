@@ -21,15 +21,21 @@ class ItemPedidoInline(admin.StackedInline):
             qs = super().formfield_for_foreignkey(db_field, request, **kwargs).queryset
             
             object_id = request.resolver_match.kwargs.get('object_id')            
+            kwargs['queryset'] = qs.filter(Q(is_disponivel_para_pedido=True)).distinct()
             
             if(object_id):                            
                 pedido = Pedido.objects.get(pk=object_id)
-                related_items = pedido.itens_pedido.all() 
-                materiais = [item.material for item in related_items]
-                kwargs['queryset'] = qs.filter(Q(is_disponivel_para_pedido=True) | Q(material__materialadaptado__in = materiais)).distinct()        
+                related_items = pedido.itens_pedido.all()
+                
+                materiais = [item.material for item in related_items]                
+                # kwargs['queryset'] = qs.filter(Q(is_disponivel_para_pedido=True) | Q(material__materialadaptado__in = materiais)).distinct()        
+                my_qs_filter = Q(is_disponivel_para_pedido = True)                
+                for material in materiais:
+                    my_qs_filter = my_qs_filter | Q(material__materialadaptado = material) | Q(is_disponivel_para_pedido = True)
+                
+                kwargs['queryset'] = qs.filter(my_qs_filter).distinct()        
                 return super().formfield_for_foreignkey(db_field, request, **kwargs)
             
-            kwargs['queryset'] = qs.filter(Q(is_disponivel_para_pedido=True)).distinct()
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 class PedidoAdmin(admin.ModelAdmin):
