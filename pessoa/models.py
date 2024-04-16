@@ -39,10 +39,10 @@ class Contato(models.Model):
     celular = models.CharField(max_length=255)
     pessoa = models.OneToOneField(Pessoa,on_delete=models.CASCADE, default=None)
 
-class PessoaFisica(Pessoa, models.Model):    
+class PessoaFisica(Pessoa, models.Model):
     class Meta:
         verbose_name_plural = 'Pessoas Físicas'
-    cpf = models.CharField(max_length=255, null=True)
+    cpf = models.CharField(max_length=255, null=False)
     data_nascimento = models.DateField(null=True)
     # def __str__(self):
     #     return self.nome + ' ' + self.get_cpf()
@@ -54,6 +54,8 @@ class PessoaFisica(Pessoa, models.Model):
     #     return self.format_cpf(self.cpf)
 
 class PessoaJuridica(Pessoa, models.Model):
+    TIPO_INSTITUICAO_CHOICES = [('Associações','Associações'),('Bibliotecas','Bibliotecas'),('Centros','Centros'),('Escolas','Escolas'),('Estrangeiros','Estrangeiros'),('Fundações','Fundações'),('Governo','Governo'),('Instituições','Instituições'),('Universidades','Universidades'),]
+    tipo_instituicao = models.CharField(max_length=255, blank=True, null=True, choices=TIPO_INSTITUICAO_CHOICES)
     class Meta:
         verbose_name_plural = 'Pessoas Jurídicas'
         
