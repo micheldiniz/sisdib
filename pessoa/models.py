@@ -58,7 +58,7 @@ class PessoaJuridica(Pessoa, models.Model):
     tipo_instituicao = models.CharField(max_length=255, blank=True, null=True, choices=TIPO_INSTITUICAO_CHOICES)
     class Meta:
         verbose_name_plural = 'Pessoas Jurídicas'
-        
+
     cnpj = models.CharField(max_length=255)
 
     def __str__(self) -> str:

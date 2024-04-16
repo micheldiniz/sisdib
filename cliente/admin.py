@@ -47,5 +47,17 @@ class AssinaturaAdmin(admin.ModelAdmin):
 class ClienteAdmin(admin.ModelAdmin):
     search_fields = ['pessoa__nome','pessoa__nacionalidade', 'pessoa__endereco__pais']    
 
+class RegistroEnvioRevistasAdmin(admin.ModelAdmin):
+    search_fields = ['revistas__material']
+    list_display = ['descricao','data_envio','get_assinaturas','data_registro', 'observacao']
+    autocomplete_fields = ['revistas']
+    # formfield_overrides = {
+    #     models.ManyToManyField: {'widget': CheckboxSelectMultiple},
+    # }
+    def get_assinaturas(self, obj):
+        return "\n".join([str(p) for p in obj.revistas.all()])
+    get_assinaturas.short_description = 'Assinaturas enviadas'
+
+admin.site.register(RegistroEnvioRevistas, RegistroEnvioRevistasAdmin)
 admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(Assinatura, AssinaturaAdmin)
