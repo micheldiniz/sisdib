@@ -1,6 +1,10 @@
+from typing import Any
 from django.shortcuts import render, redirect
 from .forms import PessoaFisicaRegistrationForm, EnderecoRegistrationForm, ContatoRegistrationForm, ClienteRegistrationForm
 from django.contrib.auth.decorators import login_required
+from pessoa.models import PessoaFisica
+from django.core.paginator import Paginator
+
 # Create your views here.
 @login_required
 def pessoafisica_registration(request):
@@ -11,8 +15,8 @@ def pessoafisica_registration(request):
         cliente_form = ClienteRegistrationForm(request.POST, prefix='cliente')
 
         if pessoa_fisica_form.is_valid() and endereco_form.is_valid() and contato_form.is_valid():
-            pessoa_fisica = pessoa_fisica_form.save()                       
-            endereco = endereco_form.save(commit=False)                        
+            pessoa_fisica = pessoa_fisica_form.save()
+            endereco = endereco_form.save(commit=False)
             contato = contato_form.save(commit=False)
             cliente = cliente_form.save(commit=False)
 
@@ -24,8 +28,8 @@ def pessoafisica_registration(request):
 
             cliente.pessoa = pessoa_fisica
             cliente.save()
-            
-            return redirect('success_page') 
+
+            return redirect('success_page')
 
     else:
         pessoa_fisica_form = PessoaFisicaRegistrationForm(prefix='pessoa_fisica')
@@ -39,3 +43,24 @@ def pessoafisica_registration(request):
 
 def success_page(request):
     return render(request, 'success.html')
+
+@login_required
+def pessoa_all(request):
+    pessoas = PessoaFisica.objects.all()
+    itens_por_pagina = request.GET.get('itens')    
+    if (itens_por_pagina):
+        paginator = Paginator(pessoas, itens_por_pagina)
+    else:
+        paginator = Paginator(pessoas, 50)
+    page_number = request.GET.get('page')
+
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, "all.html", {"page_obj":page_obj})
+
+@login_required
+def deletar_pessoa(request):
+    id_pessoa = request.GET.get('id')
+    # if request.method == 'POST':
+    #     print(id_pessoa)
+    pass
