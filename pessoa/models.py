@@ -54,7 +54,7 @@ class PessoaFisica(Pessoa, models.Model):
     #     return self.format_cpf(self.cpf)
 
 class PessoaJuridica(Pessoa, models.Model):
-    TIPO_INSTITUICAO_CHOICES = [('Associações','Associações'),('Bibliotecas','Bibliotecas'),('Centros','Centros'),('Escolas','Escolas'),('Estrangeiros','Estrangeiros'),('Fundações','Fundações'),('Governo','Governo'),('Instituições','Instituições'),('Universidades','Universidades'),]
+    TIPO_INSTITUICAO_CHOICES = [('Associações','Associações'),('Bibliotecas','Bibliotecas'),('Centros','Centros'),('Escolas','Escolas'),('Fundações','Fundações'),('Governo','Governo'),('Instituições','Instituições'),('Universidades','Universidades'),]
     tipo_instituicao = models.CharField(max_length=255, blank=True, null=True, choices=TIPO_INSTITUICAO_CHOICES)
     class Meta:
         verbose_name_plural = 'Pessoas Jurídicas'
