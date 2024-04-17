@@ -21,7 +21,7 @@ class AssinaturaAdmin(admin.ModelAdmin):
     inlines = [AssinanteInline]
     list_display = ['material','solicitante','data_registro', 'estado', 'observacao', 'data_ultima_alteracao']
     list_editable = ['estado', 'observacao']
-    search_fields = ['material__material__titulo','estado','solicitante__pessoa__nome']
+    search_fields = ['material__material__titulo','estado','solicitante__pessoa__nome', 'material__tipo']
     # raw_id_fields = ('material', )
     # autocomplete_fields = ('material','solicitante')
     exclude = ('data_ultima_alteracao',)
@@ -48,15 +48,21 @@ class ClienteAdmin(admin.ModelAdmin):
     search_fields = ['pessoa__nome','pessoa__nacionalidade', 'pessoa__endereco__pais']    
 
 class RegistroEnvioRevistasAdmin(admin.ModelAdmin):
-    search_fields = ['revistas__material']
-    list_display = ['descricao','data_envio','get_assinaturas','data_registro', 'observacao']
-    autocomplete_fields = ['revistas']
+    search_fields = ['descricao', 'assinaturas']
+    list_display = ['descricao','data_envio','get_total_assinaturas','data_registro', 'observacao']
+    autocomplete_fields = ['assinaturas']
     # formfield_overrides = {
     #     models.ManyToManyField: {'widget': CheckboxSelectMultiple},
     # }
     def get_assinaturas(self, obj):
-        return "\n".join([str(p) for p in obj.revistas.all()])
+        return "\n".join([str(p) for p in obj.assinaturas.all()])
+    
     get_assinaturas.short_description = 'Assinaturas enviadas'
+
+    def get_total_assinaturas(self, obj):
+        return obj.assinaturas.count()
+
+    get_total_assinaturas.short_description = 'total de assinaturas enviadas'
 
 admin.site.register(RegistroEnvioRevistas, RegistroEnvioRevistasAdmin)
 admin.site.register(Cliente, ClienteAdmin)
