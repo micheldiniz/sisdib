@@ -43,10 +43,11 @@ class Assinante(models.Model):
     assinatura = models.OneToOneField(Assinatura, on_delete=models.CASCADE)
 
 
-class RegistroEnvioRevistas(models.Model):
+class RegistroEnvioAssinaturas(models.Model):
+    class Meta:
+        verbose_name_plural = 'Registro de envio de Assinaturas'
     descricao = models.CharField(max_length=255, verbose_name='Descrição', blank=True)
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
     data_envio = models.DateTimeField(null=True)
     observacao = models.CharField(max_length=255, verbose_name='Observação', blank=True)
-    revistas = models.ManyToManyField(Assinatura)
-    pass
+    assinaturas = models.ManyToManyField(Assinatura)

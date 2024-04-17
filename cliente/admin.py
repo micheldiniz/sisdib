@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db.models.fields.reverse_related import ForeignObjectRel
 from cliente.models import *
 from django.db.models import Q
 from typing import Any
@@ -7,6 +8,42 @@ from django.db.models.fields.related import ForeignKey
 from django.forms.models import ModelChoiceField
 from django.http import HttpRequest
 from django.db.models import Q
+from django.forms import CheckboxSelectMultiple
+from django.contrib.admin.widgets import ForeignKeyRawIdWidget
+
+class CustomRawIdWidget(ForeignKeyRawIdWidget):
+
+    def __init__(self, rel: ForeignObjectRel, admin_site: admin.AdminSite, attrs: None = ..., using: None = ...) -> None:
+        super().__init__(rel, admin_site, attrs, using)
+
+    def render(self, name, value, attrs=None, renderer=None):
+        rendered = super().render(name, value, attrs, renderer)
+        rendered += '''
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const selectAllLink = document.createElement('a');
+                    selectAllLink.textContent = 'Select All';
+                    selectAllLink.href = '#';
+                    selectAllLink.onclick = function(e) {
+                        e.preventDefault();
+                        const rawIdInput = document.getElementById("id_" + name);
+                        if (rawIdInput) {
+                            const win = window.open(rawIdInput.getAttribute('assinatura'), '_blank');
+                            if (win) {
+                                win.onload = function() {
+                                    const checkboxes = win.document.querySelectorAll('.checkbox');
+                                    checkboxes.forEach(function(checkbox) {
+                                        checkbox.checked = true;
+                                    });
+                                };
+                            }
+                        }
+                    };
+                    document.querySelector('.field-{0}').appendChild(selectAllLink);
+                });
+            </script>
+        '''.format(name)
+        return rendered
 
 @admin.action(description='cancelar assinatura(s)')
 def cancela_assinatura(modeladmin, request, queryset):
@@ -47,23 +84,27 @@ class AssinaturaAdmin(admin.ModelAdmin):
 class ClienteAdmin(admin.ModelAdmin):
     search_fields = ['pessoa__nome','pessoa__nacionalidade', 'pessoa__endereco__pais']    
 
-class RegistroEnvioRevistasAdmin(admin.ModelAdmin):
+class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
     search_fields = ['descricao', 'assinaturas']
     list_display = ['descricao','data_envio','get_total_assinaturas','data_registro', 'observacao']
-    autocomplete_fields = ['assinaturas']
+    raw_id_fields = ['assinaturas']
+    # autocomplete_fields = ['assinaturas']
     # formfield_overrides = {
     #     models.ManyToManyField: {'widget': CheckboxSelectMultiple},
+    # }
+    # formfield_overrides = {
+    #     models.ManyToManyField: {'widget': CustomRawIdWidget},
     # }
     def get_assinaturas(self, obj):
         return "\n".join([str(p) for p in obj.assinaturas.all()])
     
-    get_assinaturas.short_description = 'Assinaturas enviadas'
-
     def get_total_assinaturas(self, obj):
         return obj.assinaturas.count()
 
-    get_total_assinaturas.short_description = 'total de assinaturas enviadas'
+    get_assinaturas.short_description = 'Assinaturas enviadas'
+    get_total_assinaturas.short_description = 'Total de assinaturas enviadas'
 
-admin.site.register(RegistroEnvioRevistas, RegistroEnvioRevistasAdmin)
+admin.site.register(RegistroEnvioAssinaturas, RegistroEnvioAssinaturasAdmin)
 admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(Assinatura, AssinaturaAdmin)
+
