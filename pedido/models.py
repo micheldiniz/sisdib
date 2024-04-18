@@ -4,6 +4,17 @@ from material.models import MaterialAdaptado
 
 # Create your models here.
 
+class RegistroEnvioPedidos(models.Model):
+    class Meta:
+        verbose_name_plural = 'Registo de envio de Pedidos'
+    descricao = models.CharField(max_length=255, verbose_name='Descrição', blank=True)
+    data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
+    data_envio = models.DateField(null=True,blank=True)
+    observacao = models.CharField(max_length=255, verbose_name='Observação', blank=True)
+    
+    def __str__(self) -> str:
+        return f'{self.descricao}(envio: {self.data_envio})'
+
 class Pedido(models.Model):
     ESTADO_CHOICES = [
         ('novo','novo'),
@@ -16,7 +27,14 @@ class Pedido(models.Model):
     numero_pedido = models.PositiveBigIntegerField()
     estado_do_pedido = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo")
     solicitante = models.ForeignKey(Cliente,on_delete=models.CASCADE)
-    observacao = models.CharField(max_length=255)
+    observacao = models.CharField(max_length=255, null=True, blank=True)
+    registro_envio = models.ForeignKey(
+        RegistroEnvioPedidos,
+        # limit_choices_to={'estado_do_pedido':'novo'},
+        on_delete=models.CASCADE,
+        null=True,
+        blank = True
+        )
 
     def __str__(self):        
         return self.numero_pedido.__str__()
@@ -41,8 +59,5 @@ class ItemPedido(models.Model):
    
     def __str__(self):          
         return f"{self.material} quantidade: {self.quantidade}"
-
-
-
 
 
