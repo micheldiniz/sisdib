@@ -48,6 +48,9 @@ class RegistroEnvioAssinaturas(models.Model):
         verbose_name_plural = 'Registro de envio de Assinaturas'
     descricao = models.CharField(max_length=255, verbose_name='Descrição', blank=True)
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
-    data_envio = models.DateTimeField(null=True)
+    data_envio = models.DateField(null=True,blank=True)
     observacao = models.CharField(max_length=255, verbose_name='Observação', blank=True)
-    assinaturas = models.ManyToManyField(Assinatura)
+    assinaturas = models.ManyToManyField(
+        Assinatura,
+        limit_choices_to={'estado':'vigente'}
+        )
