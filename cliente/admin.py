@@ -78,6 +78,7 @@ class AssinaturaAdmin(admin.ModelAdmin):
                 return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
             filtered_qs = qs.filter(Q(is_disponivel_para_assinatura=True)).distinct()
+            kwargs['queryset'] = filtered_qs
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 class SolicitanteAdmin(admin.ModelAdmin):
@@ -86,8 +87,8 @@ class SolicitanteAdmin(admin.ModelAdmin):
 class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
     search_fields = ['descricao', 'assinaturas']
     list_display = ['descricao','data_envio','get_total_assinaturas','data_registro', 'observacao']
-    raw_id_fields = ['assinaturas']
-    # autocomplete_fields = ['assinaturas']
+    # raw_id_fields = ['assinaturas']
+    autocomplete_fields = ['assinaturas']
     # formfield_overrides = {
     #     models.ManyToManyField: {'widget': CheckboxSelectMultiple},
     # }
