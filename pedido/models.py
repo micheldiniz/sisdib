@@ -5,8 +5,16 @@ from material.models import MaterialAdaptado
 # Create your models here.
 
 class RegistroEnvioPedidos(models.Model):
+    ESTADO_CHOICES = [
+        ('novo','novo'),
+        ('processado','processado'),
+        ('enviado','enviado'),
+        ('finalizado','finalizado'),
+        ('pendente','pendente'),
+    ]
     class Meta:
         verbose_name_plural = 'Registo de envio de Pedidos'
+    estado_envio = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo")    
     descricao = models.CharField(max_length=255, verbose_name='Descrição', blank=True)
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
     data_envio = models.DateField(null=True,blank=True)
