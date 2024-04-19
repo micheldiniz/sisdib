@@ -36,8 +36,9 @@ class ItemPedidoInline(admin.StackedInline):
 class PedidoAdmin(admin.ModelAdmin):
     inlines = [ItemPedidoInline]
     # autocomplete_fields = ('solicitante',)
-    list_display = ['numero_pedido','registro_envio','estado_do_pedido','solicitante','itens_do_pedido','total']
-    list_editable = ['estado_do_pedido']
+    search_fields = ['numero_pedido', 'data_registro','registro_envio__descricao','estado_do_pedido']
+    list_display = ['numero_pedido','data_registro','registro_envio','estado_do_pedido','solicitante','itens_do_pedido','total']
+    list_editable = ['estado_do_pedido','registro_envio']
     # exclude = ['registro_envio']
 
     def itens_do_pedido(self, obj):
@@ -78,8 +79,9 @@ class PedidoInline(admin.StackedInline):
 
 class RegistroEnvioPedidosAdmin(admin.ModelAdmin):
     search_fields = ['descricao', 'pedidos']
-    list_display = ['descricao','data_envio','data_registro', 'observacao']
-    inlines = [PedidoInline]    
+    list_display = ['descricao','data_envio','estado_envio', 'observacao','data_registro']
+    list_editable = ['estado_envio']
+    # inlines = [PedidoInline]
 
 admin.site.register(RegistroEnvioPedidos, RegistroEnvioPedidosAdmin)
 admin.site.register(Pedido, PedidoAdmin)
