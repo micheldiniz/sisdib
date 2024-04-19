@@ -1,5 +1,5 @@
 from django.db import models
-from cliente.models import Cliente
+from cliente.models import Solicitante
 from material.models import MaterialAdaptado
 
 # Create your models here.
@@ -26,7 +26,7 @@ class Pedido(models.Model):
     data_registro = models.DateTimeField(auto_now_add=True)
     numero_pedido = models.PositiveBigIntegerField()
     estado_do_pedido = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo")
-    solicitante = models.ForeignKey(Cliente,on_delete=models.CASCADE)
+    solicitante = models.ForeignKey(Solicitante,on_delete=models.CASCADE)
     observacao = models.CharField(max_length=255, null=True, blank=True)
     registro_envio = models.ForeignKey(
         RegistroEnvioPedidos,

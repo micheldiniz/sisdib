@@ -1,6 +1,6 @@
 from typing import Any
 from django.shortcuts import render, redirect
-from .forms import PessoaFisicaRegistrationForm, EnderecoRegistrationForm, ContatoRegistrationForm, ClienteRegistrationForm
+from .forms import PessoaFisicaRegistrationForm, EnderecoRegistrationForm, ContatoRegistrationForm, SolicitanteRegistrationForm
 from django.contrib.auth.decorators import login_required
 from pessoa.models import PessoaFisica
 from django.core.paginator import Paginator
@@ -12,13 +12,13 @@ def pessoafisica_registration(request):
         pessoa_fisica_form = PessoaFisicaRegistrationForm(request.POST, prefix='pessoa_fisica')
         endereco_form = EnderecoRegistrationForm(request.POST, prefix='endereco')
         contato_form = ContatoRegistrationForm(request.POST, prefix='contato')
-        cliente_form = ClienteRegistrationForm(request.POST, prefix='cliente')
+        solicitante_form = SolicitanteRegistrationForm(request.POST, prefix='solicitante')
 
         if pessoa_fisica_form.is_valid() and endereco_form.is_valid() and contato_form.is_valid():
             pessoa_fisica = pessoa_fisica_form.save()
             endereco = endereco_form.save(commit=False)
             contato = contato_form.save(commit=False)
-            cliente = cliente_form.save(commit=False)
+            solicitante = solicitante_form.save(commit=False)
 
             endereco.pessoa = pessoa_fisica
             endereco.save()
@@ -26,8 +26,8 @@ def pessoafisica_registration(request):
             contato.pessoa = pessoa_fisica
             contato.save()
 
-            cliente.pessoa = pessoa_fisica
-            cliente.save()
+            solicitante.pessoa = pessoa_fisica
+            solicitante.save()
 
             return redirect('success_page')
 

@@ -4,7 +4,7 @@ from material.models import MaterialAdaptado
 from django.utils import timezone
 
 # Create your models here.
-class Cliente(models.Model):
+class Solicitante(models.Model):
     data_registro = models.DateTimeField(auto_now_add=True)
     pessoa = models.OneToOneField(Pessoa, on_delete=models.CASCADE)
 
@@ -25,7 +25,7 @@ class Assinatura(models.Model):
     data_registro = models.DateTimeField(auto_now_add=True, verbose_name='Data de registro')
     data_ultima_alteracao = models.DateTimeField(null=True)
     observacao = models.CharField(max_length=255, verbose_name='Observação', blank=True)
-    solicitante = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    solicitante = models.ForeignKey(Solicitante, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return f'{self.material}, solicitante: {self.solicitante}'

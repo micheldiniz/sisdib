@@ -1,6 +1,6 @@
 from django import forms
 from .models import PessoaFisica, PessoaJuridica, Endereco, Contato
-from cliente.models import Cliente
+from cliente.models import Solicitante
 
 class PessoaFisicaRegistrationForm(forms.ModelForm):
     class Meta:
@@ -25,7 +25,7 @@ class ContatoRegistrationForm(forms.ModelForm):
         model = Contato
         fields = ['nome_contato', 'email', 'telefone', 'celular']
 
-class ClienteRegistrationForm(forms.ModelForm):
+class SolicitanteRegistrationForm(forms.ModelForm):
     class Meta:
-        model = Cliente
+        model = Solicitante
         exclude = ['pessoa']

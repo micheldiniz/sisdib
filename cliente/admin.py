@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db.models.fields.reverse_related import ForeignObjectRel
-from cliente.models import *
+from cliente.models import Solicitante,Assinatura,Assinante,RegistroEnvioAssinaturas
 from django.db.models import Q
 from typing import Any
 from django.contrib import admin
@@ -8,13 +8,12 @@ from django.db.models.fields.related import ForeignKey
 from django.forms.models import ModelChoiceField
 from django.http import HttpRequest
 from django.db.models import Q
-from django.forms import SelectMultiple
 from django.contrib.admin.widgets import ForeignKeyRawIdWidget
 
 class CustomRawIdWidget(ForeignKeyRawIdWidget):
 
-    def __init__(self, rel, admin_site, *args, **kwargs):
-        super().__init__(rel, admin_site, *args, **kwargs)
+    def __init__(self, rel: ForeignObjectRel, admin_site: admin.AdminSite, attrs: None = ..., using: None = ...) -> None:
+        super().__init__(rel, admin_site, attrs, using)
 
     def render(self, name, value, attrs=None, renderer=None):
         rendered = super().render(name, value, attrs, renderer)
@@ -68,32 +67,33 @@ class AssinaturaAdmin(admin.ModelAdmin):
 
         if db_field.name == 'material':
             qs = super().formfield_for_foreignkey(db_field, request, **kwargs).queryset
-            filtered_qs = qs.filter(Q(is_disponivel_para_assinatura=True)).distinct()
             object_id = request.resolver_match.kwargs.get('object_id')
+            
             if (object_id):
                 assinatura_instance = Assinatura.objects.get(id=object_id)
                 current_material = assinatura_instance.material
                 filtered_qs = qs.filter(Q(is_disponivel_para_assinatura=True) | Q(material__materialadaptado = current_material)).distinct()
                 kwargs['queryset'] = filtered_qs
+
                 return super().formfield_for_foreignkey(db_field, request, **kwargs)
-            kwargs['queryset'] = filtered_qs
+
+            filtered_qs = qs.filter(Q(is_disponivel_para_assinatura=True)).distinct()
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
-class ClienteAdmin(admin.ModelAdmin):
+class SolicitanteAdmin(admin.ModelAdmin):
     search_fields = ['pessoa__nome','pessoa__nacionalidade', 'pessoa__endereco__pais']    
 
 class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
     search_fields = ['descricao', 'assinaturas']
-    list_display = ['descricao','data_envio','get_assinaturas','get_total_assinaturas','data_registro', 'observacao']
-    # raw_id_fields = ['assinaturas']
+    list_display = ['descricao','data_envio','get_total_assinaturas','data_registro', 'observacao']
+    raw_id_fields = ['assinaturas']
     # autocomplete_fields = ['assinaturas']
     # formfield_overrides = {
-    #     models.ManyToManyField: {'widget': SelectMultiple},
+    #     models.ManyToManyField: {'widget': CheckboxSelectMultiple},
     # }
     # formfield_overrides = {
     #     models.ManyToManyField: {'widget': CustomRawIdWidget},
     # }
-
     def get_assinaturas(self, obj):
         return "\n".join([str(p) for p in obj.assinaturas.all()])
     
@@ -103,7 +103,7 @@ class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
     get_assinaturas.short_description = 'Assinaturas enviadas'
     get_total_assinaturas.short_description = 'Total de assinaturas enviadas'
 
-admin.site.register(RegistroEnvioAssinaturas, RegistroEnvioAssinaturasAdmin)
-admin.site.register(Cliente, ClienteAdmin)
+admin.site.register(Solicitante, SolicitanteAdmin)
 admin.site.register(Assinatura, AssinaturaAdmin)
+admin.site.register(RegistroEnvioAssinaturas, RegistroEnvioAssinaturasAdmin)
 
