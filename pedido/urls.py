@@ -1,6 +1,7 @@
 from django.urls import path
-from . import views
+from .views import registro_envio_pedido_registration, index
 
 urlpatterns = [
-    path("", views.index, name="index")
+    path("", index, name="index"),
+    path("cadastrar",  registro_envio_pedido_registration, name="registro_envio_pedido"),
 ]

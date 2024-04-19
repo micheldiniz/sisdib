@@ -1,0 +1,15 @@
+<!-- register_multiple_entities.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register Multiple Entities</title>
+</head>
+<body>
+    <h2>Register Multiple Entities</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ registro_envio_pedidos_form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
