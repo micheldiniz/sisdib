@@ -38,6 +38,7 @@ class PessoaJuridicaAdmin(admin.ModelAdmin):
         ContatoInline
     ]
 
+
 admin.site.register(PessoaJuridica, PessoaJuridicaAdmin)
 admin.site.register(PessoaFisica, PessoaFisicaAdmin)
 # admin.site.register(Pessoa, PessoaAdmin)

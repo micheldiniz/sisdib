@@ -46,6 +46,9 @@ class Pedido(models.Model):
 
     def __str__(self):        
         return self.numero_pedido.__str__()
+    
+    def get_admin_url(self):
+        return f'/admin/pedido/pedido/{self.id}/change/'
 
 class ItemPedido(models.Model):
     ESTADO_CHOICES = [

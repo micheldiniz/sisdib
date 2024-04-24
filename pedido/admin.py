@@ -79,9 +79,24 @@ class PedidoInline(admin.StackedInline):
 
 class RegistroEnvioPedidosAdmin(admin.ModelAdmin):
     search_fields = ['descricao', 'pedidos']
-    list_display = ['descricao','data_envio','estado_envio', 'observacao','data_registro']
+    list_display = ['descricao', 'data_envio', 'get_pedidos', 'estado_envio', 'observacao', 'data_registro']
     list_editable = ['estado_envio']
     # inlines = [PedidoInline]
+
+    def get_pedidos(self, obj):
+        pedidos = Pedido.objects.filter(registro_envio=obj)
+        links = []
+        for pedido in pedidos:
+            link = '<a href="{0}">{1}</a>'.format(pedido.get_admin_url(), str(pedido))
+            links.append(link)
+        
+        print(pedidos)
+
+        html_content = '<br/> '.join(links)
+
+        return mark_safe(html_content)
+    
+    get_pedidos.short_description = 'pedidos'
 
 admin.site.register(RegistroEnvioPedidos, RegistroEnvioPedidosAdmin)
 admin.site.register(Pedido, PedidoAdmin)

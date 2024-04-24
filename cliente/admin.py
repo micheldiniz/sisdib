@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.db.models.fields.reverse_related import ForeignObjectRel
 from cliente.models import Solicitante,Assinatura,Assinante,RegistroEnvioAssinaturas
+from pessoa.models import PessoaFisica, PessoaJuridica, Endereco, Contato
 from django.db.models import Q
 from typing import Any
 from django.contrib import admin
@@ -103,6 +104,28 @@ class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
 
     get_assinaturas.short_description = 'Assinaturas enviadas'
     get_total_assinaturas.short_description = 'Total de assinaturas enviadas'
+
+# #################################
+
+# class EnderecoInline(admin.StackedInline):
+#     model = Endereco
+
+
+# class ContatoInline(admin.StackedInline):
+#     model = Contato
+
+
+# class PessoaFisicaInline(admin.StackedInline):
+#     model = PessoaFisica
+    
+# class PessoaJuridicaInline(admin.StackedInline):
+#     model = PessoaJuridica
+
+# class SolicitanteAdmin(admin.ModelAdmin):
+#     inlines = [EnderecoInline, ContatoInline, PessoaFisicaInline, PessoaJuridicaInline]
+#     list_display = ['data_registro', 'pessoa']
+
+
 
 admin.site.register(Solicitante, SolicitanteAdmin)
 admin.site.register(Assinatura, AssinaturaAdmin)
