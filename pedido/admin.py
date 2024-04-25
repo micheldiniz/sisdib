@@ -87,13 +87,13 @@ class RegistroEnvioPedidosAdmin(admin.ModelAdmin):
         pedidos = Pedido.objects.filter(registro_envio=obj)
         links = []
         for pedido in pedidos:
-            link = '<a href="{0}">{1}</a>'.format(pedido.get_admin_url(), str(pedido))
+            link = '<li><a href="{0}">{1}</a></li>'.format(pedido.get_admin_url(), str(pedido))
             links.append(link)
         
         print(pedidos)
 
-        html_content = '<br/> '.join(links)
-
+        html_content = ''.join(links)
+        html_content = '<ul>' + html_content + '</ul>'
         return mark_safe(html_content)
     
     get_pedidos.short_description = 'pedidos'
