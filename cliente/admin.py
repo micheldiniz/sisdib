@@ -11,6 +11,8 @@ from django.http import HttpRequest
 from django.db.models import Q
 from django.contrib.admin.widgets import ForeignKeyRawIdWidget
 from datetime import datetime
+from django.utils.safestring import mark_safe
+
 
 class CustomRawIdWidget(ForeignKeyRawIdWidget):
 
@@ -84,7 +86,30 @@ class AssinaturaAdmin(admin.ModelAdmin):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 class SolicitanteAdmin(admin.ModelAdmin):
-    search_fields = ['pessoa__nome','pessoa__nacionalidade', 'pessoa__endereco__pais']    
+    search_fields = ['pessoa__nome','pessoa__nacionalidade', 'pessoa__endereco__pais']
+    list_display = ['pessoa', 'assinaturas_ativas', 'assinaturas_canceladas']
+
+    def assinaturas_ativas(self, obj):
+        assinaturas = Assinatura.objects.filter(solicitante=obj, estado='vigente')
+        if assinaturas.count() < 1:
+            return 'nenhuma'
+        assinaturas_html = []
+        for assinatura in assinaturas:
+            html = '<a href="{0}">{1}</a></br>'.format(assinatura.get_admin_url(),str(assinatura.material))
+            assinaturas_html.append(html)
+        html_content = ''.join(assinaturas_html)
+        return mark_safe(html_content)
+
+    def assinaturas_canceladas(self, obj):
+        assinaturas = Assinatura.objects.filter(solicitante=obj, estado='cancelado')
+        if assinaturas.count() < 1:
+            return 'nenhuma'
+        assinaturas_html = []
+        for assinatura in assinaturas:
+            html = '<a href="{0}">{1}</a></br>'.format(assinatura.get_admin_url(),str(assinatura.material))
+            assinaturas_html.append(html)
+        html_content = ''.join(assinaturas_html)
+        return mark_safe(html_content)
 
 class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
     search_fields = ['descricao', 'assinaturas']
