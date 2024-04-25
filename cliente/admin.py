@@ -10,6 +10,7 @@ from django.forms.models import ModelChoiceField
 from django.http import HttpRequest
 from django.db.models import Q
 from django.contrib.admin.widgets import ForeignKeyRawIdWidget
+from datetime import datetime
 
 class CustomRawIdWidget(ForeignKeyRawIdWidget):
 
@@ -47,7 +48,7 @@ class CustomRawIdWidget(ForeignKeyRawIdWidget):
 
 @admin.action(description='cancelar assinatura(s)')
 def cancela_assinatura(modeladmin, request, queryset):
-    queryset.update(estado='cancelado', observacao='Cancelamento realizado em lote')
+    queryset.update(estado='cancelado', observacao='Cancelamento realizado em lote', data_ultima_alteracao = datetime.now())
 
 
 class AssinanteInline(admin.StackedInline):
@@ -104,27 +105,6 @@ class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
 
     get_assinaturas.short_description = 'Assinaturas enviadas'
     get_total_assinaturas.short_description = 'Total de assinaturas enviadas'
-
-# #################################
-
-# class EnderecoInline(admin.StackedInline):
-#     model = Endereco
-
-
-# class ContatoInline(admin.StackedInline):
-#     model = Contato
-
-
-# class PessoaFisicaInline(admin.StackedInline):
-#     model = PessoaFisica
-    
-# class PessoaJuridicaInline(admin.StackedInline):
-#     model = PessoaJuridica
-
-# class SolicitanteAdmin(admin.ModelAdmin):
-#     inlines = [EnderecoInline, ContatoInline, PessoaFisicaInline, PessoaJuridicaInline]
-#     list_display = ['data_registro', 'pessoa']
-
 
 
 admin.site.register(Solicitante, SolicitanteAdmin)
