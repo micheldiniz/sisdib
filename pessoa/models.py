@@ -1,6 +1,7 @@
 from typing import Any
 from django.db import models
 from datetime import datetime
+from django.utils.safestring import mark_safe
 
 BOOL_CHOICES = ((True,"Sim"),(False,"Não"))
 
@@ -31,6 +32,9 @@ class Endereco(models.Model):
     cidade = models.CharField(max_length=255)
     estado = models.CharField(max_length=255)
     pessoa = models.OneToOneField(Pessoa,on_delete=models.CASCADE, default=None)
+    def html_endereco(self):
+        html_endereco = "<span class='endereco'>{0} {1}, {2} <br /> {3} <br /> {4} {5}/{6}</span>".format(self.logradouro,self.numero,self.complemento,self.bairro,self.cep,self.cidade,self.estado)
+        return mark_safe(html_endereco)
 
 class Contato(models.Model):
     nome_contato = models.CharField(max_length=255)
