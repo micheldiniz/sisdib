@@ -6,6 +6,7 @@ from django.http import HttpRequest
 from pedido.models import Pedido, ItemPedido, RegistroEnvioPedidos
 from django.db.models import Q
 from django.utils.safestring import mark_safe
+from django.shortcuts import render
 
 # Register your models here.
 
@@ -82,6 +83,7 @@ class RegistroEnvioPedidosAdmin(admin.ModelAdmin):
     list_display = ['descricao', 'data_envio', 'get_pedidos', 'estado_envio', 'observacao', 'data_registro']
     list_editable = ['estado_envio']
     # inlines = [PedidoInline]
+    actions = ['get_guia_correios']
 
     def get_pedidos(self, obj):
         pedidos = Pedido.objects.filter(registro_envio=obj)
@@ -96,6 +98,18 @@ class RegistroEnvioPedidosAdmin(admin.ModelAdmin):
         html_content = '<ul>' + html_content + '</ul>'
         return mark_safe(html_content)
     
+    
+    def get_guia_correios(self, request, queryset):
+        dict = {}
+        for p in queryset:
+            dict[p.descricao] = { 'pedidos' : Pedido.objects.filter(registro_envio = p)}
+            
+        print(dict)
+        return render(request, 'guia_correios_pedidos.html', {
+            'registroSaidaPedidos': dict,            
+            })
+    
+    get_guia_correios.short_description = "Guia correios"
     get_pedidos.short_description = 'pedidos'
 
 admin.site.register(RegistroEnvioPedidos, RegistroEnvioPedidosAdmin)
