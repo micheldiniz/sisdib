@@ -13,6 +13,7 @@
         <ul>
             {% for pedido in values.pedidos %}
             <div style="border:1px solid black;padding: 20px;margin: 20px 0;display: inline-block;">
+                <p>Nº pedido: {{pedido.numero_pedido}}</p>
                 <b>{{ pedido.solicitante }}</b><br>
                 {{ pedido.solicitante.pessoa.endereco.html_endereco }}<br>
             

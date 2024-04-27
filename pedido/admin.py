@@ -102,7 +102,7 @@ class RegistroEnvioPedidosAdmin(admin.ModelAdmin):
     def get_guia_correios(self, request, queryset):
         dict = {}
         for p in queryset:
-            dict[p.descricao] = { 'pedidos' : Pedido.objects.filter(registro_envio = p)}
+            dict[p.descricao] = { 'pedidos' : Pedido.objects.filter(registro_envio = p).distinct()}
             
         print(dict)
         return render(request, 'guia_correios_pedidos.html', {
