@@ -1,0 +1,28 @@
+<!-- register_multiple_entities.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Guia correio Pedidos</title>
+</head>
+<body>
+    <h2>Saida correios</h2>
+
+    <ul>
+        {% for lote, values in registroSaidaPedidos.items %}
+        <li>{{ lote }}</li>
+        <ul>
+            {% for pedido in values.pedidos %}
+            <div style="border:1px solid black;padding: 20px;margin: 20px 0;display: inline-block;">
+                <p>Nº pedido: {{pedido.numero_pedido}}</p>
+                <b>{{ pedido.solicitante }}</b><br>
+                {{ pedido.solicitante.pessoa.endereco.html_endereco }}<br>
+            
+            </div>
+
+            {% endfor %}
+        </ul>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
