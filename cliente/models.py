@@ -79,8 +79,7 @@ class EdicaoMaterialAssinatura(models.Model):
         )
     assinaturas = models.ManyToManyField(
         Assinatura,
-        limit_choices_to={'estado':'vigente'},
-        null = True, blank= True
+        limit_choices_to={'estado':'vigente'}        
         )
     edicao = models.CharField(max_length = 255, null=True, blank=True)                
     quantidade_paginas = models.PositiveIntegerField(null=True, blank=True)
