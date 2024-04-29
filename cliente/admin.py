@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.db.models.fields.reverse_related import ForeignObjectRel
-from cliente.models import Solicitante,Assinatura,Assinante,RegistroEnvioAssinaturas
-from pessoa.models import PessoaFisica, PessoaJuridica, Endereco, Contato
+from cliente.models import Solicitante,Assinatura,Assinante,RegistroEnvioAssinaturas,EdicaoMaterialAssinatura
 from django.db.models import Q
 from typing import Any
 from django.contrib import admin
@@ -111,11 +110,17 @@ class SolicitanteAdmin(admin.ModelAdmin):
         html_content = ''.join(assinaturas_html)
         return mark_safe(html_content)
 
+
+class EdicaoMaterialAssinaturaInline(admin.StackedInline):
+    model = EdicaoMaterialAssinatura
+    extra = 0
+
 class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
     search_fields = ['descricao', 'assinaturas']
     list_display = ['descricao','data_envio','get_total_assinaturas','data_registro', 'observacao']
     # raw_id_fields = ['assinaturas']
     autocomplete_fields = ['assinaturas']
+    inlines = [EdicaoMaterialAssinaturaInline]
     # formfield_overrides = {
     #     models.ManyToManyField: {'widget': CheckboxSelectMultiple},
     # }
