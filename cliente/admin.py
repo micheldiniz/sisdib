@@ -82,26 +82,36 @@ class EdicaoMaterialAssinaturaInline(admin.StackedInline):
 
 class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
     search_fields = ['nome', 'assinaturas']
-    list_display = ['nome','data_envio','data_registro', 'observacao']        
+    list_display = ['nome','estado','data_envio','data_registro', 'observacao','get_quantidade_assinaturas','get_quantidade_paginas']        
     inlines = [EdicaoMaterialAssinaturaInline]
-
-    # def save_model(self, request: Any, obj: Any, form: Any, change: Any) -> None:
-    #     super().save_model(request, obj, form, change)    
-    #     print(form)
-    #     for inline_obj in form.cleaned_data['edicaomaterialassinatura_set']:
-    #         print(inline_obj)
-    #     # return super().save_model(request, obj, form, change)    
 
     def save_related(self, request: Any, form: Any, formsets: Any, change: Any) -> None:
         super().save_related(request, form, formsets, change)
-        print('################################################')
-        print(formsets)
-        print(form)
-        print(change)
+        
+        for formset in formsets:
+            if formset.model == EdicaoMaterialAssinatura:
+                for obj in formset.queryset:
+                    if form.instance.estado != 'enviado':
+                        assinaturas = Assinatura.objects.filter(estado='vigente', material=obj.material)
+                        print(assinaturas)
+                        if assinaturas:
+                            obj.assinaturas.set(assinaturas)
+                            obj.save()
 
+    def get_quantidade_assinaturas(self,obj):
+        edicoes_relacionadas = EdicaoMaterialAssinatura.objects.filter(registro_envio = obj)
+        total = 0
+        for edicao in edicoes_relacionadas:
+            total += edicao.assinaturas.count()
+        return total
 
-
-
+    def get_quantidade_paginas(self,obj):
+        edicoes_relacionadas = EdicaoMaterialAssinatura.objects.filter(registro_envio = obj)        
+        total_paginas = 0
+        for edicao in edicoes_relacionadas:
+            qtd_paginas = edicao.quantidade_paginas * edicao.assinaturas.count()
+            total_paginas += qtd_paginas
+        return total_paginas
 
     def get_assinaturas(self, obj):
         return "\n".join([str(p) for p in obj.assinaturas.all()])
@@ -111,6 +121,9 @@ class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
 
     get_assinaturas.short_description = 'Assinaturas enviadas'
     get_total_assinaturas.short_description = 'Total de assinaturas enviadas'
+    get_quantidade_assinaturas.short_description = 'Total assinaturas'
+    get_quantidade_paginas.short_description = 'total paginas'
+
 
 admin.site.register(Solicitante, SolicitanteAdmin)
 admin.site.register(Assinatura, AssinaturaAdmin)
