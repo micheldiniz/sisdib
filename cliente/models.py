@@ -37,7 +37,7 @@ class Assinatura(models.Model):
     data_registro = models.DateTimeField(auto_now_add=True, verbose_name='Data de registro')
     data_ultima_alteracao = models.DateTimeField(null=True)
     observacao = models.CharField(max_length=255, verbose_name='Observação', blank=True)
-    solicitante = models.ForeignKey(Solicitante, on_delete=models.CASCADE)
+    solicitante = models.ForeignKey(Solicitante, on_delete=models.CASCADE, verbose_name='Solicitante / Assinante')
 
     def __str__(self) -> str:
         return f'{self.material}, solicitante: {self.solicitante}'
@@ -59,16 +59,21 @@ class Assinante(models.Model):
 
 
 class RegistroEnvioAssinaturas(models.Model):
+    ESTADO_ENVIO_ASSINATURAS_CHOICES = [
+        ('enviado','enviado'),
+        ('não enviado','não enviado'),
+    ]
     class Meta:
         verbose_name_plural = 'Registro de envio de Assinaturas'
-    descricao = models.CharField(max_length=255, verbose_name='Descrição', blank=True)
+    nome = models.CharField(max_length=255, verbose_name='Nome', blank=False)
+    estado = models.CharField(max_length=255, choices=ESTADO_ENVIO_ASSINATURAS_CHOICES, blank=False)
+    # descricao = models.CharField(max_length=255, verbose_name='Descrição', blank=True)
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
     data_envio = models.DateField(null=True,blank=True)
     observacao = models.CharField(max_length=255, verbose_name='Observação', blank=True)
-    assinaturas = models.ManyToManyField(
-        Assinatura,
-        limit_choices_to={'estado':'vigente'}
-        )
+
+    def __str__(self) -> str:
+        return self.nome
 
 class EdicaoMaterialAssinatura(models.Model):
     material = models.ForeignKey(
@@ -85,4 +90,7 @@ class EdicaoMaterialAssinatura(models.Model):
     quantidade_paginas = models.PositiveIntegerField(null=True, blank=True)
     registro_envio = models.ForeignKey(RegistroEnvioAssinaturas, on_delete= models.CASCADE, null = True, blank= True)
     arquivo_original = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
+
+    def __str__(self) -> str:
+        return '{0}. Edição: {1}'.format(self.material.material, self.edicao)
     

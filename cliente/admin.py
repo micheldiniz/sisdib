@@ -12,41 +12,6 @@ from django.contrib.admin.widgets import ForeignKeyRawIdWidget
 from datetime import datetime
 from django.utils.safestring import mark_safe
 
-
-class CustomRawIdWidget(ForeignKeyRawIdWidget):
-
-    def __init__(self, rel: ForeignObjectRel, admin_site: admin.AdminSite, attrs: None = ..., using: None = ...) -> None:
-        super().__init__(rel, admin_site, attrs, using)
-
-    def render(self, name, value, attrs=None, renderer=None):
-        rendered = super().render(name, value, attrs, renderer)
-        rendered += '''
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const selectAllLink = document.createElement('a');
-                    selectAllLink.textContent = 'Select All';
-                    selectAllLink.href = '#';
-                    selectAllLink.onclick = function(e) {
-                        e.preventDefault();
-                        const rawIdInput = document.getElementById("id_" + name);
-                        if (rawIdInput) {
-                            const win = window.open(rawIdInput.getAttribute('assinatura'), '_blank');
-                            if (win) {
-                                win.onload = function() {
-                                    const checkboxes = win.document.querySelectorAll('.checkbox');
-                                    checkboxes.forEach(function(checkbox) {
-                                        checkbox.checked = true;
-                                    });
-                                };
-                            }
-                        }
-                    };
-                    document.querySelector('.field-{0}').appendChild(selectAllLink);
-                });
-            </script>
-        '''.format(name)
-        return rendered
-
 @admin.action(description='cancelar assinatura(s)')
 def cancela_assinatura(modeladmin, request, queryset):
     queryset.update(estado='cancelado', observacao='Cancelamento realizado em lote', data_ultima_alteracao = datetime.now())
@@ -57,12 +22,11 @@ class AssinanteInline(admin.StackedInline):
     extra = 0
 
 class AssinaturaAdmin(admin.ModelAdmin):
-    inlines = [AssinanteInline]
+    # inlines = [AssinanteInline]
     list_display = ['material','solicitante','data_registro', 'estado', 'observacao', 'data_ultima_alteracao']
     list_editable = ['estado', 'observacao']
-    search_fields = ['material__material__titulo','estado','solicitante__pessoa__nome', 'material__tipo']
-    # raw_id_fields = ('material', )
-    # autocomplete_fields = ('material','solicitante')
+    search_fields = ['material__material__titulo','estado','solicitante__pessoa__nome', 'material__tipo']    
+    autocomplete_fields = ['solicitante']
     exclude = ('data_ultima_alteracao',)
     actions = [cancela_assinatura]
 
@@ -114,19 +78,31 @@ class SolicitanteAdmin(admin.ModelAdmin):
 class EdicaoMaterialAssinaturaInline(admin.StackedInline):
     model = EdicaoMaterialAssinatura
     extra = 0
+    readonly_fields = ['assinaturas']
 
 class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
-    search_fields = ['descricao', 'assinaturas']
-    list_display = ['descricao','data_envio','get_total_assinaturas','data_registro', 'observacao']
-    # raw_id_fields = ['assinaturas']
-    autocomplete_fields = ['assinaturas']
+    search_fields = ['nome', 'assinaturas']
+    list_display = ['nome','data_envio','data_registro', 'observacao']        
     inlines = [EdicaoMaterialAssinaturaInline]
-    # formfield_overrides = {
-    #     models.ManyToManyField: {'widget': CheckboxSelectMultiple},
-    # }
-    # formfield_overrides = {
-    #     models.ManyToManyField: {'widget': CustomRawIdWidget},
-    # }
+
+    # def save_model(self, request: Any, obj: Any, form: Any, change: Any) -> None:
+    #     super().save_model(request, obj, form, change)    
+    #     print(form)
+    #     for inline_obj in form.cleaned_data['edicaomaterialassinatura_set']:
+    #         print(inline_obj)
+    #     # return super().save_model(request, obj, form, change)    
+
+    def save_related(self, request: Any, form: Any, formsets: Any, change: Any) -> None:
+        super().save_related(request, form, formsets, change)
+        print('################################################')
+        print(formsets)
+        print(form)
+        print(change)
+
+
+
+
+
     def get_assinaturas(self, obj):
         return "\n".join([str(p) for p in obj.assinaturas.all()])
     
@@ -136,8 +112,6 @@ class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
     get_assinaturas.short_description = 'Assinaturas enviadas'
     get_total_assinaturas.short_description = 'Total de assinaturas enviadas'
 
-
 admin.site.register(Solicitante, SolicitanteAdmin)
 admin.site.register(Assinatura, AssinaturaAdmin)
 admin.site.register(RegistroEnvioAssinaturas, RegistroEnvioAssinaturasAdmin)
-

@@ -26,7 +26,7 @@ class Endereco(models.Model):
     cep = models.CharField(max_length=255)
     logradouro = models.CharField(max_length=255)
     numero = models.CharField(max_length=255)
-    complemento = models.CharField(max_length=255)
+    complemento = models.CharField(max_length=255, blank=True)
     bairro = models.CharField(max_length=255)
     pais = models.CharField(max_length=255)
     cidade = models.CharField(max_length=255)
