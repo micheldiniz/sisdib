@@ -1,0 +1,38 @@
+<!-- register_multiple_entities.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+            .endereco:nth-child(even){
+                float:right;
+                width: 50%;                
+            }
+
+            .endereco:nth-child(odd){
+                float:left;
+                clear: right;                
+            }
+
+    </style>
+
+    <title>Etiquetas correios</title>
+</head>
+<body>
+
+        {% for saida, values in registroSaidaAssinaturas.items %}
+        <!-- <h1>{{ saida }}</h1> -->
+        
+            <div class="enderecos">
+            {% for assinatura in values.assinaturas %}
+                <div class='endereco' style="padding: 20px;margin: 20px 0;display: inline-block;">
+                    <!-- <p>Nº pedido: {{pedido.numero_pedido}}</p> -->
+                    <b style="text-transform:uppercase">{{ assinatura.solicitante }}</b><br>
+                    {{ assinatura.solicitante.pessoa.endereco.html_endereco }}<br>           
+                </div>
+            {% endfor %}
+            </div>        
+        {% endfor %}
+    
+
+</body>
+</html>

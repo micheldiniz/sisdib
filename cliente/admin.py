@@ -11,11 +11,45 @@ from django.db.models import Q
 from django.contrib.admin.widgets import ForeignKeyRawIdWidget
 from datetime import datetime
 from django.utils.safestring import mark_safe
+from django.shortcuts import render
+from typing import List
 
 @admin.action(description='cancelar assinatura(s)')
 def cancela_assinatura(modeladmin, request, queryset):
     queryset.update(estado='cancelado', observacao='Cancelamento realizado em lote', data_ultima_alteracao = datetime.now())
 
+@admin.action(description='guia de correios')
+def guia_correio(modeladmin, request, queryset):
+    dict = {}
+
+    return render(request, 'guia_correios_assinaturas.html', {
+        'registroSaidaAssinaturas': dict,
+    })
+
+@admin.action(description='gerar etiquetas')
+def gerar_etiquetas(modeladmin, request, queryset):
+    dict = {}
+
+    for p in queryset:        
+        edicoes = get_inner_element(p)   
+        assinaturas_e = []
+        for edicao in edicoes:
+            [assinaturas_e.append(assinatura) for assinatura in edicao.assinaturas.all()]            
+        dict[p] = { 'assinaturas' : assinaturas_e }
+
+    return render(request, 'etiquetas_assinaturas.html', {
+        'registroSaidaAssinaturas': dict,
+    })
+
+def get_assinaturas(elem):    
+    assinaturas = []
+    for el in elem:
+        assinaturas = el.assinaturas.all()
+    return [assinatura for assinatura in assinaturas] 
+
+def get_inner_element(ra: RegistroEnvioAssinaturas) -> List['EdicaoMaterialAssinatura']:
+    edicoes_qs = EdicaoMaterialAssinatura.objects.filter(registro_envio = ra)
+    return [edicoes for edicoes in edicoes_qs]
 
 class AssinanteInline(admin.StackedInline):
     model = Assinante    
@@ -84,6 +118,7 @@ class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
     search_fields = ['nome', 'assinaturas']
     list_display = ['nome','estado','data_envio','data_registro', 'observacao','get_quantidade_assinaturas','get_quantidade_paginas']        
     inlines = [EdicaoMaterialAssinaturaInline]
+    actions = [gerar_etiquetas, guia_correio]
 
     def save_related(self, request: Any, form: Any, formsets: Any, change: Any) -> None:
         super().save_related(request, form, formsets, change)
