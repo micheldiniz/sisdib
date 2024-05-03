@@ -47,6 +47,7 @@ class MaterialAdaptado(models.Model):
     material = models.ForeignKey(Material, on_delete=models.CASCADE)
     tipo = models.CharField(max_length = 255, choices = MATERIAL_CHOICES)
     quantidade_paginas = models.PositiveIntegerField(blank=True, null = True)
+    tamanho = models.PositiveIntegerField(blank=True, null = True)
     partes = models.PositiveIntegerField(blank=True, null = True)
     arquivo = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
     is_disponivel_para_pedido = models.BooleanField(default=False, verbose_name="Disponível para pedido?")
