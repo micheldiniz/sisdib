@@ -26,7 +26,7 @@ class Endereco(models.Model):
     cep = models.CharField(max_length=255)
     logradouro = models.CharField(max_length=255)
     numero = models.CharField(max_length=255)
-    complemento = models.CharField(max_length=255, blank=True)
+    complemento = models.CharField(max_length=255, null=True, blank=True)
     bairro = models.CharField(max_length=255)
     pais = models.CharField(max_length=255)
     cidade = models.CharField(max_length=255)
@@ -48,14 +48,7 @@ class PessoaFisica(Pessoa):
         verbose_name_plural = 'Pessoas Físicas'
     cpf = models.CharField(max_length=255, null=False)
     data_nascimento = models.DateField(null=True)
-    # def __str__(self):
-    #     return self.nome + ' ' + self.get_cpf()
-       
-    # def format_cpf(self, cpf:str):
-    #     return cpf[0:3] + '.' + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:11]
-    
-    # def get_cpf(self):
-    #     return self.format_cpf(self.cpf)
+
 
 class PessoaJuridica(Pessoa):
     TIPO_INSTITUICAO_CHOICES = [('Associações','Associações'),('Bibliotecas','Bibliotecas'),('Centros','Centros'),('Escolas','Escolas'),('Fundações','Fundações'),('Governo','Governo'),('Instituições','Instituições'),('Universidades','Universidades'),]
