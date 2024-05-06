@@ -76,9 +76,20 @@ class RegistroEnvioAssinaturas(models.Model):
     def __str__(self) -> str:
         return self.nome
 
-class Remessa(models.Model):
-    pass
-    
+class TipoRemessa(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+class Remessa(models.Model):    
+    registro_envio = models.ForeignKey(RegistroEnvioAssinaturas, on_delete= models.CASCADE, null = True, blank= True)
+    tipo_remessa = models.ManyToManyField('TipoRemessa',max_length=255)
+    data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
+    data_envio = models.DateField(null=True,blank=True)
+    quantidade = models.PositiveIntegerField(null=True, blank=True)
+    observacao = models.CharField(max_length=255, verbose_name='Observação', blank=True)
+    ordem = models.CharField(max_length=255, verbose_name='ordem', blank=True)
 
 class EdicaoMaterialAssinatura(models.Model):
     material = models.ForeignKey(
