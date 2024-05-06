@@ -67,13 +67,18 @@ class RegistroEnvioAssinaturas(models.Model):
         verbose_name_plural = 'Registro de envio de Assinaturas'
     nome = models.CharField(max_length=255, verbose_name='Nome', blank=False)
     estado = models.CharField(max_length=255, choices=ESTADO_ENVIO_ASSINATURAS_CHOICES, blank=False)
-    # descricao = models.CharField(max_length=255, verbose_name='Descrição', blank=True)
+    remetente = models.CharField(max_length=255, verbose_name='Remetente',default='Instituto Benjamin Constant', blank=True)
+    identificacao = models.CharField(max_length=255, verbose_name='Identificação',default='Cecograma', blank=True)
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
     data_envio = models.DateField(null=True,blank=True)
     observacao = models.CharField(max_length=255, verbose_name='Observação', blank=True)
 
     def __str__(self) -> str:
         return self.nome
+
+class Remessa(models.Model):
+    pass
+    
 
 class EdicaoMaterialAssinatura(models.Model):
     material = models.ForeignKey(
