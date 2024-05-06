@@ -75,18 +75,20 @@
           </tr>
         </thead>
         <tbody>
+            {% for item in registroSaidaAssinaturas %}
           <tr>
+            <td class="tg-0pky">{{ registroSaidaAssinaturas.items }}</td>
             <td class="tg-0pky"></td>
             <td class="tg-0pky"></td>
             <td class="tg-0pky"></td>
-            <td class="tg-0pky"></td>
-            <td class="tg-0pky"></td>
+            <td class="tg-0pky peso">{{ registroSaidaAssinaturas }}</td>
             <td class="tg-0pky"></td>
             <td class="tg-0pky"></td>
             <td class="tg-0pky"></td>
             <td class="tg-0pky"></td>
             <td class="tg-0pky"></td>
           </tr>
+          {% endfor %}
         </tbody>
         </table>
 <p>OBS.: A coluna "IDENTIFICAÇÃO" deve ser preenchida pelo remtendte que indicará a característica da franquia ou ato que a concedeu, como por ex. Cecograma, Prisioneiro de Guerra, Decreto n.º, etc.</p>

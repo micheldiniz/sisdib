@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db.models.fields.reverse_related import ForeignObjectRel
-from cliente.models import Solicitante,Assinatura,Assinante,RegistroEnvioAssinaturas,EdicaoMaterialAssinatura
+from cliente.models import Solicitante,Assinatura,Assinante,RegistroEnvioAssinaturas,EdicaoMaterialAssinatura, Remessa
 from django.db.models import Q
 from typing import Any
 from django.contrib import admin
@@ -24,11 +24,12 @@ def guia_correio(modeladmin, request, queryset):
         
     for p in queryset:        
         edicoes = get_inner_element(p)   
-        assinaturas_e = []
+        edicao = []
         for edicao in edicoes:
-            [assinaturas_e.append(assinatura.solicitante) for assinatura in edicao.assinaturas.all()]            
-        dict[p] = { 'assinaturas' : assinaturas_e }
-        print(assinaturas_e)
+            # [assinaturas_e.append(assinatura.solicitante) for assinatura in edicao.assinaturas.all()]            
+            pass
+        dict[p] = { 'edicoes' : edicoes }
+    print(dict)        
 
     return render(request, 'guia_correios_assinaturas.html', {
         'registroSaidaAssinaturas': dict,
@@ -122,10 +123,15 @@ class EdicaoMaterialAssinaturaInline(admin.StackedInline):
     extra = 0
     readonly_fields = ['assinaturas']
 
+class RemessaInline(admin.StackedInline):
+    model = Remessa
+    extra = 0
+    readonly_fields = ['quantidade', 'ordem']
+
 class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
     search_fields = ['nome', 'assinaturas']
     list_display = ['nome','estado','data_envio','data_registro', 'observacao','get_quantidade_assinaturas','get_quantidade_paginas']        
-    inlines = [EdicaoMaterialAssinaturaInline]
+    inlines = [EdicaoMaterialAssinaturaInline, RemessaInline]
     actions = [gerar_etiquetas, guia_correio]
 
     def save_related(self, request: Any, form: Any, formsets: Any, change: Any) -> None:
