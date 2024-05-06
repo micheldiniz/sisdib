@@ -23,11 +23,11 @@
         <!-- <h1>{{ saida }}</h1> -->
         
             <div class="enderecos">
-            {% for assinatura in values.assinaturas %}
+            {% for solicitante in values.solicitantes %}
                 <div class='endereco' style="padding: 20px;margin: 20px 0;display: inline-block;">
                     <!-- <p>Nº pedido: {{pedido.numero_pedido}}</p> -->
-                    <b style="text-transform:uppercase">{{ assinatura.solicitante }}</b><br>
-                    {{ assinatura.solicitante.pessoa.endereco.html_endereco }}<br>           
+                    <b style="text-transform:uppercase">{{ solicitante }}</b><br>
+                    {{ solicitante.pessoa.endereco.html_endereco }}<br>           
                 </div>
             {% endfor %}
             </div>        

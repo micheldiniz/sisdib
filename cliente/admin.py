@@ -21,6 +21,14 @@ def cancela_assinatura(modeladmin, request, queryset):
 @admin.action(description='guia de correios')
 def guia_correio(modeladmin, request, queryset):
     dict = {}
+        
+    for p in queryset:        
+        edicoes = get_inner_element(p)   
+        assinaturas_e = []
+        for edicao in edicoes:
+            [assinaturas_e.append(assinatura.solicitante) for assinatura in edicao.assinaturas.all()]            
+        dict[p] = { 'assinaturas' : assinaturas_e }
+        print(assinaturas_e)
 
     return render(request, 'guia_correios_assinaturas.html', {
         'registroSaidaAssinaturas': dict,
@@ -29,13 +37,13 @@ def guia_correio(modeladmin, request, queryset):
 @admin.action(description='gerar etiquetas')
 def gerar_etiquetas(modeladmin, request, queryset):
     dict = {}
-
+    
     for p in queryset:        
         edicoes = get_inner_element(p)   
-        assinaturas_e = []
+        solicitantes = []
         for edicao in edicoes:
-            [assinaturas_e.append(assinatura) for assinatura in edicao.assinaturas.all()]            
-        dict[p] = { 'assinaturas' : assinaturas_e }
+            [solicitantes.append(assinatura.solicitante) for assinatura in edicao.assinaturas.all()]            
+        dict[p] = { 'solicitantes' : dict.fromkeys(solicitantes) }
 
     return render(request, 'etiquetas_assinaturas.html', {
         'registroSaidaAssinaturas': dict,
