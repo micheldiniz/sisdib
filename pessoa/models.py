@@ -33,7 +33,10 @@ class Endereco(models.Model):
     estado = models.CharField(max_length=255)
     pessoa = models.OneToOneField(Pessoa,on_delete=models.CASCADE, default=None)
     def html_endereco(self):
-        html_endereco = "<span class='endereco'>{0} {1}, {2} <br /> {3} <br /> {4} {5}/{6}</span>".format(self.logradouro,self.numero,self.complemento,self.bairro,self.cep,self.cidade,self.estado)
+        html_endereco = "<span class='endereco'>{0} {1}, {2} <br /> {3} <br /> {4} {5}/{6}<br /> {7}</span>".format(self.logradouro,self.numero,self.complemento,self.bairro,self.cep,self.cidade,self.estado,self.pais)        
+        if(self.pais == 'Brasil'):
+            html_endereco = "<span class='endereco'>{0} {1}, {2} <br /> {3} <br /> {4} {5}/{6}</span>".format(self.logradouro,self.numero,self.complemento,self.bairro,self.cep,self.cidade,self.estado)        
+            return mark_safe(html_endereco)
         return mark_safe(html_endereco)
 
 class Contato(models.Model):
