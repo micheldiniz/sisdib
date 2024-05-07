@@ -64,9 +64,9 @@ class RegistroEnvioAssinaturas(models.Model):
         ('não enviado','não enviado'),
     ]
     class Meta:
-        verbose_name_plural = 'Registro de envio de Assinaturas'
+        verbose_name_plural = 'Configurar envio de Assinaturas'
     nome = models.CharField(max_length=255, verbose_name='Nome', blank=False)
-    estado = models.CharField(max_length=255, choices=ESTADO_ENVIO_ASSINATURAS_CHOICES, blank=False)
+    estado = models.CharField(max_length=255, choices=ESTADO_ENVIO_ASSINATURAS_CHOICES, default='não enviado', blank=False)
     remetente = models.CharField(max_length=255, verbose_name='Remetente',default='Instituto Benjamin Constant', blank=True)
     identificacao = models.CharField(max_length=255, verbose_name='Identificação',default='Cecograma', blank=True)
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
@@ -83,6 +83,9 @@ class TipoRemessa(models.Model):
         return self.name
 
 class Remessa(models.Model):    
+    class Meta:
+        verbose_name = 'Remessa'
+        verbose_name_plural = 'Remessas para Envio (de edições de assinaturas)'
     registro_envio = models.ForeignKey(RegistroEnvioAssinaturas, on_delete= models.CASCADE, null = True, blank= True)
     tipo_remessa = models.ManyToManyField('TipoRemessa',max_length=255)
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
@@ -91,7 +94,14 @@ class Remessa(models.Model):
     observacao = models.CharField(max_length=255, verbose_name='Observação', blank=True)
     ordem = models.CharField(max_length=255, verbose_name='ordem', blank=True)
 
+    def __str__(self):
+        return "{0} {1}".format(self.tipo_remessa.name, self.ordem)
+
 class EdicaoMaterialAssinatura(models.Model):
+    class Meta:
+        verbose_name = 'Edição da Assinatura'
+        verbose_name_plural = 'Edições da Assinatura'
+
     material = models.ForeignKey(
         MaterialAdaptado, 
         on_delete= models.CASCADE,

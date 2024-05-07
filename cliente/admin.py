@@ -133,6 +133,7 @@ class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
     list_display = ['nome','estado','data_envio','data_registro', 'observacao','get_quantidade_assinaturas','get_quantidade_paginas']        
     inlines = [EdicaoMaterialAssinaturaInline, RemessaInline]
     actions = [gerar_etiquetas, guia_correio]
+    verbose_name_plural = 'ashdhasdhas'
 
     def save_related(self, request: Any, form: Any, formsets: Any, change: Any) -> None:
         super().save_related(request, form, formsets, change)
