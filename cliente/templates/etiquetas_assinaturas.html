@@ -3,15 +3,23 @@
 <html>
 <head>
     <style>
-            .endereco:nth-child(even){
-                float:right;
-                width: 50%;                
+        .endereco{
+            padding: 20px;
+            display: inline-block;
+        }
+            .endereco b {
+                text-transform:uppercase;
             }
 
-            .endereco:nth-child(odd){
-                float:left;
-                clear: right;                
-            }
+        .endereco:nth-child(even){
+            float:right;
+            width: 45%;                
+        }
+
+        .endereco:nth-child(odd){
+            float:left;
+            clear: both;                
+        }
 
     </style>
 
@@ -24,9 +32,9 @@
         
             <div class="enderecos">
             {% for solicitante in values.solicitantes %}
-                <div class='endereco' style="padding: 20px;margin: 20px 0;display: inline-block;">
+                <div class='endereco'>
                     <!-- <p>Nº pedido: {{pedido.numero_pedido}}</p> -->
-                    <b style="text-transform:uppercase">{{ solicitante }}</b><br>
+                    <b>{{ solicitante }}</b><br>
                     {{ solicitante.pessoa.endereco.html_endereco }}<br>           
                 </div>
             {% endfor %}
