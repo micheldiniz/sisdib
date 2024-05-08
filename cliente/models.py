@@ -66,7 +66,6 @@ class RegistroEnvioAssinaturas(models.Model):
     remetente = models.CharField(max_length=255, verbose_name='Remetente',default='Instituto Benjamin Constant', blank=True)
     identificacao = models.CharField(max_length=255, verbose_name='Identificação',default='Cecograma', blank=True)
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
-    # data_envio = models.DateField(null=True,blank=True)
     observacao = models.CharField(max_length=255, verbose_name='Observação', blank=True)
 
     def __str__(self) -> str:
@@ -90,8 +89,10 @@ class Remessa(models.Model):
     observacao = models.CharField(max_length=255, verbose_name='Observação', blank=True)
     ordem = models.CharField(max_length=255, verbose_name='ordem', blank=True)
 
-    def __str__(self):
-        return "{0} {1}".format(self.tipo_remessa.name, self.ordem)
+    def __str__(self):        
+        tipo_remessas = [str(tipo_remessa) for tipo_remessa in self.tipo_remessa.all()]        
+        tipo_remessa = " e ".join(tipo_remessas)
+        return tipo_remessa + ' ' + self.ordem
 
 class EdicaoMaterialAssinatura(models.Model):
     class Meta:
@@ -110,6 +111,7 @@ class EdicaoMaterialAssinatura(models.Model):
         )
     edicao = models.CharField(max_length = 255, null=True, blank=True)                
     quantidade_paginas = models.PositiveIntegerField(null=True, blank=True, default=0)
+    peso = models.PositiveIntegerField(null=True, blank=True, default=0)
     registro_envio = models.ForeignKey(RegistroEnvioAssinaturas, on_delete= models.CASCADE, null = True, blank= True)
     arquivo_original = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
 
