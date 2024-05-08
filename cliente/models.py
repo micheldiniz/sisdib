@@ -30,7 +30,7 @@ class Assinatura(models.Model):
     ]
     estado = models.CharField(max_length=255,choices=ESTADO_CHOICES, default='vigente')
     material = models.ForeignKey(
-        MaterialAdaptado, 
+        MaterialAdaptado,
         on_delete= models.CASCADE,
         # limit_choices_to={'is_disponivel_para_assinatura':True}
         )    
@@ -105,7 +105,7 @@ class EdicaoMaterialAssinatura(models.Model):
     material = models.ForeignKey(
         MaterialAdaptado, 
         on_delete= models.CASCADE,
-        # limit_choices_to={'is_disponivel_para_assinatura':True}
+        limit_choices_to={'is_disponivel_para_assinatura':True},
         null = True, blank= True
         )
     assinaturas = models.ManyToManyField(
@@ -113,7 +113,7 @@ class EdicaoMaterialAssinatura(models.Model):
         limit_choices_to={'estado':'vigente'}        
         )
     edicao = models.CharField(max_length = 255, null=True, blank=True)                
-    quantidade_paginas = models.PositiveIntegerField(null=True, blank=True)
+    quantidade_paginas = models.PositiveIntegerField(null=True, blank=True, default=0)
     registro_envio = models.ForeignKey(RegistroEnvioAssinaturas, on_delete= models.CASCADE, null = True, blank= True)
     arquivo_original = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
 
