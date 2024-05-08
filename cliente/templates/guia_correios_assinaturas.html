@@ -3,6 +3,13 @@
 <html>
 <head>
     <style type="text/css">
+        @media print{@page {size: landscape}}
+        @media print {
+            .guia-correios {
+                clear: both;
+                page-break-after: always;
+            }
+        }
         .tg  {border-collapse:collapse;border-spacing:0; width: 100%;}
         .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
             overflow:hidden;padding:10px 5px;word-break:normal;}
@@ -43,6 +50,9 @@
     <title>guia dos correios</title>
 </head>
 <body>
+{% for key, value in registroSaidaAssinaturas.items %}
+{% for a, b in value.items %}
+<div class="guia-correios">
     <header>
         <h1>
             <span class="titulo">
@@ -53,53 +63,50 @@
         </h1>
             <p class="detail">
             <span>RELAÇÃO DA CORRESPONDÊNCIA DE FRANQUIA</span>
-            <span>dia semana, dia de Mês de ANO</span>
+            <span>{{b.data_envio|date:"l"}}, {{b.data_envio}}</span>
         </p>
     </header>
 
-
-
-        <table class="tg">
+    <table class="tg">
         <thead>
-          <tr>
-            <th class="tg-c3ow">Nº ORDEM</th>
-            <th class="tg-c3ow">CLASSIFICAÇÃO DA<br> CORRENSPONDÊNCIA</th>
-            <th class="tg-c3ow">DESTINATÁRIO</th>
-            <th class="tg-c3ow">REMETENTE</th>
-            <th class="tg-c3ow">PESO (KG)</th>
-            <th class="tg-c3ow">VALOR NÃO <br>ARRECADADO<br> R$</th>
-            <th class="tg-c3ow">IDENTIFICAÇÃO</th>
-            <th class="tg-c3ow">Nº <br>REG</th>
-            <th class="tg-c3ow">Nº DE<br>PACOTES</th>
-            <th class="tg-c3ow">DESTINO</th>
-          </tr>
-        </thead>
-        <tbody>
-            {% for item in registroSaidaAssinaturas %}
-          <tr>
-            <td class="tg-0pky">{{ registroSaidaAssinaturas.items }}</td>
-            <td class="tg-0pky"></td>
-            <td class="tg-0pky"></td>
-            <td class="tg-0pky"></td>
-            <td class="tg-0pky peso">{{ registroSaidaAssinaturas }}</td>
-            <td class="tg-0pky"></td>
-            <td class="tg-0pky"></td>
-            <td class="tg-0pky"></td>
-            <td class="tg-0pky"></td>
-            <td class="tg-0pky"></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-        </table>
-<p>OBS.: A coluna "IDENTIFICAÇÃO" deve ser preenchida pelo remtendte que indicará a característica da franquia ou ato que a concedeu, como por ex. Cecograma, Prisioneiro de Guerra, Decreto n.º, etc.</p>
+            <tr>
+                <th class="tg-c3ow">Nº ORDEM</th>
+                <th class="tg-c3ow">CLASSIFICAÇÃO DA<br> CORRENSPONDÊNCIA</th>
+                <th class="tg-c3ow">DESTINATÁRIO</th>
+                <th class="tg-c3ow">REMETENTE</th>
+                <th class="tg-c3ow">PESO (KG)</th>
+                <th class="tg-c3ow">VALOR NÃO <br>ARRECADADO<br> R$</th>
+                <th class="tg-c3ow">IDENTIFICAÇÃO</th>
+                <th class="tg-c3ow">Nº <br>REG</th>
+                <th class="tg-c3ow">Nº DE<br>PACOTES</th>
+                <th class="tg-c3ow">DESTINO</th>
+            </tr>
+            </thead>
+            <tbody>
+                
+            <tr>
+                <td class="tg-0pky">1</td>
+                <td class="tg-0pky">{{registroSaidaAssinaturas.classificacao}} (versão braille)</td>
+                <td class="tg-0pky peso">Distribuição: <br />{{ b }}</td>
+                <td class="tg-0pky">{{registroSaidaAssinaturas.remetente}}</td>
+                <td class="tg-0pky">{{ registroSaidaAssinaturas.peso }}</td>
+                <td class="tg-0pky"></td>
+                <td class="tg-0pky">{{registroSaidaAssinaturas.identificacao}}</td>
+                <td class="tg-0pky"></td>
+                <td class="tg-0pky">{{ b.quantidade }}</td>
+                <td class="tg-0pky"></td>
+            </tr>
+            </tbody>
+            </table>
+    <p>OBS.: A coluna "IDENTIFICAÇÃO" deve ser preenchida pelo remtendte que indicará a característica da franquia ou ato que a concedeu, como por ex. Cecograma, Prisioneiro de Guerra, Decreto n.º, etc.</p>
 
-<footer>
-    <span class="objetos_recebidos">Recebi ____________________ Objetos</span>
-    <span class="carimbo_ect">CARIMBO DA ECT</span>
-    <span class="assinatura_ect">ass. e função do empregado postal</span>
-    
-</footer>
-    
-
+    <footer>
+        <span class="objetos_recebidos">Recebi ____________________ Objetos</span>
+        <span class="carimbo_ect">CARIMBO DA ECT</span>
+        <span class="assinatura_ect">ass. e função do empregado postal</span>
+    </footer>
+</div>
+{% endfor %}
+{% endfor %}
 </body>
 </html>

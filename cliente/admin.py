@@ -22,25 +22,42 @@ def cancela_assinatura(modeladmin, request, queryset):
 def guia_correio(modeladmin, request, queryset):
     dict = {}
         
-    for p in queryset:        
-        edicoes = get_inner_element(p)   
-        edicao = []
-        for edicao in edicoes:
-            # [assinaturas_e.append(assinatura.solicitante) for assinatura in edicao.assinaturas.all()]            
-            pass
-        dict[p] = { 'edicoes' : edicoes }
-    print(dict)        
+    for p in queryset:
+        materiais_adaptados  = []
+        edicoes = get_edicoes(p)
+        peso = 0
+        pacotes = 0
+        for e in edicoes:
+            materiais_adaptados.append(str(e.material.material.titulo))
+            peso += e.peso
+            pacotes += e.assinaturas.count()
+        remessas_qs = get_remessas(p)
+        remessas = {}
+        for remessa in remessas_qs:
+            remessas[remessa.id] = remessa
+
+        dict = {  'remessas' : remessas,
+                  'remetente': p.remetente,
+                  'identificacao': p.identificacao,
+                  'classificacao': ' + '.join(materiais_adaptados),
+                  'peso': peso,
+                  'pacotes':pacotes//2,
+                }
 
     return render(request, 'guia_correios_assinaturas.html', {
         'registroSaidaAssinaturas': dict,
     })
+
+# def get_quantidade_pacotes(ra: RegistroEnvioAssinaturas):
+#     edicoes = get_edicoes(ra)
+
 
 @admin.action(description='gerar etiquetas')
 def gerar_etiquetas(modeladmin, request, queryset):
     dict = {}
     
     for p in queryset:        
-        edicoes = get_inner_element(p)   
+        edicoes = get_edicoes(p)   
         solicitantes = []
         for edicao in edicoes:
             [solicitantes.append(assinatura.solicitante) for assinatura in edicao.assinaturas.all()]            
@@ -56,18 +73,31 @@ def get_assinaturas(elem):
         assinaturas = el.assinaturas.all()
     return [assinatura for assinatura in assinaturas] 
 
-def get_inner_element(ra: RegistroEnvioAssinaturas) -> List['EdicaoMaterialAssinatura']:
+def get_edicoes(ra: RegistroEnvioAssinaturas) -> List['EdicaoMaterialAssinatura']:
     edicoes_qs = EdicaoMaterialAssinatura.objects.filter(registro_envio = ra)
     return [edicoes for edicoes in edicoes_qs]
 
+def get_remessas(ra: RegistroEnvioAssinaturas) -> List['Remessa']:
+    remessas_qs = Remessa.objects.filter(registro_envio = ra)
+    return [remessas for remessas in remessas_qs]
+
 def atualizar_assinaturas_no_registro_de_saida(modeladmin, request, queryset):
     for p in queryset:        
-        edicoes = get_inner_element(p)   
+        edicoes = get_edicoes(p)   
         if p.enviado == False:
             for edicao in edicoes:            
                 assinaturas = Assinatura.objects.filter(estado='vigente', material=edicao.material)            
                 edicao.assinaturas.set(assinaturas)
-    
+
+def atualizar_remessas(modeladmin, request, queryset):
+    # for p in queryset:
+    #      assinaturas = []
+    #      edicoes = get_edicoes(p)
+    #      for e in edicoes:
+    #         assinaturas = e.assinaturas
+    #         assinaturas.filter(pessoa='')
+    pass
+        
 
 class AssinanteInline(admin.StackedInline):
     model = Assinante    
@@ -135,14 +165,14 @@ class EdicaoMaterialAssinaturaInline(admin.StackedInline):
 class RemessaInline(admin.StackedInline):
     model = Remessa
     extra = 0
-    readonly_fields = ['quantidade', 'ordem']
+    readonly_fields = ['quantidade']
+    exclude = ['observacao','ordem']
 
 class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
     search_fields = ['nome', 'assinaturas']
     list_display = ['nome','enviado','data_registro', 'observacao','get_quantidade_assinaturas','get_quantidade_paginas']        
     inlines = [EdicaoMaterialAssinaturaInline, RemessaInline]
     actions = [gerar_etiquetas, guia_correio, atualizar_assinaturas_no_registro_de_saida]
-    verbose_name_plural = 'ashdhasdhas'
 
     # def save_related(self, request: Any, form: Any, formsets: Any, change: Any) -> None:
     #     super().save_related(request, form, formsets, change)
