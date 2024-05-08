@@ -60,6 +60,15 @@ def get_inner_element(ra: RegistroEnvioAssinaturas) -> List['EdicaoMaterialAssin
     edicoes_qs = EdicaoMaterialAssinatura.objects.filter(registro_envio = ra)
     return [edicoes for edicoes in edicoes_qs]
 
+def atualizar_assinaturas_no_registro_de_saida(modeladmin, request, queryset):
+    for p in queryset:        
+        edicoes = get_inner_element(p)   
+        if p.enviado == False:
+            for edicao in edicoes:            
+                assinaturas = Assinatura.objects.filter(estado='vigente', material=edicao.material)            
+                edicao.assinaturas.set(assinaturas)
+    
+
 class AssinanteInline(admin.StackedInline):
     model = Assinante    
     extra = 0
@@ -117,11 +126,11 @@ class SolicitanteAdmin(admin.ModelAdmin):
         html_content = ''.join(assinaturas_html)
         return mark_safe(html_content)
 
-
-class EdicaoMaterialAssinaturaInline(admin.StackedInline):
+class EdicaoMaterialAssinaturaInline(admin.StackedInline):    
     model = EdicaoMaterialAssinatura
     extra = 0
-    readonly_fields = ['assinaturas']
+    # readonly_fields = ['assinaturas']
+    exclude = ['assinaturas']
 
 class RemessaInline(admin.StackedInline):
     model = Remessa
@@ -130,24 +139,14 @@ class RemessaInline(admin.StackedInline):
 
 class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
     search_fields = ['nome', 'assinaturas']
-    list_display = ['nome','estado','data_envio','data_registro', 'observacao','get_quantidade_assinaturas','get_quantidade_paginas']        
+    list_display = ['nome','enviado','data_registro', 'observacao','get_quantidade_assinaturas','get_quantidade_paginas']        
     inlines = [EdicaoMaterialAssinaturaInline, RemessaInline]
-    actions = [gerar_etiquetas, guia_correio]
+    actions = [gerar_etiquetas, guia_correio, atualizar_assinaturas_no_registro_de_saida]
     verbose_name_plural = 'ashdhasdhas'
 
-    def save_related(self, request: Any, form: Any, formsets: Any, change: Any) -> None:
-        super().save_related(request, form, formsets, change)
-        
-        for formset in formsets:
-            if formset.model == EdicaoMaterialAssinatura:
-                for obj in formset.queryset:
-                    if form.instance.estado != 'enviado':
-                        assinaturas = Assinatura.objects.filter(estado='vigente', material=obj.material)
-                        print(assinaturas)
-                        if assinaturas:
-                            obj.assinaturas.set(assinaturas)
-                            obj.save()
-
+    # def save_related(self, request: Any, form: Any, formsets: Any, change: Any) -> None:
+    #     super().save_related(request, form, formsets, change)
+    
     def get_quantidade_assinaturas(self,obj):
         edicoes_relacionadas = EdicaoMaterialAssinatura.objects.filter(registro_envio = obj)
         total = 0

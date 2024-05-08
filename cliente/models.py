@@ -58,19 +58,15 @@ class Assinante(models.Model):
     assinatura = models.OneToOneField(Assinatura, on_delete=models.CASCADE)
 
 
-class RegistroEnvioAssinaturas(models.Model):
-    ESTADO_ENVIO_ASSINATURAS_CHOICES = [
-        ('enviado','enviado'),
-        ('não enviado','não enviado'),
-    ]
+class RegistroEnvioAssinaturas(models.Model):    
     class Meta:
         verbose_name_plural = 'Configurar envio de Assinaturas'
     nome = models.CharField(max_length=255, verbose_name='Nome', blank=False)
-    estado = models.CharField(max_length=255, choices=ESTADO_ENVIO_ASSINATURAS_CHOICES, default='não enviado', blank=False)
+    enviado = models.BooleanField(default=False, verbose_name='Enviado?')
     remetente = models.CharField(max_length=255, verbose_name='Remetente',default='Instituto Benjamin Constant', blank=True)
     identificacao = models.CharField(max_length=255, verbose_name='Identificação',default='Cecograma', blank=True)
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
-    data_envio = models.DateField(null=True,blank=True)
+    # data_envio = models.DateField(null=True,blank=True)
     observacao = models.CharField(max_length=255, verbose_name='Observação', blank=True)
 
     def __str__(self) -> str:
