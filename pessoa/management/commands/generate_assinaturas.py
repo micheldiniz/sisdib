@@ -12,21 +12,23 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        superbraille = MaterialAdaptado.objects.get(pk=3)
-        pontinhos = MaterialAdaptado.objects.get(pk=6)
-        rbc = MaterialAdaptado.objects.get(pk=5)
-
+        superbraille = MaterialAdaptado.objects.filter(material__titulo='Superbraille').first()
+        pontinhos = MaterialAdaptado.objects.filter(material__titulo='Pontinhos').first()
+        rbc = MaterialAdaptado.objects.filter(material__titulo='Revista Brasileira para Cegos').first()
+  
         solicitantes = Solicitante.objects.all()
-
-        for solicitante in solicitantes:
-            number = random.choice([1,2,3])
-            if number==1:
-                Assinatura.objects.create(solicitante = solicitante,material = MaterialAdaptado.objects.get(pk=3))
-                Assinatura.objects.create(solicitante = solicitante,material = MaterialAdaptado.objects.get(pk=6))
-            if number == 2:
-                Assinatura.objects.create(solicitante = solicitante,material = MaterialAdaptado.objects.get(pk=5))
-            if number == 3:
-                Assinatura.objects.create(solicitante = solicitante,material = MaterialAdaptado.objects.get(pk=3))
-                Assinatura.objects.create(solicitante = solicitante,material = MaterialAdaptado.objects.get(pk=6))
-                Assinatura.objects.create(solicitante = solicitante,material = MaterialAdaptado.objects.get(pk=5))
-        self.stdout.write(self.style.SUCCESS('Successfully created Assinatura objects'))
+        if (superbraille and pontinhos and rbc):
+            for solicitante in solicitantes:
+                number = random.choice([1,2,3])
+                if number==1:
+                    Assinatura.objects.create(solicitante = solicitante, material = pontinhos)
+                    Assinatura.objects.create(solicitante = solicitante, material = superbraille)
+                if number == 2:
+                    Assinatura.objects.create(solicitante = solicitante, material = rbc)
+                if number == 3:
+                    Assinatura.objects.create(solicitante = solicitante, material = pontinhos)
+                    Assinatura.objects.create(solicitante = solicitante, material = superbraille)
+                    Assinatura.objects.create(solicitante = solicitante, material = rbc)
+            self.stdout.write(self.style.SUCCESS('Successfully created Assinatura objects'))
+        self.stdout.write(self.style.SUCCESS('no record found'))
+        
