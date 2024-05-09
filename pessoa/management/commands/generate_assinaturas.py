@@ -30,5 +30,5 @@ class Command(BaseCommand):
                     Assinatura.objects.create(solicitante = solicitante, material = superbraille)
                     Assinatura.objects.create(solicitante = solicitante, material = rbc)
             self.stdout.write(self.style.SUCCESS('Successfully created Assinatura objects'))
-        self.stdout.write(self.style.SUCCESS('no record found'))
+        # self.stdout.write(self.style.SUCCESS('no record found'))
         
