@@ -1,18 +1,18 @@
 from django.contrib import admin
-from django.db.models.fields.reverse_related import ForeignObjectRel
 from cliente.models import Solicitante,Assinatura,Assinante,RegistroEnvioAssinaturas,EdicaoMaterialAssinatura, Remessa
+from pessoa.models import Endereco
 from django.db.models import Q
 from typing import Any
 from django.contrib import admin
 from django.db.models.fields.related import ForeignKey
 from django.forms.models import ModelChoiceField
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.db.models import Q
-from django.contrib.admin.widgets import ForeignKeyRawIdWidget
 from datetime import datetime
 from django.utils.safestring import mark_safe
 from django.shortcuts import render
 from typing import List
+from weasyprint import HTML
 
 @admin.action(description='cancelar assinatura(s)')
 def cancela_assinatura(modeladmin, request, queryset):
@@ -44,9 +44,16 @@ def guia_correio(modeladmin, request, queryset):
                   'pacotes':pacotes//2,
                 }
 
-    return render(request, 'guia_correios_assinaturas.html', {
-        'registroSaidaAssinaturas': dict,
-    })
+    html_string = render(request, 'guia_correios_assinaturas.html', {'registroSaidaAssinaturas': dict }).content.decode('utf-8')
+
+    pdf = HTML(string=html_string).write_pdf()
+
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="{0}.pdf"'.format('arquivo')
+
+    return response
+    # return render(request, 'guia_correios_assinaturas.html', {'registroSaidaAssinaturas': dict })
+
 
 # def get_quantidade_pacotes(ra: RegistroEnvioAssinaturas):
 #     edicoes = get_edicoes(ra)
@@ -83,21 +90,50 @@ def get_remessas(ra: RegistroEnvioAssinaturas) -> List['Remessa']:
 
 def atualizar_assinaturas_no_registro_de_saida(modeladmin, request, queryset):
     for p in queryset:        
-        edicoes = get_edicoes(p)   
+        edicoes = get_edicoes(p)
         if p.enviado == False:
             for edicao in edicoes:            
                 assinaturas = Assinatura.objects.filter(estado='vigente', material=edicao.material)            
-                edicao.assinaturas.set(assinaturas)
+                edicao.quantidade_assinaturas_Es = quantidade_assinaturas_es(assinaturas)
+                edicao.quantidade_assinaturas_OE = quantidade_assinaturas_oe(assinaturas)
+                edicao.quantidade_assinaturas_RJ = quantidade_assinaturas_rj(assinaturas)
+                
+                print(edicao.quantidade_assinaturas_Es)
+                print(edicao.quantidade_assinaturas_OE)
+                print(edicao.quantidade_assinaturas_RJ)
 
-def atualizar_remessas(modeladmin, request, queryset):
-    # for p in queryset:
-    #      assinaturas = []
-    #      edicoes = get_edicoes(p)
-    #      for e in edicoes:
-    #         assinaturas = e.assinaturas
-    #         assinaturas.filter(pessoa='')
-    pass
-        
+
+                edicao.assinaturas.set(assinaturas)
+                edicao.save()             
+
+def quantidade_assinaturas_es(ass):
+    total = 0
+    for a in ass:
+        if(a.solicitante.pessoa.is_estrangeiro == True):
+            # print(a.solicitante.pessoa)
+            total += 1
+    return total
+
+def quantidade_assinaturas_oe(ass):
+    total = 0
+    for a in ass:
+        if(get_UF_pessoa(a.solicitante) != 'RJ' and a.solicitante.pessoa.is_estrangeiro == False):
+            print(a.solicitante.pessoa)
+            total += 1
+    return total
+
+def quantidade_assinaturas_rj(ass):
+    total = 0
+    for a in ass:
+        if(get_UF_pessoa(a.solicitante) == 'RJ' and a.solicitante.pessoa.is_estrangeiro == False):
+            print(a.solicitante.pessoa)
+            total += 1
+
+    return total
+
+def get_UF_pessoa(solicitante:Solicitante):    
+    endereco = Endereco.objects.get(pessoa=solicitante.pessoa)
+    return endereco.estado
 
 class AssinanteInline(admin.StackedInline):
     model = Assinante    
@@ -159,13 +195,12 @@ class SolicitanteAdmin(admin.ModelAdmin):
 class EdicaoMaterialAssinaturaInline(admin.StackedInline):    
     model = EdicaoMaterialAssinatura
     extra = 0
-    # readonly_fields = ['assinaturas']
+    readonly_fields = ['quantidade_assinaturas_RJ', 'quantidade_assinaturas_Es', 'quantidade_assinaturas_OE']
     exclude = ['assinaturas']
 
 class RemessaInline(admin.StackedInline):
     model = Remessa
     extra = 0
-    readonly_fields = ['quantidade']
     exclude = ['observacao','ordem']
 
 class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):

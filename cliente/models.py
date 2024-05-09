@@ -114,6 +114,9 @@ class EdicaoMaterialAssinatura(models.Model):
     peso = models.PositiveIntegerField(null=True, blank=True, default=0)
     registro_envio = models.ForeignKey(RegistroEnvioAssinaturas, on_delete= models.CASCADE, null = True, blank= True)
     arquivo_original = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
+    quantidade_assinaturas_RJ = models.PositiveIntegerField(null=True,verbose_name='Qtd. ass. Rio de Janeiro (ativas)', blank=True, default=0)
+    quantidade_assinaturas_Es = models.PositiveIntegerField(null=True,verbose_name='Qtd. ass. Estrangeiros (ativas)', blank=True, default=0)
+    quantidade_assinaturas_OE = models.PositiveIntegerField(null=True,verbose_name='Qtd. ass. Outros Estados (ativas)', blank=True, default=0)
 
     def __str__(self) -> str:
         return '{0}. Edição: {1}'.format(self.material.material, self.edicao)
