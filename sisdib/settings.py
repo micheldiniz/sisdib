@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'material',
     'pedido',
     'pessoa',
+    'pedidoAdaptacao',
     # 'django_forms_bootstrap',
 ]
 
