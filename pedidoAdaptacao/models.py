@@ -28,15 +28,15 @@ class Etapa(models.Model):
         ('transcrição','transcrição'),
     ]
     class Meta:
-        verbose_name_plural = 'Registo de envio de Pedidos'
+        verbose_name_plural = 'Etapas'
 
     nome_etapa = models.CharField(max_length=255, choices = ETAPA_CHOICES)
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
-    data_inicio = models.DateTimeField(verbose_name='Data de registro', blank=True)
-    data_fim = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
+    data_inicio = models.DateTimeField(verbose_name='Data de início')
+    data_fim = models.DateTimeField(verbose_name='Data de finalização')
     profissional = models.CharField(max_length=255)
     arquivo_original = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
-
+    pedido_adaptacao = models.ForeignKey(to=PedidoAdaptacao, on_delete=models.CASCADE)
 
 class Avaliacao(models.Model):
     pass
