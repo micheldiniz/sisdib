@@ -1,20 +1,21 @@
 from django.db import models
 from material.models import Material
 from datetime import datetime
+from cliente.models import Solicitante
 import os
 
 # Create your models here.
 
 def get_material_upload_path(filename):
-    date_part = datetime.now().strftime('%Y/%m')
-  
+    date_part = datetime.now().strftime('%Y/%m')  
     return os.path.join('etapa', date_part, filename)
-
 
 class PedidoAdaptacao(models.Model):    
     class Meta:
         verbose_name_plural = 'Pedidos de adaptação'
     material = models.ForeignKey(Material, on_delete=models.CASCADE)
+    solicitante = models.ForeignKey(Solicitante,on_delete=models.CASCADE)
+    data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
 
 class Etapa(models.Model):
     ETAPA_CHOICES = [
@@ -23,6 +24,7 @@ class Etapa(models.Model):
         ('esteriotipia','esteriotipia'),
         ('encadernação','encadernação'),
         ('expedição','expedição'),
+        ('revisão','revisão'),
         ('impressão tinta','impressão tinta'),
         ('impressão braille','impressão braille'),
         ('transcrição','transcrição'),
