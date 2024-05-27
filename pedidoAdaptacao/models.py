@@ -43,3 +43,38 @@ class Etapa(models.Model):
 class Avaliacao(models.Model):
     pass
 
+class Adaptacao(models.Model):
+    class Meta:
+        verbose_name_plural = 'Adaptações'
+    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+
+class Diagramacao(models.Model):
+    class Meta:
+        verbose_name_plural = 'Diagramações'
+    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+
+class Esteriotipia(models.Model):
+    class Meta:
+        verbose_name_plural = 'Esteriotipias'
+    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+
+class Encadernacao(models.Model):
+    class Meta:
+        verbose_name_plural = 'Encadernações'
+    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+
+class Revisao(models.Model):
+    class Meta:
+        verbose_name_plural = 'Revisões'
+    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+
+class Impressao(models.Model):
+    class Meta:
+        verbose_name_plural = 'Impressões'
+    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+
+class Transcricao(models.Model):
+    class Meta:
+        verbose_name_plural = 'Transcrições'
+    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+    
