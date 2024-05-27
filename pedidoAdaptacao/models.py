@@ -40,41 +40,74 @@ class Etapa(models.Model):
     arquivo_original = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
     pedido_adaptacao = models.ForeignKey(to=PedidoAdaptacao, on_delete=models.CASCADE)
 
+#class para avaliação de atendimento de pedido
 class Avaliacao(models.Model):
     pass
+
+#classe para revisao de pedido
+class Revisao(models.Model):
+    class Meta:
+        verbose_name_plural = 'Revisões'
+    profissional = models.CharField(max_length=255)
+    arquivo_revisado = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
+    
 
 class Adaptacao(models.Model):
     class Meta:
         verbose_name_plural = 'Adaptações'
     pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+    data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
+    data_inicio = models.DateTimeField(verbose_name='Data de início')
+    data_fim = models.DateTimeField(verbose_name='Data de finalização')
+    profissional = models.CharField(max_length=255)
+    arquivo_adaptado = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
+
 
 class Diagramacao(models.Model):
     class Meta:
         verbose_name_plural = 'Diagramações'
     pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+    data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
+    data_inicio = models.DateTimeField(verbose_name='Data de início')
+    data_fim = models.DateTimeField(verbose_name='Data de finalização')
+    profissional = models.CharField(max_length=255)
+    arquivo_diagramado = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
+
 
 class Esteriotipia(models.Model):
     class Meta:
         verbose_name_plural = 'Esteriotipias'
     pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+    data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
+    data_inicio = models.DateTimeField(verbose_name='Data de início')
+    data_fim = models.DateTimeField(verbose_name='Data de finalização')
+    profissional = models.CharField(max_length=255)
 
 class Encadernacao(models.Model):
     class Meta:
         verbose_name_plural = 'Encadernações'
     pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
-
-class Revisao(models.Model):
-    class Meta:
-        verbose_name_plural = 'Revisões'
-    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+    data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
+    data_inicio = models.DateTimeField(verbose_name='Data de início')
+    data_fim = models.DateTimeField(verbose_name='Data de finalização')
+    profissional = models.CharField(max_length=255)
 
 class Impressao(models.Model):
     class Meta:
         verbose_name_plural = 'Impressões'
     pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+    data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
+    data_inicio = models.DateTimeField(verbose_name='Data de início')
+    data_fim = models.DateTimeField(verbose_name='Data de finalização')
+    profissional = models.CharField(max_length=255)
 
 class Transcricao(models.Model):
     class Meta:
         verbose_name_plural = 'Transcrições'
     pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+    data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
+    data_inicio = models.DateTimeField(verbose_name='Data de início')
+    data_fim = models.DateTimeField(verbose_name='Data de finalização')
+    profissional = models.CharField(max_length=255)
+    arquivo_transcrito = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
     
