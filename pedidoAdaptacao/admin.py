@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django import forms
 from pedidoAdaptacao.models import Etapa,PedidoAdaptacao, Avaliacao, Adaptacao, Diagramacao, Esteriotipia, Encadernacao, Revisao, Impressao, Transcricao
 # Register your models here.
 
@@ -39,9 +40,10 @@ class TranscricaoInline(admin.StackedInline):
     extra = 0
 
 class PedidoAdaptacaoAdmin(admin.ModelAdmin):
-    inlines = [AdaptacaoInline,DiagramacaoInline,EsteriotipiaInline,EncadernacaoInline,ImpressaoInline,TranscricaoInline]
+    inlines = [TranscricaoInline, AdaptacaoInline, DiagramacaoInline, EsteriotipiaInline, EncadernacaoInline, ImpressaoInline]
     search_fields = ['solicitante']
     autocomplete_fields = ['solicitante','material']
+ 
 
 admin.site.register(PedidoAdaptacao, PedidoAdaptacaoAdmin)
 admin.site.register(Etapa, EtapaAdmin)

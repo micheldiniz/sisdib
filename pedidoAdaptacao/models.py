@@ -16,6 +16,8 @@ class PedidoAdaptacao(models.Model):
     material = models.ForeignKey(Material, on_delete=models.CASCADE)
     solicitante = models.ForeignKey(Solicitante,on_delete=models.CASCADE)
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
+    descricao = models.CharField(max_length=500, verbose_name='descrição')
+    
 
 class Etapa(models.Model):
     ETAPA_CHOICES = [
@@ -93,12 +95,18 @@ class Encadernacao(models.Model):
     profissional = models.CharField(max_length=255)
 
 class Impressao(models.Model):
+    TIPO_IMPRESSAO_CHOICES = [
+        ('BRAILLE','BRAILLE'),
+        ('AMPLIADO','AMPLIADO'),
+    ]
     class Meta:
         verbose_name_plural = 'Impressões'
+    tipo_impressao = models.CharField(max_length=255, choices=TIPO_IMPRESSAO_CHOICES)
     pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
     data_inicio = models.DateTimeField(verbose_name='Data de início')
     data_fim = models.DateTimeField(verbose_name='Data de finalização')
+    quantidade_paginas_impressas = models.PositiveIntegerField(verbose_name='qunatidade de páginas impressas')
     profissional = models.CharField(max_length=255)
 
 class Transcricao(models.Model):
