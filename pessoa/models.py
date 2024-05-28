@@ -74,5 +74,5 @@ class Funcionario(PessoaFisica):
     profissao = models.CharField(max_length=255, null=False)
 
     def __str__(self) -> str:
-        return super().__str__() + ' ' + self.profissao
+        return super().__str__() + ', ' + self.profissao
 

@@ -2,6 +2,7 @@ from django.db import models
 from material.models import Material
 from datetime import datetime
 from cliente.models import Solicitante
+from pessoa.models import Funcionario
 import os
 
 # Create your models here.
@@ -16,8 +17,11 @@ class PedidoAdaptacao(models.Model):
     material = models.ForeignKey(Material, on_delete=models.CASCADE)
     solicitante = models.ForeignKey(Solicitante,on_delete=models.CASCADE)
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
+    quantidade_solicitada = models.PositiveIntegerField(blank=True, null=True)
     descricao = models.CharField(max_length=500, verbose_name='descrição')
     
+    def __str__(self):
+        return 'nº: ' + str(self.id) + ' ' + self.solicitante.pessoa.nome + ', ' + self.material.__str__()
 
 class Etapa(models.Model):
     ETAPA_CHOICES = [
@@ -38,7 +42,7 @@ class Etapa(models.Model):
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
     data_inicio = models.DateField(verbose_name='Data de início')
     data_fim = models.DateField(verbose_name='Data de finalização')
-    profissional = models.CharField(max_length=255)
+    profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
     arquivo_original = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
     pedido_adaptacao = models.ForeignKey(to=PedidoAdaptacao, on_delete=models.CASCADE)
 
@@ -50,7 +54,7 @@ class Avaliacao(models.Model):
 class Revisao(models.Model):
     class Meta:
         verbose_name_plural = 'Revisões'
-    profissional = models.CharField(max_length=255)
+    profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
     arquivo_revisado = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
     
 
@@ -61,7 +65,7 @@ class Adaptacao(models.Model):
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
     data_inicio = models.DateField(verbose_name='Data de início')
     data_fim = models.DateField(verbose_name='Data de finalização')
-    profissional = models.CharField(max_length=255)
+    profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
     arquivo_adaptado = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
 
 
@@ -72,7 +76,7 @@ class Diagramacao(models.Model):
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
     data_inicio = models.DateField(verbose_name='Data de início')
     data_fim = models.DateField(verbose_name='Data de finalização')
-    profissional = models.CharField(max_length=255)
+    profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
     arquivo_diagramado = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
 
 
@@ -83,7 +87,7 @@ class Esteriotipia(models.Model):
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
     data_inicio = models.DateField(verbose_name='Data de início')
     data_fim = models.DateField(verbose_name='Data de finalização')
-    profissional = models.CharField(max_length=255)
+    profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
 
 class Encadernacao(models.Model):
     class Meta:
@@ -92,7 +96,7 @@ class Encadernacao(models.Model):
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
     data_inicio = models.DateField(verbose_name='Data de início')
     data_fim = models.DateField(verbose_name='Data de finalização')
-    profissional = models.CharField(max_length=255)
+    profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
 
 class Impressao(models.Model):
     TIPO_IMPRESSAO_CHOICES = [
@@ -107,7 +111,7 @@ class Impressao(models.Model):
     data_inicio = models.DateField(verbose_name='Data de início')
     data_fim = models.DateField(verbose_name='Data de finalização')
     quantidade_paginas_impressas = models.PositiveIntegerField(verbose_name='qunatidade de páginas impressas')
-    profissional = models.CharField(max_length=255)
+    profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
 
 class Transcricao(models.Model):
     class Meta:
@@ -116,6 +120,5 @@ class Transcricao(models.Model):
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
     data_inicio = models.DateField(verbose_name='Data de início')
     data_fim = models.DateField(verbose_name='Data de finalização')
-    profissional = models.CharField(max_length=255)
+    profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
     arquivo_transcrito = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
-    
