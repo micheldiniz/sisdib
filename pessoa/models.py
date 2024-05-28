@@ -63,3 +63,16 @@ class PessoaJuridica(Pessoa):
 
     def __str__(self) -> str:
         return f"cnpj: {self.cnpj}, {self.nome}"
+    
+
+class Funcionario(PessoaFisica):
+    class Meta:
+        verbose_name = 'funcionário'
+        verbose_name_plural = 'funcionários'
+
+    matricula = models.CharField(max_length=255, null=False)
+    profissao = models.CharField(max_length=255, null=False)
+
+    def __str__(self) -> str:
+        return super().__str__() + ' ' + self.profissao
+

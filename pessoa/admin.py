@@ -58,6 +58,10 @@ class PessoaJuridicaAdmin(admin.ModelAdmin):
 
     get_pedidos.short_description = 'pedidos'
 
+class FuncionarioAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Funcionario, FuncionarioAdmin)
 admin.site.register(PessoaJuridica, PessoaJuridicaAdmin)
 admin.site.register(PessoaFisica, PessoaFisicaAdmin)
 # admin.site.register(Pessoa, PessoaAdmin)
