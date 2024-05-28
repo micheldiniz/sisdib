@@ -39,6 +39,27 @@ class TranscricaoInline(admin.StackedInline):
     model = Transcricao
     extra = 0
 
+class AdaptacaoAdmin(admin.ModelAdmin):
+    pass
+
+class DiagramacaoAdmin(admin.ModelAdmin):
+    pass
+
+class EsteriotipiaAdmin(admin.ModelAdmin):
+    pass
+
+class EncadernacaoAdmin(admin.ModelAdmin):
+    pass
+
+class RevisaoAdmin(admin.ModelAdmin):
+    pass
+
+class ImpressaoAdmin(admin.ModelAdmin):
+    pass
+
+class TranscricaoAdmin(admin.ModelAdmin):
+    pass
+
 class PedidoAdaptacaoAdmin(admin.ModelAdmin):
     inlines = [TranscricaoInline, AdaptacaoInline, DiagramacaoInline, EsteriotipiaInline, EncadernacaoInline, ImpressaoInline]
     search_fields = ['solicitante']
@@ -46,4 +67,11 @@ class PedidoAdaptacaoAdmin(admin.ModelAdmin):
  
 
 admin.site.register(PedidoAdaptacao, PedidoAdaptacaoAdmin)
-admin.site.register(Etapa, EtapaAdmin)
+# admin.site.register(Etapa, EtapaAdmin)
+admin.site.register(Adaptacao,AdaptacaoAdmin)
+admin.site.register(Diagramacao,DiagramacaoAdmin)
+admin.site.register(Esteriotipia,EsteriotipiaAdmin)
+admin.site.register(Encadernacao,EncadernacaoAdmin)
+admin.site.register(Revisao,RevisaoAdmin)
+admin.site.register(Impressao,ImpressaoAdmin)
+admin.site.register(Transcricao,TranscricaoAdmin)
