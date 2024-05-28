@@ -3,62 +3,69 @@ from django import forms
 from pedidoAdaptacao.models import Etapa,PedidoAdaptacao, Avaliacao, Adaptacao, Diagramacao, Esteriotipia, Encadernacao, Revisao, Impressao, Transcricao
 # Register your models here.
 
-
 class EtapaAdmin(admin.ModelAdmin):
     pass
 
 class EtapaInline(admin.StackedInline):
+    autocomplete_fields = ['profissional']
     model = Etapa
     extra = 1
 
 class AdaptacaoInline(admin.StackedInline):
+    autocomplete_fields = ['profissional']
     model = Adaptacao
     extra = 0
 
 class DiagramacaoInline(admin.StackedInline):
+    autocomplete_fields = ['profissional']
     model = Diagramacao
     extra = 0
 
 class EsteriotipiaInline(admin.StackedInline):
+    autocomplete_fields = ['profissional']
     model = Esteriotipia
     extra = 0
 
 class EncadernacaoInline(admin.StackedInline):
+    autocomplete_fields = ['profissional']
     model = Encadernacao
     extra = 0
 
 class RevisaoInline(admin.StackedInline):
+    autocomplete_fields = ['profissional']
     model = Revisao
     extra = 0
 
 class ImpressaoInline(admin.StackedInline):
+    autocomplete_fields = ['profissional']
     model = Impressao
     extra = 0
 
 class TranscricaoInline(admin.StackedInline):
+    autocomplete_fields = ['profissional']
     model = Transcricao
     extra = 0
 
 class AdaptacaoAdmin(admin.ModelAdmin):
-    pass
+    autocomplete_fields = ['profissional']
 
 class DiagramacaoAdmin(admin.ModelAdmin):
-    pass
+    autocomplete_fields = ['profissional']
 
 class EsteriotipiaAdmin(admin.ModelAdmin):
-    pass
+    autocomplete_fields = ['profissional']
 
 class EncadernacaoAdmin(admin.ModelAdmin):
-    pass
+    autocomplete_fields = ['profissional']
 
 class RevisaoAdmin(admin.ModelAdmin):
-    pass
+    autocomplete_fields = ['profissional']
 
 class ImpressaoAdmin(admin.ModelAdmin):
-    pass
+    autocomplete_fields = ['profissional']
 
 class TranscricaoAdmin(admin.ModelAdmin):
-    pass
+    autocomplete_fields = ['profissional']
 
 class PedidoAdaptacaoAdmin(admin.ModelAdmin):
     inlines = [TranscricaoInline, AdaptacaoInline, DiagramacaoInline, EsteriotipiaInline, EncadernacaoInline, ImpressaoInline]

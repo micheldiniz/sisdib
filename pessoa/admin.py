@@ -59,7 +59,7 @@ class PessoaJuridicaAdmin(admin.ModelAdmin):
     get_pedidos.short_description = 'pedidos'
 
 class FuncionarioAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ['nome','is_estrangeiro']
 
 admin.site.register(Funcionario, FuncionarioAdmin)
 admin.site.register(PessoaJuridica, PessoaJuridicaAdmin)
