@@ -128,12 +128,16 @@ class Transcricao(models.Model):
 
 class Revisao(models.Model):
     REVISAO_CHOICES = [
+        ('novo','novo'),
         ('aprovado','aprovado'),
         ('recusado','recusado'),
     ]
     class Meta:
-        verbose_name_plural = 'Revisões'
+        verbose_name_plural = 'Revisões'        
     profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
+    data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
+    data_inicio = models.DateField(verbose_name='Data de início', null = True, blank= True)
+    data_fim = models.DateField(verbose_name='Data de finalização', null = True, blank= True)
     arquivo_revisado = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
-    estado_revisao = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo")
+    estado_revisao = models.CharField(max_length=255, choices = REVISAO_CHOICES, default = "novo")
     transcricao = models.ForeignKey(Transcricao, on_delete= models.CASCADE)
