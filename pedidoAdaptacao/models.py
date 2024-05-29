@@ -14,8 +14,8 @@ def get_material_upload_path(filename):
 ESTADO_CHOICES = [
     ('novo','novo'),
     ('processado','processado'), 
-    ('finalizado','finalizado'),
     ('pendente','pendente'),
+    ('finalizado','finalizado'),
 ]
 
 class PedidoAdaptacao(models.Model):    
@@ -56,14 +56,6 @@ class Etapa(models.Model):
 #class para avaliação de atendimento de pedido
 class Avaliacao(models.Model):
     pass
-
-#classe para revisao de pedido
-class Revisao(models.Model):
-    class Meta:
-        verbose_name_plural = 'Revisões'
-    profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
-    arquivo_revisado = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
-    estado_revisao = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo")   
 
 class Adaptacao(models.Model):
     class Meta:
@@ -133,3 +125,15 @@ class Transcricao(models.Model):
     profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
     arquivo_transcrito = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
     pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+
+class Revisao(models.Model):
+    REVISAO_CHOICES = [
+        ('aprovado','aprovado'),
+        ('recusado','recusado'),
+    ]
+    class Meta:
+        verbose_name_plural = 'Revisões'
+    profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
+    arquivo_revisado = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
+    estado_revisao = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo")
+    transcricao = models.ForeignKey(Transcricao, on_delete= models.CASCADE)
