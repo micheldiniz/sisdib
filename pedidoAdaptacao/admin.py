@@ -74,7 +74,7 @@ class PedidoAdaptacaoAdmin(admin.ModelAdmin):
  
 
 admin.site.register(PedidoAdaptacao, PedidoAdaptacaoAdmin)
-# admin.site.register(Etapa, EtapaAdmin)
+admin.site.register(Etapa, EtapaAdmin)
 admin.site.register(Adaptacao,AdaptacaoAdmin)
 admin.site.register(Diagramacao,DiagramacaoAdmin)
 admin.site.register(Esteriotipia,EsteriotipiaAdmin)
