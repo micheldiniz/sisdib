@@ -46,6 +46,10 @@ class TranscricaoInline(admin.StackedInline):
     model = Transcricao
     extra = 0
 
+class RevisaoInline(admin.StackedInline):    
+    model = Revisao
+    extra = 0
+
 class AdaptacaoAdmin(admin.ModelAdmin):
     autocomplete_fields = ['profissional']
 
@@ -66,6 +70,7 @@ class ImpressaoAdmin(admin.ModelAdmin):
 
 class TranscricaoAdmin(admin.ModelAdmin):
     autocomplete_fields = ['profissional']
+    inlines = [RevisaoInline]
 
 class PedidoAdaptacaoAdmin(admin.ModelAdmin):
     inlines = [TranscricaoInline, AdaptacaoInline, DiagramacaoInline, EsteriotipiaInline, EncadernacaoInline, ImpressaoInline]
