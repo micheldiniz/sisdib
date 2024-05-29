@@ -63,49 +63,49 @@ class Revisao(models.Model):
         verbose_name_plural = 'Revisões'
     profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
     arquivo_revisado = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
-    estado_envio = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo")   
+    estado_revisao = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo")   
 
 class Adaptacao(models.Model):
     class Meta:
         verbose_name_plural = 'Adaptações'
-    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+    estado_adaptacao = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo", verbose_name="estado da adaptação")
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
     data_inicio = models.DateField(verbose_name='Data de início')
     data_fim = models.DateField(verbose_name='Data de finalização')
     profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
     arquivo_adaptado = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
-    estado_envio = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo")   
+    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
 
 class Diagramacao(models.Model):
     class Meta:
         verbose_name_plural = 'Diagramações'
-    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+    estado_diagramacao = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo", verbose_name="estado da diagramação")
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
     data_inicio = models.DateField(verbose_name='Data de início')
     data_fim = models.DateField(verbose_name='Data de finalização')
     profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
     arquivo_diagramado = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
-    estado_envio = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo")   
+    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
 
 class Esteriotipia(models.Model):
     class Meta:
         verbose_name_plural = 'Esteriotipias'
-    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+    estado_esteriotipia = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo", verbose_name="estado da esteriotipia")
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
     data_inicio = models.DateField(verbose_name='Data de início')
     data_fim = models.DateField(verbose_name='Data de finalização')
     profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
-    estado_envio = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo")   
+    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
 
 class Encadernacao(models.Model):
     class Meta:
         verbose_name_plural = 'Encadernações'
-    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+    estado_encadernacao = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo", verbose_name="estado da encadernação")
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
     data_inicio = models.DateField(verbose_name='Data de início')
     data_fim = models.DateField(verbose_name='Data de finalização')
     profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
-    estado_envio = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo")   
+    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
 
 class Impressao(models.Model):
     TIPO_IMPRESSAO_CHOICES = [
@@ -114,22 +114,22 @@ class Impressao(models.Model):
     ]
     class Meta:
         verbose_name_plural = 'Impressões'
+    estado_impressao = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo", verbose_name="estado da impressão")
     tipo_impressao = models.CharField(max_length=255, choices=TIPO_IMPRESSAO_CHOICES)
-    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
     data_inicio = models.DateField(verbose_name='Data de início')
     data_fim = models.DateField(verbose_name='Data de finalização')
-    quantidade_paginas_impressas = models.PositiveIntegerField(verbose_name='qunatidade de páginas impressas')
+    quantidade_paginas_impressas = models.PositiveIntegerField(verbose_name='quantidade de páginas impressas')
     profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
-    estado_envio = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo")   
+    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
 
 class Transcricao(models.Model):
     class Meta:
         verbose_name_plural = 'Transcrições'
-    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+    estado_transcricao = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo", verbose_name="estado da transcrição")
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
     data_inicio = models.DateField(verbose_name='Data de início')
     data_fim = models.DateField(verbose_name='Data de finalização')
     profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
     arquivo_transcrito = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
-    estado_envio = models.CharField(max_length=255, choices = ESTADO_CHOICES, default = "novo")
+    pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
