@@ -2,6 +2,7 @@ from typing import Any
 from django.db import models
 from datetime import datetime
 from django.utils.safestring import mark_safe
+from django.contrib.auth.models import User
 
 BOOL_CHOICES = ((True,"Sim"),(False,"Não"))
 
@@ -70,8 +71,11 @@ class Funcionario(PessoaFisica):
         verbose_name = 'funcionário'
         verbose_name_plural = 'funcionários'
 
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(blank=True)    
     matricula = models.CharField(max_length=255, null=False)
     profissao = models.CharField(max_length=255, null=False)
+
 
     def __str__(self) -> str:
         return super().__str__() + ', ' + self.profissao
