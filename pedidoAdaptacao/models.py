@@ -125,6 +125,9 @@ class Transcricao(models.Model):
     profissional = models.ForeignKey(Funcionario, on_delete= models.CASCADE)
     arquivo_transcrito = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
     pedido_adaptacao = models.ForeignKey(PedidoAdaptacao, on_delete=models.CASCADE)
+    
+    def __str__(self) -> str:
+        return 'Transcrição ' + self.id.__str__()
 
 class Revisao(models.Model):
     REVISAO_CHOICES = [
