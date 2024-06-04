@@ -1,6 +1,105 @@
-hello you're at your home page!
+{% extends "base/generic.html" %}
+
 
 {% block content %}
+
+    <div class="container mt-4 painel_dados_usuarios">
+       
+        <div class="row">
+            <h3>Painel Administrativo</h3>
+            <!-- dados 1 -->
+            <div class="col-md-3">
+                <h4 class="d-flex align-items-center">
+                    <span class="fs-4 lh-1 " style="color:rgb(76, 73, 255)">
+                        <i class="bi bi-people-fill"></i>
+                    </span>
+                    <div class="ms-2">
+                        <span class="number_count"><strong>14</strong> Funcionarios</span>
+                        <p class="text-body-secondary">dando o máximo de si</p>
+                    </div>
+                </h4>
+            </div>
+            <!-- dados 2 -->
+            <div class="col-md-3">
+                <h4 class="d-flex align-items-center">
+                    <span class="fs-4 lh-1 " style="color:forestgreen">
+                        <i class="bi bi-journals"></i>
+                    </span>
+                    <div class="ms-2">
+                        <span class="number_count"><strong>6.5K</strong> Assinaturas</span>
+                        <p class="text-body-secondary">ativas</p>
+                    </div>
+                </h4>
+            </div>
+            <!-- dados 3 -->
+            <div class="col-md-3">
+                <h4 class="d-flex align-items-center">
+                    <span class="fs-4 lh-1 " style="color:rgb(98, 95, 0)">
+                        <i class="bi bi-book-half"></i>
+                    </span>
+                    <div class="ms-2">
+                        <span class="number_count"><strong>180</strong> Materiais</span>
+                        <p class="text-body-secondary">adaptados em braille</p>
+                    </div>
+                </h4>
+            </div>
+            <!-- dados 4 -->
+            <div class="col-md-3">
+                <h4 class="d-flex align-items-center">
+                    <span class="fs-4 lh-1 " style="color:forestgreen">
+                        <i class="bi bi-list-check" ></i>
+                    </span>
+                    <div class="ms-2">
+                        <span class="number_count"><strong>78</strong> Pedidos</span>
+                        <p class="text-body-secondary">finalizados</p>
+                    </div>
+                </h4>
+            </div>
+        </div>
+        <div class="row">
+        </div>
+        <div class="row"><br><br>
+        </div>
+
+    </div>
+    <div class="container-fluid pb-3">
+        <div class="d-grid gap-3" style="grid-template-columns: 1fr 2fr;">
+        <div class="bg-light border rounded-3">
+            <h3>Bloco 1</h3>
+            <br><br><br><br><br><br><br><br><br><br>
+        </div>
+        <div class="bg-light border rounded-3">
+            <h3>Bloco 2</h3>
+            <br><br><br><br><br><br><br><br><br><br>
+        </div>
+        </div>
+    </div>
+    <div class="container-fluid pb-3">
+        <div class="d-grid gap-3" style="grid-template-columns: 2fr 2fr;">
+        <div class="bg-light border rounded-3">
+            <h3>Bloco 1</h3>
+            <br><br><br><br><br><br><br><br><br><br>
+        </div>
+        <div class="bg-light border rounded-3">
+            <h3>Bloco 2</h3>
+            <br><br><br><br><br><br><br><br><br><br>
+        </div>
+        </div>
+    </div>
+    <div class="container-fluid pb-3">
+        <div class="d-grid gap-3" style="grid-template-columns: 2fr 2fr;">
+            <div class="bg-light border rounded-3">
+                <h3>Bloco 3</h3>
+                    <br><br><br><br><br><br><br><br><br><br>
+            </div>
+            <div class="bg-light border rounded-3">
+                <h3>Bloco 4</h3>
+                <br><br><br><br><br><br><br><br><br><br>
+            </div>
+        </div>
+    </div>
+
+home page
     {% if user.is_authenticated %}
         Hi {{ user.username }}!
         <form action="{% url 'logout' %}" method="post">
