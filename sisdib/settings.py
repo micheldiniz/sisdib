@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'pessoa',
     'pedidoAdaptacao',
     'django_forms_bootstrap',
+    'django_bootstrap_icons',
 ]
 
 MIDDLEWARE = [
