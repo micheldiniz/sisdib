@@ -3,8 +3,15 @@ from django.db import models
 from datetime import datetime
 from django.utils.safestring import mark_safe
 from django.contrib.auth.models import User
+import os
 
 BOOL_CHOICES = ((True,"Sim"),(False,"Não"))
+
+def get_foto_upload_path(instance, filename):
+    date_part = datetime.now().strftime('%Y/%m')
+
+    return os.path.join('fotos',instance.user.username, date_part,filename)
+
 
 # Create your models here.
 class Pessoa(models.Model):
@@ -75,6 +82,7 @@ class Funcionario(PessoaFisica):
     bio = models.TextField(blank=True)    
     matricula = models.CharField(max_length=255, null=False)
     profissao = models.CharField(max_length=255, null=False)
+    foto = models.FileField(upload_to=get_foto_upload_path, null = True, blank= True)
 
 
     def __str__(self) -> str:
