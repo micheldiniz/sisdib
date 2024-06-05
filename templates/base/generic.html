@@ -33,7 +33,7 @@
       font-size: 0.9em;
     }
     .painel_dados_usuarios h4 i{
-      font-size: 2em;
+      font-size: 1.6em;
     }
     .painel_dados_usuarios h4 .number_count{
       font-size: 1.5em;
@@ -145,8 +145,7 @@
                       <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                       <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
                     </svg>
-                    Pedidos de adaptação
-                    
+                    Adaptação                    
                   </a>                  
                   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                     <li class="dropdown-item">
@@ -235,16 +234,24 @@
                     </svg>
                   </a>
                   </li>
+                {% if user.is_authenticated%}
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <!-- <img src="https://via.placeholder.com/50" class="rounded-circle me-2" alt="User Image">                     -->                    
-                    Olá, {{ user.username }}!
+                    {% if funcionario_logado%}
+                      Olá, {{ funcionario_logado.nome }}!
+                    {% else %}
+                      Olá, {{ user.first_name }}!
+                    {% endif %}
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                     <li class="dropdown-item">
                       <div class="d-flex align-items-center">
                         <div class="user_info_details">
-                          <img src="https://via.placeholder.com/60" class="rounded-circle" alt="User Image">
+                          {% if funcionario_logado%}
+                          <img src="{{funcionario_logado.foto.url}}" style="width: 80px;" class="rounded-circle" alt="imagem do usuario {{funcionario_logado.nome}}" >                          
+                        {% else %}
+                          <img src="https://via.placeholder.com/50" style="width: 80px;" class="rounded-circle" alt="imagem do usuario" >                          
+                        {% endif %}
                           <h6 class="mb-0">{{ user.username }}</h6>
                           <small class="text-muted">{{ user.email }}</small>
                         </div>
@@ -256,6 +263,13 @@
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Sair</a></li>
                   </ul>
                 </li>
+                {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'login' %}" role="button" >
+                    Login
+                  </a>
+                </li>
+                {% endif %}
               </ul>
             </div>
           </div>
