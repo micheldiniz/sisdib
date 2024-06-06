@@ -1,7 +1,7 @@
 from django.db import models
 from material.models import Material
 from datetime import datetime
-from cliente.models import Solicitante
+from assinatura.models import Solicitante
 from pessoa.models import Funcionario
 import os
 

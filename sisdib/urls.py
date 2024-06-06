@@ -25,7 +25,7 @@ urlpatterns = [
     # path('login/', auth_views.LoginView.as_view(),name = 'login'),
     path('logout/', auth_views.LogoutView.as_view(), name = 'logout'),    
     path('admin/', admin.site.urls),
-    path('cliente/', include("cliente.urls")),    
+    path('assinatura/', include("assinatura.urls")),    
     path('pessoa/', include("pessoa.urls")),
     path('material/', include("material.urls")),
     path('pedido/', include("pedido.urls")),

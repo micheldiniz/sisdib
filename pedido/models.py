@@ -1,5 +1,5 @@
 from django.db import models
-from cliente.models import Solicitante
+from assinatura.models import Solicitante
 from material.models import MaterialAdaptado
 
 # Create your models here.
