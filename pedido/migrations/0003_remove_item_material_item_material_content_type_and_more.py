@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('contenttypes', '0002_remove_content_type_name'),
-        ('pedido', '0002_remove_pedido_cliente'),
+        ('pedido', '0002_remove_pedido_assinatura'),
     ]
 
     operations = [

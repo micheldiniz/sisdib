@@ -7,15 +7,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cliente', '0007_remove_cliente_assinaturas_remove_cliente_pedidos_and_more'),
+        ('assinatura', '0007_remove_assinatura_assinaturas_remove_assinatura_pedidos_and_more'),
         ('pedido', '0003_remove_item_material_item_material_content_type_and_more'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='pedido',
-            name='cliente',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='cliente.cliente'),
+            name='assinatura',
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='assinatura.assinatura'),
             preserve_default=False,
         ),
     ]

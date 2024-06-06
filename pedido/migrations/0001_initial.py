@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('cliente', '0001_initial'),
+        ('assinatura', '0001_initial'),
         ('material', '0001_initial'),
     ]
 
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('data_registro', models.DateTimeField(auto_now_add=True)),
-                ('cliente', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='cliente.cliente')),
+                ('assinatura', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='assinatura.assinatura')),
                 ('items', models.ManyToManyField(to='pedido.item')),
             ],
         ),

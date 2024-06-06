@@ -1,6 +1,6 @@
 from django import forms
 from .models import PessoaFisica, PessoaJuridica, Endereco, Contato
-from cliente.models import Solicitante
+from assinatura.models import Solicitante
 
 class PessoaFisicaRegistrationForm(forms.ModelForm):
     class Meta:

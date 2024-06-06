@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('assinatura', '0002_remove_assinatura_contato_remove_assinatura_endereco_and_more'),
+        ('assinatura', '0002_remove_assinatura_contato_remove_solicitante_endereco_and_more'),
     ]
 
     operations = [

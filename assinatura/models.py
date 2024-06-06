@@ -43,7 +43,7 @@ class Assinatura(models.Model):
         return f'{self.material}, solicitante: {self.solicitante}'
     
     def get_admin_url(self):
-        return '/admin/cliente/assinatura/{0}/change'.format(self.id)
+        return '/admin/assinatura/assinatura/{0}/change'.format(self.id)
 
     def save(self, *args, **kwargs):
         if self.pk:

@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from cliente.models import Solicitante, Assinatura
+from assinatura.models import Solicitante, Assinatura
 import csv, datetime, re, random
 from material.models import MaterialAdaptado
 

@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cliente', '0039_alter_edicaomaterialassinatura_quantidade_assinaturas_es_and_more'),
+        ('assinatura', '0039_alter_edicaomaterialassinatura_quantidade_assinaturas_es_and_more'),
         ('pedidoAdaptacao', '0001_initial'),
     ]
 
