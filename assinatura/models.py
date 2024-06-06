@@ -23,6 +23,14 @@ class Solicitante(models.Model):
     def __str__(self) -> str:
         return self.pessoa.__str__()
 
+class Revista(models.Model):    
+    titulo = models.CharField(max_length = 255)
+    data_registro = models.DateTimeField(auto_now_add=True, verbose_name='Data de registro')
+    is_disponivel_para_assinatura = models.BooleanField(default=False, verbose_name="Disponível para assinatura?")
+
+    def __str__(self) -> str:
+        return self.titulo
+
 class Assinatura(models.Model):
     ESTADO_CHOICES =[
         ('vigente','vigente'),
@@ -33,7 +41,13 @@ class Assinatura(models.Model):
         MaterialAdaptado,
         on_delete= models.CASCADE,
         # limit_choices_to={'is_disponivel_para_assinatura':True}
-        )    
+        )
+    Revista = models.ForeignKey(
+        Revista,
+        on_delete= models.CASCADE,
+        limit_choices_to={'is_disponivel_para_assinatura':True},
+        null = True, blank= True
+        )
     data_registro = models.DateTimeField(auto_now_add=True, verbose_name='Data de registro')
     data_ultima_alteracao = models.DateTimeField(null=True)
     observacao = models.CharField(max_length=255, verbose_name='Observação', blank=True)
@@ -94,13 +108,6 @@ class Remessa(models.Model):
         tipo_remessa = " e ".join(tipo_remessas)
         return tipo_remessa + ' ' + self.ordem
 
-class Revista(models.Model):    
-    titulo = models.CharField(max_length = 255)
-    data_registro = models.DateTimeField(auto_now_add=True, verbose_name='Data de registro')
-    is_disponivel_para_assinatura = models.BooleanField(default=False, verbose_name="Disponível para assinatura?")
-
-    def __str__(self) -> str:
-        return self.titulo
 
 class EdicaoMaterialAssinatura(models.Model):
     class Meta:
@@ -109,6 +116,12 @@ class EdicaoMaterialAssinatura(models.Model):
 
     material = models.ForeignKey(
         MaterialAdaptado, 
+        on_delete= models.CASCADE,
+        limit_choices_to={'is_disponivel_para_assinatura':True},
+        null = True, blank= True
+        )
+    revista = models.ForeignKey(
+        Revista, 
         on_delete= models.CASCADE,
         limit_choices_to={'is_disponivel_para_assinatura':True},
         null = True, blank= True
