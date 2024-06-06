@@ -97,6 +97,7 @@ class Remessa(models.Model):
 class Revista(models.Model):    
     titulo = models.CharField(max_length = 255)
     data_registro = models.DateTimeField(auto_now_add=True, verbose_name='Data de registro')
+    is_disponivel_para_assinatura = models.BooleanField(default=False, verbose_name="Disponível para assinatura?")
 
     def __str__(self) -> str:
         return self.titulo
