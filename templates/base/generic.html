@@ -42,6 +42,9 @@
       font-size: 1em;
       margin: 0;
     }
+
+    
+
   </style>
 
 </head>
@@ -290,18 +293,6 @@
     <div class="container">
       {% block content %}
       {% endblock %}
-
-
-    {% if user.is_authenticated %}
-      Hi {{ user.username }}!
-      <form action="{% url 'logout' %}" method="post">
-      {% csrf_token %}
-      <button class="nav-link px-3" type="submit">Log Out</button>
-      </form>        
-      {% else %}
-          <p>You are not logged in</p>
-          <a class="nav-link px-3" href="{% url 'login' %}">Log In</a>
-    {% endif %}
     </div>
   </main>
 </body>
