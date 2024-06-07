@@ -1,5 +1,5 @@
 from django.contrib import admin
-from assinatura.models import Solicitante,Assinatura,Assinante,RegistroEnvioAssinaturas,EdicaoMaterialAssinatura, Remessa,Revista
+from assinatura.models import Solicitante,Assinatura,Assinante,RegistroEnvioAssinaturas,EdicaoRevistaAssinatura, Remessa,Revista
 from pessoa.models import Endereco
 from django.db.models import Q
 from typing import Any
@@ -80,8 +80,8 @@ def get_assinaturas(elem):
         assinaturas = el.assinaturas.all()
     return [assinatura for assinatura in assinaturas] 
 
-def get_edicoes(ra: RegistroEnvioAssinaturas) -> List['EdicaoMaterialAssinatura']:
-    edicoes_qs = EdicaoMaterialAssinatura.objects.filter(registro_envio = ra)
+def get_edicoes(ra: RegistroEnvioAssinaturas) -> List['EdicaoRevistaAssinatura']:
+    edicoes_qs = EdicaoRevistaAssinatura.objects.filter(registro_envio = ra)
     return [edicoes for edicoes in edicoes_qs]
 
 def get_remessas(ra: RegistroEnvioAssinaturas) -> List['Remessa']:
@@ -93,7 +93,7 @@ def atualizar_assinaturas_no_registro_de_saida(modeladmin, request, queryset):
         edicoes = get_edicoes(p)
         if p.enviado == False:
             for edicao in edicoes:            
-                assinaturas = Assinatura.objects.filter(estado='vigente', material=edicao.material)            
+                assinaturas = Assinatura.objects.filter(estado='vigente', revista=edicao.revista)            
                 edicao.quantidade_assinaturas_Es = quantidade_assinaturas_es(assinaturas)
                 edicao.quantidade_assinaturas_OE = quantidade_assinaturas_oe(assinaturas)
                 edicao.quantidade_assinaturas_RJ = quantidade_assinaturas_rj(assinaturas)
@@ -141,23 +141,23 @@ class AssinanteInline(admin.StackedInline):
 
 class AssinaturaAdmin(admin.ModelAdmin):
     # inlines = [AssinanteInline]
-    list_display = ['material','solicitante','data_registro', 'estado', 'observacao', 'data_ultima_alteracao']
+    list_display = ['revista','solicitante','data_registro', 'estado', 'observacao', 'data_ultima_alteracao']
     list_editable = ['estado', 'observacao']
-    search_fields = ['material__material__titulo','estado','solicitante__pessoa__nome', 'material__tipo']    
+    search_fields = ['revista_titulo','estado','solicitante__pessoa__nome']    
     autocomplete_fields = ['solicitante']
     exclude = ('data_ultima_alteracao',)
     actions = [cancela_assinatura]
 
     def formfield_for_foreignkey(self, db_field: ForeignKey[Any], request: HttpRequest | None, **kwargs: Any) -> ModelChoiceField | None:
 
-        if db_field.name == 'material':
+        if db_field.name == 'revista':
             qs = super().formfield_for_foreignkey(db_field, request, **kwargs).queryset
             object_id = request.resolver_match.kwargs.get('object_id')
             
             if (object_id):
                 assinatura_instance = Assinatura.objects.get(id=object_id)
-                current_material = assinatura_instance.material
-                filtered_qs = qs.filter(Q(is_disponivel_para_assinatura=True) | Q(material__materialadaptado = current_material)).distinct()
+                current_revista = assinatura_instance.revista
+                filtered_qs = qs.filter(Q(is_disponivel_para_assinatura=True) | Q(revista = current_revista)).distinct()
                 kwargs['queryset'] = filtered_qs
 
                 return super().formfield_for_foreignkey(db_field, request, **kwargs)
@@ -192,8 +192,8 @@ class SolicitanteAdmin(admin.ModelAdmin):
         html_content = ''.join(assinaturas_html)
         return mark_safe(html_content)
 
-class EdicaoMaterialAssinaturaInline(admin.StackedInline):    
-    model = EdicaoMaterialAssinatura
+class EdicaoRevistaAssinaturaInline(admin.StackedInline):    
+    model = EdicaoRevistaAssinatura
     extra = 0
     readonly_fields = ['quantidade_assinaturas_RJ', 'quantidade_assinaturas_Es', 'quantidade_assinaturas_OE']
     exclude = ['assinaturas']
@@ -206,21 +206,21 @@ class RemessaInline(admin.StackedInline):
 class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
     search_fields = ['nome', 'assinaturas']
     list_display = ['nome','enviado','data_registro', 'observacao','get_quantidade_assinaturas','get_quantidade_paginas']        
-    inlines = [EdicaoMaterialAssinaturaInline, RemessaInline]
+    inlines = [EdicaoRevistaAssinaturaInline, RemessaInline]
     actions = [gerar_etiquetas, guia_correio, atualizar_assinaturas_no_registro_de_saida]
 
     # def save_related(self, request: Any, form: Any, formsets: Any, change: Any) -> None:
     #     super().save_related(request, form, formsets, change)
     
     def get_quantidade_assinaturas(self,obj):
-        edicoes_relacionadas = EdicaoMaterialAssinatura.objects.filter(registro_envio = obj)
+        edicoes_relacionadas = EdicaoRevistaAssinatura.objects.filter(registro_envio = obj)
         total = 0
         for edicao in edicoes_relacionadas:
             total += edicao.assinaturas.count()
         return total
 
     def get_quantidade_paginas(self,obj):
-        edicoes_relacionadas = EdicaoMaterialAssinatura.objects.filter(registro_envio = obj)        
+        edicoes_relacionadas = EdicaoRevistaAssinatura.objects.filter(registro_envio = obj)        
         total_paginas = 0
         for edicao in edicoes_relacionadas:
             qtd_paginas = edicao.quantidade_paginas * edicao.assinaturas.count()
