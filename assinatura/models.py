@@ -37,12 +37,7 @@ class Assinatura(models.Model):
         ('cancelado','cancelado'),
     ]
     estado = models.CharField(max_length=255,choices=ESTADO_CHOICES, default='vigente')
-    material = models.ForeignKey(
-        MaterialAdaptado,
-        on_delete= models.CASCADE,
-        # limit_choices_to={'is_disponivel_para_assinatura':True}
-        )
-    Revista = models.ForeignKey(
+    revista = models.ForeignKey(
         Revista,
         on_delete= models.CASCADE,
         limit_choices_to={'is_disponivel_para_assinatura':True},
@@ -94,7 +89,7 @@ class TipoRemessa(models.Model):
 class Remessa(models.Model):    
     class Meta:
         verbose_name = 'Remessa'
-        verbose_name_plural = 'Remessas para Envio (de edições de assinaturas)'
+        verbose_name_plural = 'Remessas para Envio (das edições das revistas)'
     registro_envio = models.ForeignKey(RegistroEnvioAssinaturas, on_delete= models.CASCADE, null = True, blank= True)
     tipo_remessa = models.ManyToManyField('TipoRemessa',max_length=255)
     data_registro = models.DateTimeField(verbose_name='Data de registro', auto_now_add=True)
@@ -109,17 +104,11 @@ class Remessa(models.Model):
         return tipo_remessa + ' ' + self.ordem
 
 
-class EdicaoMaterialAssinatura(models.Model):
+class EdicaoRevistaAssinatura(models.Model):
     class Meta:
-        verbose_name = 'Edição da Assinatura'
-        verbose_name_plural = 'Edições da Assinatura'
+        verbose_name = 'Edição da Revista'
+        verbose_name_plural = 'Edições das Revistas (que serão enviadas)'
 
-    material = models.ForeignKey(
-        MaterialAdaptado, 
-        on_delete= models.CASCADE,
-        limit_choices_to={'is_disponivel_para_assinatura':True},
-        null = True, blank= True
-        )
     revista = models.ForeignKey(
         Revista, 
         on_delete= models.CASCADE,
