@@ -12,10 +12,13 @@
 <form method="post" enctype="multipart/form-data">
 
     {% csrf_token %}
-    {{ material_form.as_p }}
-    {{ materialAdaptado_form.management_form }}  {# Required for formset management #}
+    
+    {{ material_form.as_div }}
+    
+    {{ materialAdaptado_form.management_form }}
+
     {% for form in materialAdaptado_form %}
-        {{ form.as_p }}
+        {{ form.as_div }}
     {% endfor %}
 
 </form>
