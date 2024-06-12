@@ -104,13 +104,18 @@
           
           if(savedValue == 'true'){
             themeControlToggle.checked = true;
-            document.querySelector('body').classList.toggle('dark-theme');            
+            document.querySelector('body').classList.toggle('dark-theme');                        
+            document.querySelector('header .navbar').classList.toggle('navbar-dark'); 
+            document.querySelector('header .navbar').classList.toggle('bg-dark'); 
+
           }
 
             themeControlToggle.addEventListener('change',function(e){
                 document.querySelector('body').classList.toggle('dark-theme');
+                document.querySelector('header .navbar').classList.toggle('navbar-dark'); 
+                document.querySelector('header .navbar').classList.toggle('bg-dark'); 
                 localStorage.setItem('themeControlToggle', themeControlToggle.checked);
-            });    
+              });    
         }    
     </script>
 
@@ -121,7 +126,7 @@
   <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="container">
-          <a class="navbar-brand" href="#">SGDIB</a>
+          <a class="navbar-brand" href="/">SGDIB</a>
           <div class="container-fluid">        
 
             <div class="collapse navbar-collapse" id="navbarNav">              
@@ -260,8 +265,8 @@
                     Materiais
                   </a>                  
                   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                    <li class="dropdown-item">
-                      Cadastrar novo
+                    <li>
+                      <a href="/material/cadastrar" class="dropdown-item">Cadastrar novo</a>
                     </li>                    
                     <li class="dropdown-item">
                       Visualizar todos

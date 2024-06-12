@@ -9,17 +9,52 @@
 {% block title %}Cadastro de Materiais{% endblock %}
 
 {% block content %}
+<h1>Cadastro de Materiais</h1>
 <form method="post" enctype="multipart/form-data">
 
     {% csrf_token %}
-    
-    {{ material_form.as_div }}
-    
-    {{ materialAdaptado_form.management_form }}
-
-    {% for form in materialAdaptado_form %}
-        {{ form.as_div }}
+    <fieldset>
+        <legend>Material  <small class="text-muted">original</small></legend>
+    {% for field in material_form %}
+        <div class="row g-3">
+            <label class="col-sm-2 col-form-label col-form-label-sm" for="{{field.id_for_label}}">{{field.label}}</label>            
+            <div class="col-sm-10">
+                {{field}}
+            </div>
+        
+            {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
     {% endfor %}
+    </fieldset>
 
+    <fieldset>
+        <legend>Material adaptado</legend>
+        {% for fields in materialAdaptado_form %}
+        {% for field in fields %}
+            {% if field and field.name != "id" and field.name != "material" %}
+            <!-- <p>{{field}}</p> -->
+                <div class="row g-3">
+                    <label class="col-sm-2 col-form-label col-form-label-sm" for="{{field.id_for_label}}">{{field.label}}</label>            
+                    <div class="col-sm-10">
+                        {{field}}
+                    </div>        
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+    {% endfor %}
+    {% endfor %}
+    </fieldset>
+    
+    <button type="button" class="btn btn-primary">Cadastrar</button>
 </form>
 {% endblock %}
