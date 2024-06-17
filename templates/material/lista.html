@@ -1,0 +1,22 @@
+{% extends "base/generic.html" %}
+
+{% block extra_head %}
+<style>
+
+</style>    
+{% endblock %}
+
+{% block title %}Cadastro de Materiais{% endblock %}
+
+{% block content %}
+<h1>Materiais Cadastrados</h1>
+
+
+    
+    
+    {% for material in materiais %}
+        <p> {{material}}</p>       
+    {% endfor %}
+    
+
+{% endblock %}
