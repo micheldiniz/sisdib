@@ -13,18 +13,31 @@ def cadastrar_material(request):
         materialAdaptado_form = MaterialAdaptadoFormSet(request.POST, request.FILES)
         material_form = MaterialForm(request.POST, request.FILES)
         
-        if materialAdaptado_form.is_valid() and material_form.is_valid():
-            material = material_form.save()
-            materialAdaptado_form.instance = material
-            materialAdaptado_form.save()            
+        # print(material_form)
+        # material = material_form.save()
+        
+        # if materialAdaptado_form.is_valid() and material_form.is_valid():
+        #     material = material_form.save()
+        #     print("#################################")
+        #     print(material)
+        #     materialAdaptado_form.instance = material
+        #     materialAdaptado_form.save()            
+        #     return render(request, 'success.html')
+        if material_form.is_valid():
+            material = material_form.save()               
             return render(request, 'success.html')
     else:
         material_form = MaterialForm()
-        materialAdaptado_form = MaterialAdaptadoFormSet()
+        # materialAdaptado_form = MaterialAdaptadoFormSet()
     return render(request, 'material/cadastrar.html', {
         'material_form' : material_form,
-        'materialAdaptado_form' : materialAdaptado_form,
+        # 'materialAdaptado_form' : materialAdaptado_form,
     })
+
+def list_materials(request):
+  all_materials = Material.objects.all()
+  context = {'materiais': all_materials}
+  return render(request, 'material/lista.html', context)
 
 def visualizar_material(request):
     pass
