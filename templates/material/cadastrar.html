@@ -9,13 +9,13 @@
 {% block title %}Cadastro de Materiais{% endblock %}
 
 {% block content %}
-<h1>Cadastro de Materiais</h1>
-<form method="post" enctype="multipart/form-data" action="/material/cadastrar">
+<h1>{{app_description}}</h1>
+<form method="post" enctype="multipart/form-data" action="/{{app}}/cadastrar">
 
     {% csrf_token %}
     <fieldset>
-        <legend>Material  <small class="text-muted">original</small></legend>
-    {% for field in material_form %}
+        <legend>{{titulo}}  <small class="text-muted">{{subtitulo}}</small></legend>
+    {% for field in form %}
         <div class="mb-3">
             <label for="{{field.id_for_label}}">{{field.label}}</label>            
                 {{field}}          
@@ -31,43 +31,6 @@
         </div>
     {% endfor %}
     </fieldset>
-
-    <!-- <fieldset>            
-            
-        <legend>Adaptado(s)</legend>
-        <nav>
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button class="nav-link show active" id="material-1-tab" data-bs-toggle="tab" data-bs-target="#material-1-tab" type="button" role="tab" aria-controls="material-1" aria-selected="true">material adaptado 1</button>
-                <button class="nav-link" id="material-2-tab" data-bs-toggle="tab" data-bs-target="#material-2-tab" type="button" role="tab" aria-controls="material-2" aria-selected="false">material adaptado 2</button>
-                <button class="nav-link" id="material-3-tab" data-bs-toggle="tab" data-bs-target="#material-3-tab" type="button" role="tab" aria-controls="material-3" aria-selected="false">material adaptado 3</button>            
-            </div>
-        </nav>
-        <div class="tab-content" id="myTabContent">
-            {% for fields in materialAdaptado_form %}      
-            <div class="tab-pane fade show active" id="material-1" role="tabpanel" aria-labelledby="material-1-tab">
-                {% for field in fields %}
-                    {% if field and field.name != "id" and field.name != "material" %}
-                    <p>{{field}}</p>
-                        <div class="row g-3">
-                            <label class="col-sm-2 col-form-label col-form-label-sm" for="{{field.id_for_label}}">{{field.label}}</label>            
-                            <div class="col-sm-10">
-                                {{field}}
-                            </div>        
-                            {% if field.help_text %}
-                                <small class="form-text text-muted">{{ field.help_text }}</small>
-                            {% endif %}
-                            {% for error in field.errors %}
-                                <div class="alert alert-danger">{{ error }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                {% endfor %}          
-            </div>
-            {% endfor %}        
-            <div class="tab-pane fade" id="material-2" role="tabpanel" aria-labelledby="material-2-tab">2</div>
-            <div class="tab-pane fade" id="material-3" role="tabpanel" aria-labelledby="material-3-tab">3</div>
-        </div>
-    </fieldset> -->
     
     <button type="submit" class="btn btn-primary" >Cadastrar</button>
   
