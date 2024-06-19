@@ -57,17 +57,17 @@ def cadastrar_material_adaptado(request):
         'titulo':"Material",
         'subtitulo':"Adaptado",
         'app':'material/adaptado',
-    })
+    }) 
 
 def list_materiais_adaptados(request):
   all_materiais_adaptados = MaterialAdaptado.objects.all()
+
   ths = [field.name for field in MaterialAdaptado._meta.fields]
 
-  context = {'objects':  all_materiais_adaptados,
+  context = {'objects': all_materiais_adaptados,
             'titulo':"Material",
             'subtitulo':"Adaptado",
             'app_description':'Material Adaptado',
-            'app':'material/adaptado',
             'ths':ths,
             }
   return render(request, 'material/lista_adaptado.html', context)
