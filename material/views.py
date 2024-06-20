@@ -16,7 +16,7 @@ def cadastrar_material(request):
   
         if material_form.is_valid():
             material = material_form.save()               
-            return redirect(reverse(list_materials))
+            return redirect(reverse(list_materiais))
     else:
         material_form = MaterialForm()        
 
@@ -37,6 +37,7 @@ def list_materiais(request):
             'titulo':"Material",
             'subtitulo':"Original",
             'ths':ths,
+            'app':'material',
             }
     print(context)
     return render(request, 'material/lista.html', context)
@@ -66,6 +67,7 @@ def list_materiais_adaptados(request):
             'titulo':"Material",
             'subtitulo':"Adaptado",
             'app_description':'Material Adaptado',
+            'app':'material/adaptado',
             'ths':ths,
             }
   return render(request, 'material/lista_adaptado.html', context)
