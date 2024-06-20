@@ -28,16 +28,17 @@ def cadastrar_material(request):
         'app_description':'Material',
     })
 
-def list_materials(request):
-    all_materials = Material.objects.all()
+def list_materiais(request):
+    all_materiais = Material.objects.all()
 
-    field_names = [field.name for field in Material._meta.fields]
+    ths = [field.name for field in Material._meta.fields]
 
-    context = {'objects': all_materials,
+    context = {'objects': all_materiais,
             'titulo':"Material",
             'subtitulo':"Original",
-            'fields':field_names,
+            'ths':ths,
             }
+    print(context)
     return render(request, 'material/lista.html', context)
 
 def cadastrar_material_adaptado(request):
@@ -59,12 +60,15 @@ def cadastrar_material_adaptado(request):
 
 def list_materiais_adaptados(request):
   all_materiais_adaptados = MaterialAdaptado.objects.all()
-  context = {'objects': all_materiais_adaptados,
+  ths = [field.name for field in MaterialAdaptado._meta.fields]
+
+  context = {'objects':  all_materiais_adaptados,
             'titulo':"Material",
             'subtitulo':"Adaptado",
-            'app_description':'Material Adaptado'
+            'app_description':'Material Adaptado',
+            'ths':ths,
             }
-  return render(request, 'material/lista.html', context)
+  return render(request, 'material/lista_adaptado.html', context)
 
 def visualizar_material(request):
     pass
