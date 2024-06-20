@@ -51,7 +51,6 @@ class MaterialAdaptado(models.Model):
     partes = models.PositiveIntegerField(blank=True, null = True)
     arquivo = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
     is_disponivel_para_pedido = models.BooleanField(default=False, verbose_name="Disponível para pedido?")
-    is_disponivel_para_assinatura = models.BooleanField(default=False, verbose_name="Disponível para assinatura?")
     
     def __str__(self):
         return f'{self.material} ({self.tipo})'

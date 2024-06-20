@@ -17,8 +17,8 @@ class MaterialAdmin(admin.ModelAdmin):
 
 class MaterialAdaptadoAdmin(admin.ModelAdmin):   
     search_fields = ['material__titulo','tipo']
-    list_display = ['material_titulo','tipo','is_disponivel_para_pedido','is_disponivel_para_assinatura']
-    list_editable = ['is_disponivel_para_pedido','is_disponivel_para_assinatura']
+    list_display = ['material_titulo','tipo','is_disponivel_para_pedido']
+    list_editable = ['is_disponivel_para_pedido']
     autocomplete_fields = ('material',)
 
     def material_titulo(self, obj):
