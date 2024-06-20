@@ -1,0 +1,45 @@
+{% extends "base/generic.html" %}
+
+{% block extra_head %}
+<style>
+
+</style>    
+{% endblock %}
+
+{% block title %}{{app_description}}{% endblock %}
+
+{% block content %}
+<h1>{{titulo}}  <small class="text-muted">{{subtitulo}}</small></h1>
+    
+
+<table class="table">
+    <thead>
+      <tr>
+        {% for th in ths %}            
+                <th scope="col">{{th}}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+        {% for object in objects %}       
+        <tr>    
+                <td scope="row">{{object.id}}</td>            
+                <td scope="row">{{object.material}}</td>
+                <td scope="row">{{object.tipo}}</td>
+                <td scope="row">{{object.quantidade_paginas}}</td>
+                <td scope="row">{{object.tamanho}}</td>
+                <td scope="row">{{object.partes}}</td>
+                <td scope="row">
+                  {% if object.arquivo_original %}
+                  <a href="{{object.arquivo_original.url}}" download>arquivo</a>
+                  {% else %}
+                  nenhum arquivo encontrado
+                  {% endif %}                  
+                </td>
+                <td scope="row">{{object.is_disponivel_para_pedido}}</td>
+            </tr>        
+            {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
