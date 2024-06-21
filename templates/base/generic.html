@@ -104,13 +104,13 @@
           themeControlToggle = document.querySelector('#themeControlToggle')        
           
           savedValue = localStorage.getItem('themeControlToggle');          
+          tables = document.querySelectorAll('.table');
           
           if(savedValue == 'true'){
             themeControlToggle.checked = true;
             document.querySelector('body').classList.toggle('dark-theme');                        
             document.querySelector('header .navbar').classList.toggle('navbar-dark'); 
             document.querySelector('header .navbar').classList.toggle('bg-dark');
-            tables = document.querySelectorAll('.table');
             if(tables.length > 0)
               tables.forEach(e => {
                 e.classList.toggle('table-dark');              
@@ -122,6 +122,7 @@
                 document.querySelector('header .navbar').classList.toggle('navbar-dark'); 
                 document.querySelector('header .navbar').classList.toggle('bg-dark'); 
                 localStorage.setItem('themeControlToggle', themeControlToggle.checked);
+                
                 if(tables.length > 0)
                 tables.forEach(e => {
                   e.classList.toggle('table-dark');              
