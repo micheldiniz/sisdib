@@ -62,18 +62,51 @@ def cadastrar_material_adaptado(request):
 def list_materiais_adaptados(request):
   all_materiais_adaptados = MaterialAdaptado.objects.all()
 
-  ths = [field.name for field in MaterialAdaptado._meta.fields]
-
   context = {'objects': all_materiais_adaptados,
             'titulo':"Material",
             'subtitulo':"Adaptado",
             'app_description':'Material Adaptado',
-            'ths':ths,
+            'ths':[
+                'ID',
+                'Material',
+                'Tipo',
+                'Qtd páginas',
+                'Partes',
+                'Tamanho (Kg / Mb)',
+                'Disponível para pedido?',
+                'Arquivo adaptado',
+                ],
             }
   return render(request, 'material/lista_adaptado.html', context)
 
-def visualizar_material(request):
-    pass
+def visualizar_material(request, id):
+    
+    material = get_object_or_404(Material, id=id)
+    return render(request, 'material/view.html', {
+        'object': material,
+        'titulo':"Material",
+        'subtitulo':"Original",
+        'app':'material',
+        'app_description':'Material',})
+
+def editar_material(request, id):
+    
+    material = get_object_or_404(Material, id=id)
+
+    if request.method == 'POST':
+        form = MaterialForm(request.POST, request.FILES, instance=material)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('visualizar_material', args=[material.id]))
+    else:
+        form = MaterialForm(instance=material)
+
+    return render(request, 'material/editar.html', {
+        'form': form,
+        'titulo':"Material",
+        'subtitulo':"Original",
+        'app':'material',
+        'app_description':'Material',})
 
 @login_required
 def download_file(request, material_id):
