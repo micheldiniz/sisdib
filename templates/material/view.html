@@ -1,0 +1,38 @@
+{% extends "base/generic.html" %}
+
+{% block extra_head %}
+<style>
+
+</style>    
+{% endblock %}
+
+{% block title %}Cadastro de Materiais{% endblock %}
+
+{% block content %}
+<!-- <h1>{{app_description}}</h1> -->
+
+    
+        <h1>{{titulo}}  <small class="text-muted">{{subtitulo}}</small></h1>
+      
+        <p><strong>ID: </strong>{{object.id}}</p>
+        <p><strong>Classificacao: </strong>{{object.classificacao}}</p>
+        <p><strong>Titulo: </strong>{{object.titulo}}</p>
+        <p><strong>Autor: </strong>{{object.autor}}</p>
+        <p><strong>Edicao: </strong>{{object.edicao}}</p>
+        <p><strong>Editora: </strong>{{object.editora}}</p>
+        <p><strong>Publico Alvo: </strong>{{object.publico_alvo}}</p>
+        <p><strong>Acervo: </strong>{{object.acervo}}</p>
+        <p><strong>Tiragem: </strong>{{object.tiragem}}</p>
+        <p><strong>Quantidade de paginas: </strong>{{object.quantidade_paginas}}</p>
+        <p><strong>Arquivo original: </strong>
+            {% if object.arquivo_original %}
+            <a href="{{object.arquivo_original.url}}" download>arquivo</a>
+            {% else %}
+                Nenhum arquivo cadastrado
+            {% endif %}
+        </p>        
+        <a class="btn btn-primary" href="/material/editar/{{object.id}}" role="button">Editar</a>
+        <a class="btn btn-secondary" href="/material/todos" role="button">Voltar</a>
+
+</form>
+{% endblock %}
