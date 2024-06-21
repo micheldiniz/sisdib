@@ -32,11 +32,16 @@ def list_materiais(request):
     all_materiais = Material.objects.all()
 
     ths = [field.name for field in Material._meta.fields]
+    
+    materiais_dict = [material for material in all_materiais]
+    
+    materiais_adaptados = MaterialAdaptado.objects.get(material = material)
+
 
     context = {'objects': all_materiais,
             'titulo':"Material",
             'subtitulo':"Original",
-            'ths':ths,
+            'ths':['ID','Classificacao','Titulo','Autor','Edicao','Editora','Público Alvo','Acervo', 'Tiragem','Qtd Páginas','Arquivo Original'],
             'app':'material',
             }
     print(context)
