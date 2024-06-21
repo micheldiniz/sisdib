@@ -24,7 +24,7 @@
         {% for object in objects %}       
         <tr>    
                 <td scope="row">{{object.id}}</td>            
-                <td scope="row">{{object.material}}</td>
+                <td scope="row"><a href="/material/{{object.material.id}}">{{object.material}}</a></td>
                 <td scope="row">{{object.tipo}}</td>
                 <td scope="row">{{object.quantidade_paginas}}</td>
                 <td scope="row">{{object.tamanho}}</td>
@@ -36,7 +36,11 @@
                   nenhum arquivo encontrado
                   {% endif %}                  
                 </td>
-                <td scope="row">{{object.is_disponivel_para_pedido}}</td>
+                {% if object.is_disponivel_para_pedido == 'True' %}
+                  <td scope="row">Sim</td>
+                  {% else %}
+                  <td scope="row">Não</td>
+                {% endif %}                  
             </tr>        
             {% endfor %}
     </tbody>
