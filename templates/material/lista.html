@@ -23,7 +23,7 @@
     </thead>
     <tbody>
         {% for object in objects %}
-        <tr>    
+        <tr>  
                 <td scope="row">{{object.id}}</td>            
                 <td scope="row">{{object.classificacao}}</td>
                 <td scope="row">{{object.titulo}}</td>
@@ -33,13 +33,16 @@
                 <td scope="row">{{object.publico_alvo}}</td>
                 <td scope="row">{{object.acervo}}</td>
                 <td scope="row">{{object.tiragem}}</td>
-                <td scope="row">{{object.quantidade_paginas}}</td>
+                <td scope="row">{{object.quantidade_paginas}}</td>                
                 <td scope="row">
                     {% if object.arquivo_original %}
-                    <a href="{{object.arquivo_original.url}}" download>arquivo</a>
+                      <a href="{{object.arquivo_original.url}}" download>arquivo</a>
                     {% else %}
-                    nenhum arquivo encontrado
-                    {% endif %}                    
+                      nenhum arquivo encontrado
+                    {% endif %}               
+                  {% for material in object.materiais_adaptados.all %}
+                    <li>{{ material }}</li>
+                  {% endfor %}     
                 </td>
                 <td scope="row">
                   <a class="btn btn-outline-primary" text="visualizar" role="button" href="/material/{{object.id}}">

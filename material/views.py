@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from material.models import Material,MaterialAdaptado
 from django.urls import reverse
 from django.shortcuts import redirect
+from django.views.generic import ListView
 
 def index(request):
     return HttpResponse("Index Material!")
@@ -33,9 +34,11 @@ def list_materiais(request):
 
     ths = [field.name for field in Material._meta.fields]
     
-    materiais_dict = [material for material in all_materiais]
+    # materiais_dict = [material for material in all_materiais]
+
+
     
-    materiais_adaptados = MaterialAdaptado.objects.get(material = material)
+    # materiais_adaptados = MaterialAdaptado.objects.get(material = material)
 
 
     context = {'objects': all_materiais,
@@ -112,6 +115,17 @@ def editar_material(request, id):
         'subtitulo':"Original",
         'app':'material',
         'app_description':'Material',})
+
+
+class MaterialListView(ListView):
+    model = Material
+    template_name = 'material/lista.html'
+    context_object_name = 'material_adaptado'
+
+    def get_queryset(self):
+        return Material.objects.prefetch_related('materiais_adaptados')
+
+
 
 @login_required
 def download_file(request, material_id):

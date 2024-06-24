@@ -44,7 +44,7 @@ class MaterialAdaptado(models.Model):
         ("ampliado","ampliado"),
     ]
     
-    material = models.ForeignKey(Material, on_delete=models.CASCADE)
+    material = models.ForeignKey(Material, related_name='materiais_adaptados', on_delete=models.CASCADE)
     tipo = models.CharField(max_length = 255, choices = MATERIAL_CHOICES)
     quantidade_paginas = models.PositiveIntegerField(blank=True, null = True)
     tamanho = models.PositiveIntegerField(blank=True, null = True)
