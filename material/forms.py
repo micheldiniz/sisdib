@@ -2,15 +2,6 @@ from django import forms
 from material.models import MaterialAdaptado, Material
 from django.forms.models import inlineformset_factory
 
-class YesNoBooleanField(forms.BooleanField):
-    def __init__(self, *args, **kwargs):
-        initial = kwargs.pop('initial', False)  # Default to True (Yes)
-        super().__init__(*args, **kwargs)
-        self.initial = initial
-
-    widget = forms.RadioSelect(choices=((True, 'Sim'), (False, 'Não')))
-
-
 class MaterialForm(forms.ModelForm):
     titulo = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control'})
@@ -57,10 +48,6 @@ class MaterialForm(forms.ModelForm):
 
 class MaterialAdaptadoForm(forms.ModelForm):
 
-    is_disponivel_para_pedido = YesNoBooleanField(        
-        label='Disponível para Pedido?'        
-    )
-
     class Meta:
         model = MaterialAdaptado
         fields = ['material','tipo', 'quantidade_paginas', 'partes', 'tamanho','is_disponivel_para_pedido','arquivo']        
@@ -79,9 +66,8 @@ class MaterialAdaptadoForm(forms.ModelForm):
             'quantidade_paginas': forms.TextInput(attrs={'class': 'form-control'}),
             'partes': forms.TextInput(attrs={'class': 'form-control'}),
             'tamanho': forms.TextInput(attrs={'class': 'form-control'}),
-            'is_disponivel_para_pedido': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'arquivo': forms.FileInput(attrs={'class': 'form-control'}),
-            # 'material': Select2Widget,
+            'is_disponivel_para_pedido': forms.RadioSelect(choices=((True,"Sim"),(False,"Não")) ,attrs={'class': 'check-control'}),
+            # 'arquivo': forms.FileInput(attrs={'class': 'form-control'}),
         }
 
 
