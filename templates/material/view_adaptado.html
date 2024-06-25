@@ -1,0 +1,47 @@
+{% extends "base/generic.html" %}
+
+{% block extra_head %}
+<style>
+
+</style>    
+{% endblock %}
+
+{% block title %}Cadastro de Materiais{% endblock %}
+
+{% block content %}
+<!-- <h1>{{app_description}}</h1> -->
+
+    
+        <h1>{{titulo}}  <small class="text-muted">{{subtitulo}}</small></h1>
+      
+        <p><strong>ID: </strong>{{object.id}}</p>
+        <p><strong>Tipo: </strong>{{object.tipo}}</p>
+        <p><strong>Qtd Páginas: </strong>{{object.quantidade_paginas}}</p>
+        <p><strong>Partes: </strong>{{object.partes}}</p>
+        <p><strong>Tamanho (Kg/Mb): </strong>{{object.tamanho}}
+            {% if object.tipo == 'ampliado' %}
+                Mb
+            {% else %}
+                Kg
+            {% endif %}
+        </p>
+        <p><strong>Disponível para Pedido? </strong>
+            {% if object.is_disponivel_para_pedido == True %}
+                Sim
+            {% else %}
+                Não
+            {% endif %}        
+        </p>
+        
+        <p><strong>Arquivo adaptado: </strong>
+            {% if object.arquivo %}
+            <a href="{{object.arquivo.url}}" download>download do arquivo</a>
+            {% else %}
+                Nenhum arquivo cadastrado
+            {% endif %}
+        </p>        
+        <a class="btn btn-primary" href="/material/adaptado/editar/{{object.id}}" role="button">Editar</a>
+        <a class="btn btn-secondary" href="/material/todos" role="button">Voltar</a>
+
+</form>
+{% endblock %}
