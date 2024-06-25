@@ -44,7 +44,7 @@ def list_materiais(request):
     context = {'objects': all_materiais,
             'titulo':"Material",
             'subtitulo':"Original",
-            'ths':['ID','Classificacao','Titulo','Autor','Edicao','Editora','Público Alvo','Acervo', 'Tiragem','Qtd Páginas','Arquivo Original'],
+            'ths':['ID','Classificacao','Titulo','Autor','Edicao','Editora','Público Alvo','Acervo', 'Tiragem','Qtd Páginas','Arquivo Original','Adaptações'],
             'app':'material',
             }
     print(context)
@@ -97,6 +97,16 @@ def visualizar_material(request, id):
         'app':'material',
         'app_description':'Material',})
 
+def visualizar_material_adaptado(request, id):
+    
+    material_adaptado = get_object_or_404(MaterialAdaptado, id=id)
+    return render(request, 'material/view_adaptado.html', {
+        'object': material_adaptado,
+        'titulo':"Material",
+        'subtitulo':"Adaptado",
+        'app':'material',
+        'app_description':'Material',})
+
 def editar_material(request, id):
     
     material = get_object_or_404(Material, id=id)
@@ -116,6 +126,25 @@ def editar_material(request, id):
         'app':'material',
         'app_description':'Material',})
 
+def editar_material_adaptado(request, id):
+    
+    material_adaptado = get_object_or_404(MaterialAdaptado, id=id)
+
+    if request.method == 'POST':
+        form = MaterialAdaptadoForm(request.POST, request.FILES, instance=material_adaptado)        
+        if form.is_valid():
+            form.save()
+            print(form)
+            return redirect(reverse('visualizar_material_adaptado', args=[material_adaptado.id]))        
+    else:
+        form = MaterialAdaptadoForm(instance=material_adaptado)
+
+    return render(request, 'material/editar_adaptado.html', {
+        'form': form,
+        'titulo':"Material",
+        'subtitulo':"Adaptado",
+        'app':'material',
+        'app_description':'Material',})
 
 class MaterialListView(ListView):
     model = Material
@@ -124,8 +153,6 @@ class MaterialListView(ListView):
 
     def get_queryset(self):
         return Material.objects.prefetch_related('materiais_adaptados')
-
-
 
 @login_required
 def download_file(request, material_id):
