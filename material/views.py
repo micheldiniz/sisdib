@@ -7,6 +7,7 @@ from material.models import Material,MaterialAdaptado
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.views.generic import ListView
+from django.core.paginator import Paginator
 
 def index(request):
     return HttpResponse("Index Material!")
@@ -31,17 +32,16 @@ def cadastrar_material(request):
 
 def list_materiais(request):
     all_materiais = Material.objects.all()
-
-    ths = [field.name for field in Material._meta.fields]
     
-    # materiais_dict = [material for material in all_materiais]
-
-
+    paginator = Paginator(all_materiais, 10)
     
-    # materiais_adaptados = MaterialAdaptado.objects.get(material = material)
+    page_number = request.GET.get("page")
 
+    objects = paginator.get_page(page_number)
 
-    context = {'objects': all_materiais,
+    all_materiais = request
+
+    context = {'objects': objects,
             'titulo':"Material",
             'subtitulo':"Original",
             'ths':['ID','Classificacao','Titulo','Autor','Edicao','Editora','Público Alvo','Acervo', 'Tiragem','Qtd Páginas','Arquivo Original','Adaptações'],
@@ -90,6 +90,7 @@ def list_materiais_adaptados(request):
 def visualizar_material(request, id):
     
     material = get_object_or_404(Material, id=id)
+
     return render(request, 'material/view.html', {
         'object': material,
         'titulo':"Material",
@@ -150,6 +151,7 @@ class MaterialListView(ListView):
     model = Material
     template_name = 'material/lista.html'
     context_object_name = 'material_adaptado'
+    paginate_by = 10
 
     def get_queryset(self):
         return Material.objects.prefetch_related('materiais_adaptados')
