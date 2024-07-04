@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'pedido',
     'pessoa',
     'pedidoAdaptacao',
+    'estoque',
     'django_forms_bootstrap',
     'django_bootstrap_icons',
     'django_select2',

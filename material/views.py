@@ -11,7 +11,7 @@ from django.core.paginator import Paginator
 from django.views.generic.edit import DeleteView
 
 def index(request):
-    return HttpResponse("Index Material!")
+    return redirect(reverse(list_materiais))
 
 def cadastrar_material(request):
     if request.method == 'POST':        
@@ -48,7 +48,6 @@ def list_materiais(request):
             'ths':['ID','Classificacao','Titulo','Autor','Edicao','Editora','Público Alvo','Acervo', 'Tiragem','Qtd Páginas','Arquivo Original','Adaptações'],
             'app':'material',
             }
-    print(context)
     return render(request, 'material/lista.html', context)
 
 def cadastrar_material_adaptado(request):
@@ -136,7 +135,6 @@ def editar_material_adaptado(request, id):
         form = MaterialAdaptadoForm(request.POST, request.FILES, instance=material_adaptado)        
         if form.is_valid():
             form.save()
-            print(form)
             return redirect(reverse('visualizar_material_adaptado', args=[material_adaptado.id]))        
     else:
         form = MaterialAdaptadoForm(instance=material_adaptado)
@@ -148,12 +146,10 @@ def editar_material_adaptado(request, id):
         'app':'material',
         'app_description':'Material',})
 
-
 def material_delete(request, material_id):
     obj = get_object_or_404(Material, id=material_id)
     obj.delete()
     return redirect(reverse(list_materiais))
-
 
 def material_adaptado_delete(request, material_id):
     pass
