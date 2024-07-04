@@ -4,10 +4,11 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from material.models import Material,MaterialAdaptado
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import redirect
 from django.views.generic import ListView
 from django.core.paginator import Paginator
+from django.views.generic.edit import DeleteView
 
 def index(request):
     return HttpResponse("Index Material!")
@@ -147,6 +148,16 @@ def editar_material_adaptado(request, id):
         'app':'material',
         'app_description':'Material',})
 
+
+def material_delete(request, material_id):
+    obj = get_object_or_404(Material, id=material_id)
+    obj.delete()
+    return redirect(reverse(list_materiais))
+
+
+def material_adaptado_delete(request, material_id):
+    pass
+
 class MaterialListView(ListView):
     model = Material
     template_name = 'material/lista.html'
@@ -164,3 +175,5 @@ def download_file(request, material_id):
         response['content-Dosposition'] = f'attachment; filename="{material.arquivo_original.name}"'
         return response
     return HttpResponse('File not Found')
+
+

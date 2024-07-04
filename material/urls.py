@@ -12,5 +12,7 @@ urlpatterns = [
     path("editar/<int:id>", views.editar_material, name="editar_material"),
     path("adaptado/editar/<int:id>", views.editar_material_adaptado, name="editar_material_adaptado"),
     path("adaptado/todos", views.list_materiais_adaptados, name="list_materials_adaptados"),
-    path('material/<int:material_id>/download', views.download_file, name='download_file')
+    path('material/<int:material_id>/download', views.download_file, name='download_file'),
+    path('deletar/<int:material_id>/', views.material_delete, name='material_delete'),
+    path('adaptado/deletar/<int:material_id>/', views.material_adaptado_delete, name='material_adaptado_delete')
 ]
