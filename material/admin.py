@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django import forms
 from material.models import Material, MaterialAdaptado
 
 # Register your models here.
