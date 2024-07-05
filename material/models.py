@@ -26,6 +26,7 @@ class Material(models.Model):
     titulo = models.CharField(max_length = 255)
     autor =  models.CharField(max_length = 255, null=True, blank=True)
     edicao = models.CharField(max_length = 255, null=True, blank=True)
+    ano_publicacao = models.PositiveIntegerField(null=True, blank=True)
     editora = models.CharField(max_length = 255, null=True, blank=True)
     publico_alvo = models.CharField(max_length = 255, null=True, blank=True, verbose_name = 'Público alvo')
     acervo = models.CharField(max_length = 255, null=True, blank=True)
