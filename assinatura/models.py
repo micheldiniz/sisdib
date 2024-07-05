@@ -8,12 +8,12 @@ import os
 
 # Create your models here.
 
-def get_material_upload_path(instance, filename):
+def get_revista_upload_path(instance, filename):
     date_part = datetime.now().strftime('%Y/%m')
 
     if isinstance(instance, MaterialAdaptado):
         return os.path.join('materiais',instance.tipo, date_part,filename)
-    return os.path.join('materiais', date_part, filename)
+    return os.path.join('revista', date_part, filename)
 
 
 class Solicitante(models.Model):
@@ -49,7 +49,7 @@ class Assinatura(models.Model):
     solicitante = models.ForeignKey(Solicitante, on_delete=models.CASCADE, verbose_name='Solicitante / Assinante')
 
     def __str__(self) -> str:
-        return f'{self.material}, solicitante: {self.solicitante}'
+        return f'{self.revista}, solicitante: {self.solicitante}'
     
     def get_admin_url(self):
         return '/admin/assinatura/assinatura/{0}/change'.format(self.id)
@@ -63,7 +63,7 @@ class Assinatura(models.Model):
         super().save(*args, **kwargs)
     
 class Assinante(models.Model):
-    nome = models.CharField(max_length=255, verbose_name="nome da pessoa que receberá o material")
+    nome = models.CharField(max_length=255, verbose_name="nome da pessoa que receberá a revista")
     assinatura = models.OneToOneField(Assinatura, on_delete=models.CASCADE)
 
 
@@ -123,11 +123,11 @@ class EdicaoRevistaAssinatura(models.Model):
     quantidade_paginas = models.PositiveIntegerField(null=True, blank=True, default=0)
     peso = models.PositiveIntegerField(null=True, blank=True, default=0)
     registro_envio = models.ForeignKey(RegistroEnvioAssinaturas, on_delete= models.CASCADE, null = True, blank= True)
-    arquivo_original = models.FileField(upload_to=get_material_upload_path, null = True, blank= True)
+    arquivo_original = models.FileField(upload_to=get_revista_upload_path, null = True, blank= True)
     quantidade_assinaturas_RJ = models.PositiveIntegerField(null=True,verbose_name='Qtd. ass. Rio de Janeiro (ativas)', blank=True, default=0)
     quantidade_assinaturas_Es = models.PositiveIntegerField(null=True,verbose_name='Qtd. ass. Estrangeiros (ativas)', blank=True, default=0)
     quantidade_assinaturas_OE = models.PositiveIntegerField(null=True,verbose_name='Qtd. ass. Outros Estados (ativas)', blank=True, default=0)
 
     def __str__(self) -> str:
-        return '{0}. Edição: {1}'.format(self.material.material, self.edicao)
+        return '{0}. Edição: {1}'.format(self.revista, self.edicao)
     
