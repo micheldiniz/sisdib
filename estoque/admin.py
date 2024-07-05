@@ -1,10 +1,10 @@
 from django.contrib import admin
-from estoque.models import Estoque
+from estoque.models import EntradaEstoque
 
 # Register your models here.
 
-class EstoqueAdmin(admin.ModelAdmin):
+class EntradaEstoqueAdmin(admin.ModelAdmin):
     pass
 
 
-admin.site.register(Estoque, EstoqueAdmin)
+admin.site.register(EntradaEstoque, EntradaEstoqueAdmin)
