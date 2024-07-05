@@ -23,12 +23,12 @@ def guia_correio(modeladmin, request, queryset):
     dict = {}
         
     for p in queryset:
-        materiais_adaptados  = []
+        revistas  = []
         edicoes = get_edicoes(p)
         peso = 0
         pacotes = 0
         for e in edicoes:
-            materiais_adaptados.append(str(e.material.material.titulo))
+            revistas.append(str(e.revista.titulo))
             peso += e.peso
             pacotes += e.assinaturas.count()
         remessas_qs = get_remessas(p)
@@ -39,7 +39,7 @@ def guia_correio(modeladmin, request, queryset):
         dict = {  'remessas' : remessas,
                   'remetente': p.remetente,
                   'identificacao': p.identificacao,
-                  'classificacao': ' + '.join(materiais_adaptados),
+                  'classificacao': ' + '.join(revistas),
                   'peso': peso,
                   'pacotes':pacotes//2,
                 }
@@ -176,7 +176,7 @@ class SolicitanteAdmin(admin.ModelAdmin):
             return 'nenhuma'
         assinaturas_html = []
         for assinatura in assinaturas:
-            html = '<a href="{0}">{1}</a></br>'.format(assinatura.get_admin_url(),str(assinatura.material))
+            html = '<a href="{0}">{1}</a></br>'.format(assinatura.get_admin_url(),str(assinatura.revista))
             assinaturas_html.append(html)
         html_content = ''.join(assinaturas_html)
         return mark_safe(html_content)
@@ -187,7 +187,7 @@ class SolicitanteAdmin(admin.ModelAdmin):
             return 'nenhuma'
         assinaturas_html = []
         for assinatura in assinaturas:
-            html = '<a href="{0}">{1}</a></br>'.format(assinatura.get_admin_url(),str(assinatura.material))
+            html = '<a href="{0}">{1}</a></br>'.format(assinatura.get_admin_url(),str(assinatura.revista))
             assinaturas_html.append(html)
         html_content = ''.join(assinaturas_html)
         return mark_safe(html_content)
