@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from pessoa.models import PessoaFisica, Endereco, Contato
-from cliente.models import Cliente
+from assinatura.models import Solicitante
 import csv, datetime, re
 
 class Command(BaseCommand):
@@ -27,7 +27,7 @@ class Command(BaseCommand):
                     pessoa_fisica = Command.toPessoaFisica(row)
                     endereco = Command.toEndereco(row, pessoa_fisica)
                     contato = Command.toContato(row, pessoa_fisica)
-                    cliente = Cliente.objects.create(
+                    cliente = Solicitante.objects.create(
                         pessoa = pessoa_fisica
                     )
                     break
