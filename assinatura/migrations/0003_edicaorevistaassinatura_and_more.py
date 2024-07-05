@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('edicao', models.CharField(blank=True, max_length=255, null=True)),
                 ('quantidade_paginas', models.PositiveIntegerField(blank=True, default=0, null=True)),
                 ('peso', models.PositiveIntegerField(blank=True, default=0, null=True)),
-                ('arquivo_original', models.FileField(blank=True, null=True, upload_to=assinatura.models.get_material_upload_path)),
+                ('arquivo_original', models.FileField(blank=True, null=True, upload_to=assinatura.models.get_revista_upload_path)),
                 ('quantidade_assinaturas_RJ', models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Qtd. ass. Rio de Janeiro (ativas)')),
                 ('quantidade_assinaturas_Es', models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Qtd. ass. Estrangeiros (ativas)')),
                 ('quantidade_assinaturas_OE', models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Qtd. ass. Outros Estados (ativas)')),
