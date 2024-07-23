@@ -1,5 +1,5 @@
 from django.contrib import admin
-from assinatura.models import Solicitante,Assinatura,Assinante,RegistroEnvioAssinaturas,EdicaoRevistaAssinatura, Remessa,Revista
+from assinatura.models import Solicitante,Assinatura,Assinante,RegistroEnvioAssinaturas,EdicaoRevistaAssinatura, Remessa, Revista, TipoRemessa
 from pessoa.models import Endereco
 from django.db.models import Q
 from typing import Any
@@ -203,6 +203,9 @@ class RemessaInline(admin.StackedInline):
     extra = 0
     exclude = ['observacao','ordem']
 
+class TipoRemessaAdmin(admin.ModelAdmin):
+    model = TipoRemessa
+
 class RegistroEnvioAssinaturasAdmin(admin.ModelAdmin):
     search_fields = ['nome', 'assinaturas']
     list_display = ['nome','enviado','data_registro', 'observacao','get_quantidade_assinaturas','get_quantidade_paginas']        
@@ -247,3 +250,4 @@ admin.site.register(Revista, RevistaAdmin)
 admin.site.register(Solicitante, SolicitanteAdmin)
 admin.site.register(Assinatura, AssinaturaAdmin)
 admin.site.register(RegistroEnvioAssinaturas, RegistroEnvioAssinaturasAdmin)
+admin.site.register(TipoRemessa, TipoRemessaAdmin)
