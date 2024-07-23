@@ -121,7 +121,7 @@ class EdicaoRevistaAssinatura(models.Model):
         )
     edicao = models.CharField(max_length = 255, null=True, blank=True)                
     quantidade_paginas = models.PositiveIntegerField(null=True, blank=True, default=0)
-    peso = models.PositiveIntegerField(null=True, blank=True, default=0)
+    peso = models.PositiveIntegerField(null=True, blank=True, verbose_name='peso em gramas', default=0)
     registro_envio = models.ForeignKey(RegistroEnvioAssinaturas, on_delete= models.CASCADE, null = True, blank= True)
     arquivo_original = models.FileField(upload_to=get_revista_upload_path, null = True, blank= True)
     quantidade_assinaturas_RJ = models.PositiveIntegerField(null=True,verbose_name='Qtd. ass. Rio de Janeiro (ativas)', blank=True, default=0)
