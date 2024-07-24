@@ -13,6 +13,9 @@ from django.shortcuts import render
 class ItemPedidoInline(admin.StackedInline):
     model = ItemPedido
     extra = 0
+    search_fields = ['material_titulo','material_tipo']    
+    autocomplete_fields = ['material']
+
 
     def formfield_for_foreignkey(self, db_field: ForeignKey[Any], request: HttpRequest | None, **kwargs: Any) -> ModelChoiceField | None:
         if db_field.name == 'material':
