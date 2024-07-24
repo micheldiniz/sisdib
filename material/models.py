@@ -11,22 +11,21 @@ def get_material_upload_path(instance, filename):
         return os.path.join('materiais',instance.tipo, date_part,filename)
     return os.path.join('materiais', date_part, filename)
 
+class Classificacao(models.Model):
+    classificacao = models.CharField(max_length=255)
+
+    def __str__(self) -> str:
+        return self.classificacao
+
 class Material(models.Model):
     class Meta:
         verbose_name_plural = 'Materiais'
 
-    TIPO_CHOICES = [
-        ("didático","didático"),
-        ("paradidático","paradidático"),
-        ("revista","revista"),
-        ("DAL (S/Revisão)","DAL (S/Revisão)"),
-        ("Outro","Outro"),
-    ]
-    classificacao = models.CharField(max_length = 255, null = True, choices = TIPO_CHOICES)
+    classificacao = models.ForeignKey(Classificacao, on_delete=models.CASCADE)
     titulo = models.CharField(max_length = 255)
     autor =  models.CharField(max_length = 255, null=True, blank=True)
     edicao = models.CharField(max_length = 255, null=True, blank=True)
-    ano_publicacao = models.PositiveIntegerField(null=True, blank=True)
+    ano_publicacao = models.CharField(null=True, blank=True)
     editora = models.CharField(max_length = 255, null=True, blank=True)
     publico_alvo = models.CharField(max_length = 255, null=True, blank=True, verbose_name = 'Público alvo')
     acervo = models.CharField(max_length = 255, null=True, blank=True)
