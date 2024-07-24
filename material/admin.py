@@ -1,5 +1,5 @@
 from django.contrib import admin
-from material.models import Material, MaterialAdaptado
+from material.models import Material, MaterialAdaptado, Classificacao
 
 # Register your models here.
 
@@ -25,5 +25,9 @@ class MaterialAdaptadoAdmin(admin.ModelAdmin):
 
     material_titulo.short_description = 'Título do material'
 
+class ClassificacaoAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Classificacao, ClassificacaoAdmin)
 admin.site.register(Material, MaterialAdmin)
 admin.site.register(MaterialAdaptado, MaterialAdaptadoAdmin)
