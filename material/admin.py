@@ -16,11 +16,11 @@ class MaterialAdaptadoInline(admin.StackedInline):
 
 class MaterialAdmin(admin.ModelAdmin):
     inlines = [MaterialAdaptadoInline]
-    search_fields = ['titulo','classificacao']
+    search_fields = ['titulo','classificacao__classificacao','autor']
 
 
 class MaterialAdaptadoAdmin(admin.ModelAdmin):   
-    search_fields = ['material__titulo','tipo']
+    search_fields = ['material__titulo','tipo','material__autor']
     list_display = ['material_titulo','tipo','is_disponivel_para_pedido','item_pedido_count']
     list_editable = ['is_disponivel_para_pedido']
     autocomplete_fields = ('material',)
